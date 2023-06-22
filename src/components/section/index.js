@@ -1,0 +1,63 @@
+import React from 'react';
+import CarouselComponent from '@components/Carousel';
+import Cta from '@components/Cta';
+import HomeSection from '@components/HomeSection';
+import StoreListing from '@components/StoreListing';
+import StoreListingLocator from '@components/StoreListingLocator';
+import ArticleContent from '@components/articleContent';
+import EmbededScript from '@components/embededScript';
+import TextContent from '@components/textContent';
+
+const Section = ({ fields, sys, position, pageHeading }) => {
+  const sectionType = sys?.contentType?.sys?.id;
+  const page = fields?.internalTitle;
+
+  if (sectionType === 'articleContent') {
+    return (
+      <ArticleContent
+        heading={
+          pageHeading || fields?.heading?.content?.[0]?.content?.[0].value
+        }
+        fields={fields}
+      />
+    );
+  } else if (sectionType === 'locator') {
+    // ToDo create a separate component for below work same as above ArticleContent
+    return (
+      <StoreListing
+        pageHeading={
+          pageHeading || fields?.heading?.content?.[0]?.content?.[0].value
+        }
+        fields={fields}
+      />
+    );
+  } else if (sectionType === 'form') {
+    // ToDo create a separate component for below work same as above ArticleContent
+    return (
+      <StoreListingLocator
+        pageHeading={
+          pageHeading || fields?.heading?.content?.[0]?.content?.[0].value
+        }
+        fields={fields}
+      />
+    );
+  } else if (sectionType === 'carousel') {
+    //Managing carousel component for homepage and about us page.
+    return <CarouselComponent carouselItem={fields?.carouselItem} />;
+  } else if (
+    sectionType === 'textContentSection' ||
+    sectionType === 'richtext'
+  ) {
+    return (
+      <TextContent heading={pageHeading} content={fields?.richText?.content} />
+    );
+  } else if (sectionType === 'embed') {
+    return <EmbededScript fields={fields} pageHeading={pageHeading} />;
+  } else if (sectionType === 'cta') {
+    return <Cta fields={fields} />;
+  }
+  // render multiple type of sections
+  return <HomeSection homePageData={fields} />;
+};
+
+export default Section;
