@@ -15,7 +15,7 @@ export async function getStaticProps({ preview, locale }) {
   const res = client.getEntries({
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     content_type: 'latamLandingPage',
-    'fields.slug': `/${slugName}`,
+    'fields.slug': slugName,
     include: 7,
     locale: lc
   });
