@@ -37,9 +37,9 @@ const nextConfig = {
     ];
   },
   i18n: {
-    locales: ['default', 'es', 'en'],
+    locales: ['default', 'en', 'es'],
     defaultLocale: 'default',
-    localeDetection: true,
+    localeDetection: false,
   },
 };
 

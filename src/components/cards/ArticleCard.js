@@ -22,7 +22,7 @@ const ArticleCard = ({
     'bg-white',
     isArticleList
       ? 'mx-0.5 pb-10 bg-gradient-to-r from-[#ffffff] to-[#eeeeee]'
-      : 'mx-2.5 my-5 cursor-pointer lg:even:mt-12 lg:odd:mb-12 shadow-[2px_2px_5px_0_#aaa]'
+      : 'mx-2.5 my-5 cursor-pointer lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] shadow-[2px_2px_5px_0_#aaa]'
   );
 
   /***
