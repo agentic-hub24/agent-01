@@ -3,9 +3,23 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+.next/
+_next/
+.vscode/
 # Node artifact files
 node_modules/
 dist/
+
+# JSdoc folder
+docs/
+
+out/
+
+package-lock.json
+
+.env
+.env.local
+Jenkinsfile
 
 # Compiled Java class files
 *.class
@@ -48,3 +62,10 @@ Thumbs.db
 *.mov
 *.wmv
 
+#PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
