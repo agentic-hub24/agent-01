@@ -28,7 +28,7 @@ class MyDocument extends Document {
           <script src='//cdn.pricespider.com/1/lib/ps-widget.js' async></script> */}
           {/* end of PS meta data */}
           {/* Adobe Analytics script start */}
-          {/* <script src={process.env.ADOBEDTM_SCRIPT} async></script> */}
+          <script src={process.env.ADOBEDTM_SCRIPT} async></script>
           {/* Adobe Analytics script end */}
         </Head>
         <body>

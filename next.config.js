@@ -39,8 +39,8 @@ const nextConfig = {
   i18n: {
     locales: ['default', 'en', 'es'],
     defaultLocale: 'default',
-    localeDetection: false,
-  },
+    localeDetection: false
+  }
 };
 
 if (process.env.environment == 'dev') {

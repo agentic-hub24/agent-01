@@ -9,12 +9,13 @@ const Home = ({ pageData }) => {
 };
 
 export async function getStaticProps({ preview, locale }) {
+  const slugName = ['default', 'es'].includes(locale) ? 'es' : 'en';
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const res = client.getEntries({
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     content_type: 'latamLandingPage',
-    'fields.slug': `/${locale}`,
+    'fields.slug': `/${slugName}`,
     include: 7,
     locale: lc
   });
