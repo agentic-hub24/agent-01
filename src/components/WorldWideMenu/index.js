@@ -1,31 +1,60 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import NavItems from '@components/NavItems';
 
 export default function WorldWideMenu({ world }) {
+  const router = useRouter();
+  const { locale = '' } = router;
   const [open, setOpen] = useState(false);
-  const topNavMenu = world?.items[0]?.fields?.topNav[1].fields.navItems;
-  const logo = world?.items[0]?.fields?.topNav[1].fields.navItems[0];
+  const topNavMenu = world?.items[0]?.fields?.topNav[2].fields.navItems;
+  const logo = world?.items[0]?.fields?.topNav[2].fields.navItems[0];
   return (
     <div className='hidden lg:block '>
       <div className='h-[34px] bg-[#232323] text-[#b5b5b5] border-b-2 border-slate-800'>
-        <div className='flex justify-between flex-rows max-w-screen-lg mx-auto pt-[6px] pl-[2.5rem]'>
-          <Link href={logo?.fields?.url || '/'}>
-            <h4
-              className='text-sm cursor-pointer hover:text-white font-helveticaGroup no-underline text-[#bebebe]'
-              style={{
-                padding: '0px 15px',
-                borderRight: '1px solid #333',
-                borderLeft: '1px solid #333'
-              }}
-              aria-label={logo?.fields?.ariaLabel}
-              onClick={() => setOpen(!open)}
-            >
-              {logo?.fields?.label}
-            </h4>
-          </Link>
+        <div className='flex justify-between flex-rows max-w-screen-lg mx-auto pt-[6px]'>
+          <div className='flex px-6'>
+            <Link href={logo?.fields?.url || '/'}>
+              <h4
+                className='text-sm cursor-pointer hover:text-white font-helveticaGroup no-underline text-[#bebebe]'
+                style={{
+                  padding: '0px 15px',
+                  borderRight: '1px solid #333',
+                  borderLeft: '1px solid #333'
+                }}
+                aria-label={logo?.fields?.ariaLabel}
+                onClick={() => setOpen(!open)}
+              >
+                {logo?.fields?.label}
+              </h4>
+            </Link>
+            <div className='ml-9 flex'>
+              {topNavMenu?.slice(1, 3)?.map((item, index) => (
+                <Link href={item?.fields?.url || '/'} key={index}>
+                  <div>
+                    <h4
+                      className={`text-sm px-1 cursor-pointer hover:text-white font-helveticaGroup no-underline ${
+                        locale.toUpperCase() ===
+                          item?.fields?.label.toUpperCase() &&
+                        locale.toUpperCase() === 'EN'
+                          ? `selected-locale-right selected-locale-color`
+                          : locale.toUpperCase() ===
+                              item?.fields?.label.toUpperCase() &&
+                            locale.toUpperCase() === 'ES'
+                          ? `selected-locale-left selected-locale-color`
+                          : `locale-color`
+                      }`}
+                      aria-label={item?.fields?.ariaLabel}
+                    >
+                      {item?.fields?.label.toUpperCase()}
+                    </h4>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
           <div className='flex  flex-rows'>
-            {topNavMenu?.slice(1)?.map((item, index) => (
+            {topNavMenu?.slice(3)?.map((item, index) => (
               <Link href={item?.fields?.url || '/'} key={index}>
                 <h4
                   className='text-sm cursor-pointer hover:text-white font-helveticaGroup no-underline text-[#bebebe]'

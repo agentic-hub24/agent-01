@@ -57,7 +57,7 @@ export const DEFAULT_IMAGE_LINK =
   'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
 
 export const CTAObject = {
-  internalTitle: 'Brazil - Help us Improve this Site - CTA PT',
+  internalTitle: 'Latem - Help us Improve this Site - CTA PT',
   label: 'Ajude-nos a Melhorar este Site',
   ariaLabel: 'Help us Improve this Site ',
   visible: true,

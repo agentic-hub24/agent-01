@@ -32,7 +32,7 @@ const Accordion = ({
         isNavHeader
     },
     {
-      'font-helveticaLight text-[16px] uppercase cursor-default font-semibold':
+      'font-helveticaLight text-[16px] cursor-default font-semibold':
         isTopNavMobile
     },
     {

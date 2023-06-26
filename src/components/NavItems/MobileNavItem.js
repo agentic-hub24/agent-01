@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-const NavItems = ({
+const MobileNavItem = ({
   navItem,
   classNames,
   stylePro,
   justifyProp,
   linkClass,
-  secondaryNavItemFunc,
+  svgElement,
+  secondaryNavItemFuncMobile,
   handleCloseHandle
 }) => {
-  // const socialIcon = getSocialIcon(navItem?.fields?.label);
   const [cookieClass, setCookieClass] = useState('');
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const NavItems = ({
     <div
       key={navItem?.sys?.id}
       className={classNames}
-      onClick={e => secondaryNavItemFunc(e, navItem)}
+      onClick={e => secondaryNavItemFuncMobile(e, navItem)}
     >
       <Link passHref href={navItem?.fields?.url || ''}>
         <a
@@ -45,6 +45,7 @@ const NavItems = ({
             {navItem?.fields?.label ? (
               <>
                 <span>{navItem?.fields?.label}</span>
+                <span>{svgElement}</span>
               </>
             ) : null}
           </div>
@@ -53,14 +54,15 @@ const NavItems = ({
     </div>
   );
 };
-export default NavItems;
+export default MobileNavItem;
 
-NavItems.defaultProps = {
-  secondaryNavItemFunc: () => {},
-  handleCloseHandle: () => {},
+MobileNavItem.defaultProps = {
+  secondaryNavItemFuncMobile: () => {},
   navItem: {},
   classNames: '',
   stylePro: '',
   justifyProp: '',
-  linkClass: ''
+  linkClass: '',
+  svgElement: <></>,
+  handleCloseHandle: () => {}
 };

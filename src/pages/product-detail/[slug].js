@@ -14,31 +14,33 @@ export async function getServerSideProps(context) {
     locale,
     preview
   } = context;
-  console.log('::: locale==>', locale);
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const res = client.getEntries({
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
-    content_type: 'brazilLandingPage',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
+    content_type: 'latamLandingPage',
     'fields.slug': '/product-details',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
 
   const footerNavigationData = await client.getEntries({
     content_type: 'footer',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
 
   const headerNavigationData = await client.getEntries({
     content_type: 'header',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
   const world = await client.getEntries({
     content_type: 'worldwideMenu',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
 
   const results = await Promise.all([res]);

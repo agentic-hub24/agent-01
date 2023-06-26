@@ -6,8 +6,8 @@ import Landing from '@components/landing';
 
 export async function getStaticPaths() {
   const res = await contentfulClient.getEntries({
-    content_type: 'brazilLandingPage',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil'
+    content_type: 'latamLandingPage',
+    'metadata.tags.sys.id[in]': 'kohlerLatam'
   });
 
   const landingPages = res?.items?.filter(item => {
@@ -32,32 +32,33 @@ export async function getStaticPaths() {
   return { paths, fallback: true };
 }
 
-export async function getStaticProps({ params, preview }) {
+export async function getStaticProps({ params, preview, locale }) {
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const query1 = await client.getEntries({
-    content_type: 'brazilLandingPage',
+    content_type: 'latamLandingPage',
     'fields.slug[match]': `/${params.slug}`,
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
   const query2 = client.getEntries({
     content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
   const query3 = client.getEntries({
     content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
 
   const world = await client.getEntries({
     content_type: 'worldwideMenu',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
 
   const results = await Promise.all([query1, query2, query3]);

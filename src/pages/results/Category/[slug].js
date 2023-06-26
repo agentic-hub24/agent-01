@@ -33,29 +33,29 @@ export async function getServerSideProps(context) {
   const pageType = query?.type;
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const query1 = await client.getEntries({
-    content_type: 'brazilLandingPage',
-    'fields.slug[match]': `/browse/Banheiro/Artist+Editions`,
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    content_type: '',
+    'fields.slug[match]': ``,
+    'metadata.tags.sys.id[in]': '',
     include: 7,
-    locale: 'pt-BR'
+    locale: ''
   });
   const query2 = client.getEntries({
     content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': '',
     include: 7,
-    locale: 'pt-BR'
+    locale: ''
   });
   const query3 = client.getEntries({
     content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': '',
     include: 7,
-    locale: 'pt-BR'
+    locale: ''
   });
 
   const world = await client.getEntries({
     content_type: 'worldwideMenu',
     include: 7,
-    locale: 'pt-BR'
+    locale: ''
   });
 
   const results = await Promise.all([query1, query2, query3]);

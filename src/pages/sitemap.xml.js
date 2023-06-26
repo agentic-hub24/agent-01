@@ -34,8 +34,8 @@ function SiteMap() {
 
 export async function getServerSideProps({ req, res }) {
   const pages = await contentfulClient.getEntries({
-    content_type: 'brazilLandingPage',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil'
+    content_type: '',
+    'metadata.tags.sys.id[in]': ''
   });
   // We generate the XML sitemap with the locales and pages data
 

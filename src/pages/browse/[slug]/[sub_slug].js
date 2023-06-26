@@ -81,34 +81,36 @@ export default function ProductList({
 export async function getServerSideProps(context) {
   const {
     params: { slug, sub_slug },
-    preview
+    preview,
+    locale
   } = context;
 
   const client = preview ? contentfulPreviewClient : contentfulClient;
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const query1 = await client.getEntries({
-    content_type: 'brazilLandingPage',
+    content_type: 'latamLandingPage',
     'fields.slug[match]': `/browse/${slug}/${sub_slug}`,
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
   const query2 = client.getEntries({
     content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
   const query3 = client.getEntries({
     content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerBrazil',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
 
   const world = await client.getEntries({
     content_type: 'worldwideMenu',
     include: 7,
-    locale: 'pt-BR'
+    locale: lc
   });
 
   const results = await Promise.all([query1, query2, query3]);

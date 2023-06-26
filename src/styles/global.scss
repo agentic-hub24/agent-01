@@ -53,8 +53,14 @@
 }
 
 @font-face {
-  font-family: 'HelveticaRoman';
+  font-family: 'helveticaRoman';
   src: url('../assets/fonts/Helvetica_Roman.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'helveticaBold';
+  src: url('../assets/fonts/Helvetica-Font/Helvetica-Bold.ttf')
+    format('truetype');
 }
 
 body {
@@ -362,4 +368,22 @@ element.style {
 
 .koh-search-pagination ul li:first-child {
   border-left: 1px solid #e5e5e5;
+}
+
+.selected-locale-right {
+  border-right: 1px solid #fff;
+}
+
+.selected-locale-left {
+  border-left: 1px solid #fff;
+}
+.selected-locale-color {
+  color: #fff !important;
+}
+.locale-color {
+  color: #bebebe;
+}
+
+.height-max {
+  height: calc(100vh - 60px);
 }

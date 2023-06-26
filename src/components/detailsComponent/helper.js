@@ -6,6 +6,7 @@ export const imageFormatter = skuResourceName => {
 };
 
 export const gifLineArtImageFormatter = image => {
+  // TODO: Latem link should be here
   return `https://resources.kohler.com/plumbing/kohlerbrazil/lineart/${image}`;
 };
 
@@ -175,7 +176,7 @@ export const PDP_LABELS = {
 };
 
 export const CTAObject = {
-  internalTitle: 'Brazil - Help us Improve this Site - CTA PT',
+  internalTitle: 'Latem - Help us Improve this Site - CTA PT',
   label: 'Ajude-nos a Melhorar este Site',
   ariaLabel: 'Help us Improve this Site ',
   visible: true,

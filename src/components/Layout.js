@@ -14,14 +14,14 @@ export default function Layout({
 }) {
   const router = useRouter();
   const footerPrimaryNav = footerNavigationData?.items?.find(
-    nav => nav?.metadata?.tags[0]?.sys?.id === 'kohlerBrazil'
+    nav => nav?.metadata?.tags[0]?.sys?.id === 'kohlerLatam'
   )?.fields?.primaryNav;
   const headerNav = headerNavigationData?.items?.find(
-    nav => nav?.fields?.internalTitle === 'Brazil Header'
+    nav => nav?.fields?.internalTitle === 'Latam - Header'
   )?.fields;
   const logo = headerNav?.logo?.fields?.mediaItem?.fields?.asset?.fields;
   const copyRightText = footerNavigationData?.items?.find(
-    nav => nav?.metadata?.tags[0]?.sys?.id === 'kohlerBrazil'
+    nav => nav?.metadata?.tags[0]?.sys?.id === 'kohlerLatam'
   )?.fields?.copyright;
 
   return (

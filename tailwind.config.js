@@ -57,7 +57,8 @@ module.exports = {
         helveticaGroup: [
           'HelveticaLight,Helvetica Neue Light,Helvetica, Arial,Lucida Grande, sans-serif'
         ],
-        HelveticaRoman: ['HelveticaRoman']
+        HelveticaRoman: ['HelveticaRoman'],
+        HelveticaBold: ['helveticaBold']
       }
     }
   },

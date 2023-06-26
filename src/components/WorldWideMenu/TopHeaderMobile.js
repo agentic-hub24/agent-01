@@ -1,12 +1,12 @@
+import { HiOutlineChevronRight } from 'react-icons/hi';
 import { useRouter } from 'next/router';
-import { DropSvg, DropSvgOpen } from '@components/svgs';
 import Accordion from '../Accordion';
-import NavItems from '../NavItems';
+import MobileNavItem from '../NavItems/MobileNavItem';
 
-const TopHeaderMobile = ({ world, openNavbar }) => {
+const TopHeaderMobile = ({ world = {} }) => {
   const router = useRouter();
-  const topNavMenu = world?.items[0]?.fields?.topNav[1].fields.navItems;
-  const logo = world?.items[0]?.fields?.topNav[1].fields.navItems[0];
+  const topNavMenu = world?.items[0]?.fields?.topNav[2].fields.navItems;
+  const logo = world?.items[0]?.fields?.topNav[2].fields.navItems[0];
   const handleRedirect = url => {
     router.push(url);
   };
@@ -19,13 +19,12 @@ const TopHeaderMobile = ({ world, openNavbar }) => {
           color: '#fff'
         }}
       >
-        {/** where-to-buy technical assistance header */}
-        {topNavMenu?.slice(1)?.map((item, index) => {
+        {/** where-to-buy contact us */}
+        {topNavMenu?.slice(3)?.map((item, index) => {
           return (
             <div
               onClick={e => {
                 handleRedirect(item?.fields?.url);
-                openNavbar(e);
               }}
               key={index}
               style={{ borderBottom: '1px solid #4d4d4f' }}
@@ -45,54 +44,79 @@ const TopHeaderMobile = ({ world, openNavbar }) => {
         })}
 
         {/** kohler worldwide */}
-        <Accordion
-          key='a'
-          // isActive={true}
-          header={logo?.fields?.label}
-          style={{ color: 'black' }}
-          isHeader={true}
-          isTopNavMobileLogo={true}
-        >
-          <div
-            style={{
-              color: 'white'
-            }}
+        <div style={{ borderBottom: '1px solid #4d4d4f' }}>
+          <Accordion
+            key='a'
+            // isActive={true}
+            header={logo?.fields?.label}
+            style={{ color: 'black' }}
+            isHeader={true}
+            isTopNavMobileLogo={true}
           >
-            <section className='w-full'>
-              <div className='justify-evenly'>
-                {world?.items?.map((item, index) =>
-                  item?.fields?.primaryNav?.map(i => (
-                    <Accordion
-                      key={i?.sys?.id || index}
-                      item={item}
-                      // isNavHeader={true}
-                      header={String(i.fields.internalTitle).replace(
-                        'WWM - K&B Primary Nav ',
-                        ''
-                      )}
-                      isTopNavInnerData={true}
-                    >
-                      {i.fields.navItems.map((navItem, index) => {
-                        return (
-                          <NavItems
-                            key={index}
-                            navItem={navItem}
-                            svgElement={<DropSvgOpen />}
-                            svgElement1={<DropSvg />}
-                            justifyProp='space-between'
-                            classNames='hover:text-white text-white cursor-pointer text-[14px] md:text-[22px]'
-                            stylePro='5px 20px'
-                            linkClass='flex lg:p-[4px] w-full text-white bg-neutral-600 border-b border-black font-helveticaLight text-[12px] text-white opacity-70 font-semibold'
-                          />
-                        );
-                      })}
-                    </Accordion>
-                  ))
-                )}
-              </div>
-            </section>
-          </div>
-        </Accordion>
+            <div
+              style={{
+                color: 'white',
+                borderBottom: '1px solid #4d4d4f'
+              }}
+            >
+              <section className='w-full'>
+                <div className='justify-evenly'>
+                  {world?.items?.map((item, index) =>
+                    item?.fields?.primaryNav?.map(i => (
+                      <Accordion
+                        key={i?.sys?.id || index}
+                        item={item}
+                        // isNavHeader={true}
+                        header={String(i.fields.internalTitle).replace(
+                          'WWM - K&B Primary Nav ',
+                          ''
+                        )}
+                        isTopNavInnerData={true}
+                      >
+                        {i.fields.navItems.map((navItem, index) => {
+                          return (
+                            <MobileNavItem
+                              key={index}
+                              navItem={navItem}
+                              justifyProp='space-between'
+                              svgElement={<HiOutlineChevronRight size={20} />}
+                              classNames='hover:text-white text-white cursor-pointer text-[14px] md:text-[22px]'
+                              stylePro='5px 20px'
+                              linkClass='flex lg:p-[4px] w-full text-white bg-neutral-600 border-b border-black font-helveticaLight text-[12px] text-white opacity-70 font-semibold'
+                            />
+                          );
+                        })}
+                      </Accordion>
+                    ))
+                  )}
+                </div>
+              </section>
+            </div>
+          </Accordion>
+        </div>
+        {/** EN/ES header */}
+        {topNavMenu?.slice(1, 3)?.map((item, index) => {
+          return (
+            <div
+              onClick={e => {
+                handleRedirect(item?.fields?.url);
+              }}
+              key={index}
+              style={{ borderBottom: '1px solid #4d4d4f' }}
+            >
+              <Accordion
+                key={index}
+                // isActive={true}
+                header={item?.fields?.label}
+                style={{
+                  color: 'black'
+                }}
+                isHeader={true}
+                isTopNavMobile={true}
+              />
+            </div>
+          );
+        })}
         <div
           className=''
           style={{ padding: '24px', color: '#b5b5b5', background: '#666' }}
