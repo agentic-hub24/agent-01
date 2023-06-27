@@ -129,7 +129,7 @@ export default function HeaderSection({ navData = {}, world }) {
                 alt={logo?.fields?.mediaItem?.fields?.altText}
                 className='h-6 w-auto mr-2'
                 height={70}
-                width={150}
+                width={140}
                 quality={100}
                 onClick={() => setNavOpen(false)}
               />

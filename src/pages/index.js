@@ -50,7 +50,7 @@ export async function getStaticProps({ preview, locale }) {
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
     // - At most once every specified seconds
-    revalidate: process.env.CONTENT_REVALIDATION_TIME ?? 1000
+    revalidate: process.env.CONTENT_REVALIDATION_TIME ?? 10
   };
 }
 
