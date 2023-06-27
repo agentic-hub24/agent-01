@@ -116,7 +116,7 @@ stages:
               azureSubscription: $(azureSubscription)
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
-              inlineScript: 'az webapp deployment source config-zip  -g $(resourcegroup) -n $(appName)  --src $(System.ArtifactsDirectory)/**/kohler-brazil.zip'
+              inlineScript: 'az webapp deployment source config-zip  -g $(resourcegroup) -n $(appName)  --src $(System.ArtifactsDirectory)/**/kohler-latam.zip'
 
 
 - ${{ if eq( parameters['deployenv'], 'PROD') }}:
@@ -162,4 +162,4 @@ stages:
                   azureSubscription: $(azureSubscription)
                   scriptType: 'bash'
                   scriptLocation: 'inlineScript'
-                  inlineScript: 'az webapp deployment source config-zip  -g $(resourcegroup) -n $(appName)  --src $(System.ArtifactsDirectory)/**/kohler-brazil.zip'
+                  inlineScript: 'az webapp deployment source config-zip  -g $(resourcegroup) -n $(appName)  --src $(System.ArtifactsDirectory)/**/kohler-latam.zip'
