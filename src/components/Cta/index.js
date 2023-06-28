@@ -1,7 +1,15 @@
+import { useRouter } from 'next/router';
+
+const CTAURL = {
+  en: 'http://ips-invite.iperceptions.com/webValidator.aspx?sdfc=355b766d-129713-c733c77b-141a-42d7-be9f-2e52b426622b&lID=1&source=102226',
+  es: 'http://ips-invite.iperceptions.com/webValidator.aspx?sdfc=355b766d-129714-c733c77b-141a-42d7-be9f-2e52b426622b&lID=1&source=102226'
+};
+
 const Cta = ({ fields }) => {
+  const router = useRouter();
+  const { locale = '' } = router;
   const openPopUp = () => {
-    let url =
-      'https://collect.iperceptions.com/?lID=16&rn=126323&vm=1&pID=1&hs1=102214&hs2=102226&uni=1&siteID=1&am=false&referrer=https%3a%2f%2fkohler.atlassian.net%2f&sdfc=355b766d-126323-c733c77b-141a-42d7-be9f-2e52b426622b&source=102226';
+    let url = CTAURL[locale];
     let height = 700;
     let width = 700;
     var left = (screen.width - width) / 2;
