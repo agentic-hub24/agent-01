@@ -30,7 +30,11 @@ export default function WorldWideMenu({ world }) {
             </Link>
             <div className='ml-9 flex'>
               {topNavMenu?.slice(1, 3)?.map((item, index) => (
-                <Link href={item?.fields?.url || '/'} key={index}>
+                <Link
+                  href={item?.fields?.url || '/'}
+                  key={index}
+                  locale={item?.fields?.url.replace('/', '')}
+                >
                   <div>
                     <h4
                       className={`text-sm px-1 cursor-pointer hover:text-white font-helveticaGroup no-underline ${
@@ -55,7 +59,11 @@ export default function WorldWideMenu({ world }) {
           </div>
           <div className='flex  flex-rows'>
             {topNavMenu?.slice(3)?.map((item, index) => (
-              <Link href={item?.fields?.url || '/'} key={index}>
+              <Link
+                href={item?.fields?.url || '/'}
+                key={index}
+                locale={item?.fields?.url.replace('/', '')}
+              >
                 <h4
                   className='text-sm cursor-pointer hover:text-white font-helveticaGroup no-underline text-[#bebebe]'
                   style={{
