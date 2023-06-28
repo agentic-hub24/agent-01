@@ -5,7 +5,6 @@ import contentfulClient, {
 import Landing from '@components/landing';
 
 export async function getServerSideProps({ params, preview, locale }) {
-  console.log('::: params', params);
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const query1 = await client.getEntries({
