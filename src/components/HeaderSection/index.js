@@ -7,12 +7,15 @@ import {
 } from 'react-icons/hi';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import NavItems from '@components/NavItems';
 import MobileNavItem from '@components/NavItems/MobileNavItem';
 import TopHeaderMobile from '@components/WorldWideMenu/TopHeaderMobile';
 import HeaderSearch from './HeaderSearch';
 
 export default function HeaderSection({ navData = {}, world }) {
+  const router = useRouter();
+  const { locale = '' } = router;
   const { logo = {}, primaryNav = [] } = navData;
   const [top, setTop] = useState(true);
   //desktop- state
@@ -32,6 +35,10 @@ export default function HeaderSection({ navData = {}, world }) {
     window.addEventListener('scroll', scrollHandler);
     return () => window.removeEventListener('scroll', scrollHandler);
   }, [top]);
+
+  useEffect(() => {
+    setNavOpen(false);
+  }, [locale]);
 
   const handleSecondaryNav = (e, secondaryNav) => {
     e.preventDefault();
@@ -283,7 +290,10 @@ export default function HeaderSection({ navData = {}, world }) {
                   </div>
                 ))}
             </div>
-            <TopHeaderMobile world={world} />
+            <TopHeaderMobile
+              world={world}
+              handleCloseHandle={e => setOpenMobileMenu(e)}
+            />
           </div>
         )}
       </div>
