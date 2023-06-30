@@ -3,12 +3,12 @@ import { useRouter } from 'next/router';
 import Accordion from '../Accordion';
 import MobileNavItem from '../NavItems/MobileNavItem';
 
-const TopHeaderMobile = ({ world = {} }) => {
+const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
   const router = useRouter();
   const topNavMenu = world?.items[0]?.fields?.topNav[2].fields.navItems;
   const logo = world?.items[0]?.fields?.topNav[2].fields.navItems[0];
   const handleRedirect = url => {
-    router.push(url);
+    router.push(url, undefined, { locale: url.replace('/', '') });
   };
   return (
     <div className='lg:hidden md:block'>
@@ -25,6 +25,7 @@ const TopHeaderMobile = ({ world = {} }) => {
             <div
               onClick={e => {
                 handleRedirect(item?.fields?.url);
+                handleCloseHandle(false);
               }}
               key={index}
               style={{ borderBottom: '1px solid #4d4d4f' }}
@@ -100,6 +101,7 @@ const TopHeaderMobile = ({ world = {} }) => {
             <div
               onClick={e => {
                 handleRedirect(item?.fields?.url);
+                handleCloseHandle(false);
               }}
               key={index}
               style={{ borderBottom: '1px solid #4d4d4f' }}
