@@ -221,7 +221,7 @@ export default function HeaderSection({ navData = {}, world }) {
                   height={60}
                   width={105}
                   quality={100}
-                  onClick={() => setNavOpen(false)}
+                  onClick={() => setOpenMobileMenu(false)}
                 />
               </Link>
             </div>
