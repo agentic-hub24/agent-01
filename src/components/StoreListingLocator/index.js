@@ -1,51 +1,74 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import SelectSection from '@components/SelectSection';
+import { storeDetailsLabel, storeLocatorOption } from '@utils/footerUtils';
 import StoreDetails from './StoreDetails';
 
 export default function StoreListingLocator({ pageHeading, fields }) {
+  const router = useRouter();
+  const { locale = '' } = router;
+  const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
+  const [showState, setShowState] = useState(null);
   const [showCity, setShowCity] = useState(null);
   const [showStoreDetails, setShowStoreDetails] = useState(null);
   const [buttonEnable, setButtonEnable] = useState(false);
 
-  const stateregion = [
-    '--Selecione Estado--',
-    ...fields?.formItemRow[0]?.fields?.formItemSection?.fields?.stateregion?.map(
-      item => item?.fields?.stateregionName
+  const countryregion = [
+    storeLocatorOption[locale].selectCountry,
+    ...fields?.formItemRow[0]?.fields?.formItemSection?.fields?.country?.map(
+      item => item?.fields?.countryName
     )
   ];
 
-  const stateregionLabel =
-    fields?.formItemRow[0]?.fields?.formItemSection?.fields?.stateregionLabel;
-  const cityLabel =
-    fields?.formItemRow[0]?.fields?.formItemSection?.fields?.cityLabel;
-  const ctaLabel =
-    fields?.formItemRow[1]?.fields?.formItemSection?.fields?.label;
+  const { label: ctaLabel = '' } =
+    fields?.formItemRow[1]?.fields?.formItemSection?.fields;
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    const storeArray =
-      fields?.formItemRow[0]?.fields?.formItemSection?.fields?.stateregion
-        ?.filter(item => item?.fields?.stateregionName.includes(state))
-        ?.map(item =>
-          item?.fields?.city
-            .filter(item => item.fields.cityName.includes(city))
-            .map(item => item?.fields?.storeDetails)
-        )[0][0];
-    setShowStoreDetails(storeArray);
-    setButtonEnable(false);
+  const {
+    cityLabel = '',
+    countryLabel = '',
+    stateregionLabel = ''
+  } = fields?.formItemRow[0]?.fields?.formItemSection?.fields;
+
+  const handleCountryChange = e => {
+    const stateArray = [
+      storeLocatorOption[locale].selectState,
+      ...fields?.formItemRow[0]?.fields?.formItemSection?.fields?.country
+        .filter(item => item?.fields?.countryName.includes(e.target.value))
+        .map(item =>
+          item?.fields?.stateregion.map(item => item?.fields?.stateregionName)
+        )[0]
+    ];
+
+    setCountry(e.target.value);
+    setShowState(stateArray);
+    setShowCity(null);
+    setShowStoreDetails(null);
+    setState('');
+    setCity('');
   };
+
   const handleStateChange = e => {
     e.preventDefault();
+    setShowCity(null);
+    setCity('');
     setState(e.target.value);
     const cityArry = [
-      '--Selecione Cidade--',
-      ...fields?.formItemRow[0]?.fields?.formItemSection?.fields?.stateregion
-        .filter(item => item?.fields?.stateregionName.includes(e.target.value))
-        .map(item => item?.fields?.city.map(item => item?.fields?.cityName))[0]
+      storeLocatorOption[locale].selectCity,
+      ...fields?.formItemRow[0]?.fields?.formItemSection?.fields?.country
+        .filter(item => item?.fields?.countryName.includes(country))
+        .map(
+          item =>
+            item?.fields?.stateregion
+              .filter(item =>
+                item?.fields?.stateregionName?.includes(e.target.value)
+              )
+              .map(item =>
+                item?.fields?.city.map(item => item?.fields?.cityName)
+              )[0]
+        )[0]
     ];
     setShowCity(cityArry);
     setShowStoreDetails(null);
@@ -54,6 +77,26 @@ export default function StoreListingLocator({ pageHeading, fields }) {
     setCity(e.target.value);
     setButtonEnable(true);
   };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    const storeArray =
+      fields?.formItemRow[0]?.fields?.formItemSection?.fields?.country
+        ?.filter(item => item?.fields?.countryName.includes(country))
+        .map(
+          item =>
+            item?.fields?.stateregion
+              .filter(item => item?.fields?.stateregionName.includes(state))
+              .map(item =>
+                item?.fields?.city
+                  ?.filter(item => item?.fields?.cityName.includes(city))
+                  .map(item => item?.fields?.storeDetails)
+              )[0][0]
+        )[0];
+    setShowStoreDetails(storeArray);
+    setButtonEnable(false);
+  };
+
   return (
     <div className='p-[20px] max-w-screen-lg mx-auto'>
       <h1 className='font-helveticaLight pb-[20px] lg:mx-10 text-2xl lg:text-3xl lg:py-[40px] font-light text-black uppercase'>
@@ -66,10 +109,17 @@ export default function StoreListingLocator({ pageHeading, fields }) {
           onSubmit={handleSubmit}
         >
           <SelectSection
-            selectOptions={stateregion}
+            selectOptions={countryregion}
+            label={countryLabel}
+            onChange={e => handleCountryChange(e)}
+            selectValue={country}
+          />
+          <SelectSection
+            selectOptions={showState}
             label={stateregionLabel}
             onChange={e => handleStateChange(e)}
             selectValue={state}
+            disabled={!showState}
           />
           <SelectSection
             selectOptions={showCity}
@@ -80,7 +130,7 @@ export default function StoreListingLocator({ pageHeading, fields }) {
           />
           <div className='md:flex md:items-center'>
             <input
-              className='font-helvetica uppercase bg-[#dbdbdb] text-[#232323] hover:bg-[#364573] hover:text-[#fff] focus:shadow-outline font-bold py-2 px-4 rounded md:ml-[50px] md:mt-[20px] disabled:opacity-50'
+              className='font-helvetica uppercase bg-[#dbdbdb] text-[#232323] hover:bg-[#364573] hover:text-[#fff] focus:shadow-outline font-bold py-3 px-5 rounded md:ml-[50px] md:mt-[20px] disabled:opacity-50 disabled:cursor-not-allowed text-[13px] font-bold'
               type='submit'
               value={ctaLabel}
               disabled={!buttonEnable}
@@ -90,13 +140,34 @@ export default function StoreListingLocator({ pageHeading, fields }) {
       </div>
       <hr />
       {showStoreDetails && (
-        <StoreDetails state={state} details={showStoreDetails} />
+        <StoreDetails
+          city={city}
+          details={showStoreDetails}
+          locale={locale}
+          storeDetailsLabel={storeDetailsLabel}
+        />
       )}
     </div>
   );
 }
 
 StoreListingLocator.defaultProps = {
-  fields: { stateregion: [] },
+  fields: {
+    formItemRow: [
+      {
+        fields: {
+          formItemSection: {
+            fields: {
+              country: [],
+              cityLabel: '',
+              countryLabel: '',
+              stateregionLabel: ''
+            }
+          }
+        }
+      },
+      { fields: { formItemSection: { fields: { label: '' } } } }
+    ]
+  },
   pageHeading: ''
 };
