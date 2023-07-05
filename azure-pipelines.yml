@@ -43,7 +43,7 @@ variables:
      - name: buildcmd
        value: 'build:dev'
      - name: DeploytoApp
-       value: "true" 
+       value: "false" 
 
   - ${{ if or( eq(parameters.deployenv, 'DEV'), contains(variables['build.sourceBranch'],'refs/heads/develop')) }}:
      - group: var_kohler_latam_dev
