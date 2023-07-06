@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { HiOutlineChevronUp } from 'react-icons/hi';
+import { backtoTopLabels } from '@utils/footerUtils';
 
-export default function BackToTop({ topHeight }) {
+export default function BackToTop({ topHeight, localeProp = '' }) {
   const handleScrollToTop = () => {
     window.scrollTo({ top: topHeight, behavior: 'smooth' });
   };
@@ -25,7 +26,7 @@ export default function BackToTop({ topHeight }) {
             <HiOutlineChevronUp size={30} />
           </div>
           <div className='text-[8px] font-bold text-[#232323] text-center'>
-            de volta ao topo
+            {backtoTopLabels[localeProp]}
           </div>
         </div>
       )}

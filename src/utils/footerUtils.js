@@ -10,3 +10,8 @@ export const searchLabel = {
   es: 'Buscar',
   en: 'Search'
 };
+
+export const backtoTopLabels = {
+  en: 'Back to top',
+  es: 'ir al incio'
+};

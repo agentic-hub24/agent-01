@@ -1,13 +1,17 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
+
 /* eslint-disable react/no-unknown-property */
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from 'react';
-import { FaFilePdf } from 'react-icons/fa';
+import { useEffect, useState, useRef } from 'react';
+import { FaRegFilePdf } from 'react-icons/fa';
 import {
   HiCheck,
   HiOutlineDownload,
-  HiOutlineChevronRight
+  HiOutlineChevronRight,
+  HiShare
 } from 'react-icons/hi';
+import { HiMiniPrinter } from 'react-icons/hi2';
 import { MdOutlineZoomOutMap } from 'react-icons/md';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -16,6 +20,7 @@ import { useRouter } from 'next/router';
 import { getProductListing } from '@services/productListingAPI/client';
 import Cta from '@components/Cta';
 import BackToTop from '@components/backToTop';
+import { Fb, Twitter } from '@components/svgs';
 import ImageZoomModal from './ImageZoomModal';
 import LinkWithLabel from './LinkWithLabel';
 import SimilarProducts from './SimilarProducts';
@@ -41,14 +46,15 @@ import {
   PRODUCT_BIMRevit,
   TECHNICAL_INFORMATION_FILES,
   TECHNICAL_INFORMATION_FILES_NAMES,
-  formattedUrl,
   DEFAULT_IMAGE_LINK,
-  CTAObject,
-  formattedSlugName
+  CTAObject
 } from './helper';
 
 export default function DetailsComponent({ productDetailsData }) {
   const router = useRouter();
+  const { locale = '' } = router;
+  console.log('::: router', router);
+  const ref = useRef();
   const [colorName, setColorName] = useState('');
   const [carousel, setCarousel] = useState([]);
   const [skuNumber, setSKUNumber] = useState('');
@@ -66,10 +72,9 @@ export default function DetailsComponent({ productDetailsData }) {
   const [zoomActive, setZoomActive] = useState(false);
   const [showZoom, showImageZoom] = useState(false);
   const [skuName, setSkuName] = useState(0);
-  const [slugForBreadCrumbs, setSlugForBreadCrumbs] = useState('');
-  const [subSlugForBreadCrumbs, setSubSlugForBreadCrumbs] = useState('');
   const [technicalInfoFiles, setTechnicalInfoFiles] = useState([]);
   const [colorFinishCodeArray, setColorFinisCodeArray] = useState([]);
+  const [social, setSocial] = useState(false);
 
   const {
     data: {
@@ -96,41 +101,28 @@ export default function DetailsComponent({ productDetailsData }) {
         ProductWebFeatures11,
         ProductWebFeatures12,
         ProductWebFeatures13,
-        ProductWebFeatures14,
-        ProductWebFeatures15,
-        ProductWebFeatures16,
-        ProductWebFeatures17,
-        ProductWebFeatures18,
-        ProductWebFeatures19,
-        ProductWebFeatures20,
         ProductWebInstallation01,
         ProductWebInstallation02,
         ProductWebInstallation03,
         ProductWebInstallation04,
         ProductWebInstallation05,
         ProductWebInstallation06,
-        ProductWebInstallation07,
-        ProductWebInstallation08,
         ProductWebMaterial01,
         ProductWebMaterial02,
         ProductWebMaterial03,
-        ProductWebMaterial04,
-        ProductWebMaterial05,
-        ProductWebHydrotherapy01,
-        ProductWebHydrotherapy02,
-        ProductWebHydrotherapy03,
-        ProductWebHydrotherapy04,
-        ProductWebHydrotherapy05,
+        ProductWebTechnology01,
+        ProductWebTechnology02,
+        ProductWebTechnology03,
         ProductOverallLengthMm,
         ProductOverallHeightMm,
         ProductOverallWidthMm,
         ProductOverallDepthMm,
         ProductMaterial,
         ProductInstallationType,
-        ProductPriceSpiderIncluded,
         ProductLocalCategory,
         ProductSection,
-        ProductProductType
+        ProductProductType,
+        ProductNewProduct
       }
     } = {}
   } = productDetailsData;
@@ -226,11 +218,6 @@ export default function DetailsComponent({ productDetailsData }) {
       el => el.ResourceType === PRODUCT_BIMRevit
     );
     setBimRevit(bim_revit);
-    // set slug
-    const localStorageCheckForSlug = localStorage.getItem('slug') || '';
-    const localStorageCheckForSubSlug = localStorage.getItem('sub_slug') || '';
-    setSlugForBreadCrumbs(localStorageCheckForSlug);
-    setSubSlugForBreadCrumbs(localStorageCheckForSubSlug);
   }, []);
 
   useEffect(() => {
@@ -257,6 +244,23 @@ export default function DetailsComponent({ productDetailsData }) {
     fetchSimilarProducts();
   }, [skuNumber]);
 
+  useEffect(() => {
+    const checkIfClickedOutside = e => {
+      // If the menu is open and the clicked target is not within the menu,
+      // then close the menu
+      if (social && ref.current && !ref.current.contains(e.target)) {
+        setSocial(false);
+      }
+    };
+
+    document.addEventListener('mousedown', checkIfClickedOutside);
+
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener('mousedown', checkIfClickedOutside);
+    };
+  }, [social]);
+
   const handleMagnifier = (e, myImageId) => {
     let glass = document.getElementsByClassName('img-magnifier-glass');
     !zoomActive
@@ -266,15 +270,14 @@ export default function DetailsComponent({ productDetailsData }) {
 
   return (
     <>
-      <section className='max-w-screen-lg mx-auto bg-white text-[#232323] mb-[50px] p-[5px]'>
-        <div className='flex w-full m-2 md:flex-row flex-col'>
+      <section className='max-w-screen-lg mx-auto bg-white text-[#232323] mb-[50px] lg:p-10 p-2'>
+        <div className='flex w-full md:flex-row flex-col'>
           {/* Product Carousel start */}
           <div className='flex flex-col md:w-2/3 w-full'>
             <div id='product_carousel'>
               <Carousel
                 dynamicHeight={true}
                 infiniteLoop={false}
-                showArrows={true}
                 showStatus={false}
                 showIndicators={false}
                 emulateTouch={true}
@@ -297,6 +300,10 @@ export default function DetailsComponent({ productDetailsData }) {
                       }}
                     >
                       <img
+                        // src={imageFormatter(
+                        //   element.ResourceName,
+                        //   ProductNewProduct
+                        // )}
                         src={element?.ResourceFullWebURL}
                         id={element.ResourceName}
                         alt={element.ResourceName}
@@ -327,7 +334,7 @@ export default function DetailsComponent({ productDetailsData }) {
             </div>
           </div>
           {/* Product carousel end */}
-          <div className='flex flex-col md:w-1/3 w-full px-[15px]'>
+          <div className='flex flex-col md:w-1/3 w-full lg:px-[15px]'>
             <div className='text-[22px] font-helveticaLight font-semibold'>
               {ProductBrandName}
             </div>
@@ -341,7 +348,7 @@ export default function DetailsComponent({ productDetailsData }) {
             )}
             <div className='mt-[20px] mb-[10px]'>
               <span className='p-[5px] font-helveticaGroup font-semibold text-[15px] leading-tight text-[#000] uppercase'>
-                {PDP_LABELS.colorName}
+                {PDP_LABELS[locale].colorName}
               </span>
               {colorName && (
                 <span className='ml-[10px] font-helveticaLight text-[14px] leading-tight font-light'>
@@ -353,7 +360,7 @@ export default function DetailsComponent({ productDetailsData }) {
               {colorFinishCodeArray?.map((el, index) => (
                 <div
                   key={index}
-                  className='mx-1 relative inline-block'
+                  className='mx-1 relative inline-block pb-2'
                   onClick={e => setColorImageFeature(e, el)}
                   onMouseOver={e => {
                     e.preventDefault();
@@ -369,52 +376,116 @@ export default function DetailsComponent({ productDetailsData }) {
                     alt={el?.SKUColorSwatchFilename}
                     style={{
                       height: '40px',
-                      width: '40px',
-                      padding: '5px'
+                      width: '40px'
                     }}
                   />
                   {colorFileName === el.SKUColorSwatchFilename && (
                     <div className='absolute top-0 right-0 h-[40px] w-[40px] bg-cover border-2 border-neutral-500'>
-                      <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]'>
-                        <HiCheck size={20} />
+                      <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-[#fff]'>
+                        <HiCheck size={30} />
                       </div>
                     </div>
                   )}
                   {showColorName && showColorName === el.SKUColorFinishName && (
-                    <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max'>
+                    <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max z-10'>
                       {el.SKUColorFinishName}
                     </span>
                   )}
                 </div>
               ))}
             </div>
-            {/* <div className='mt-[20px] hidden md:block'>
+            <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
               <a
-                className='font-helveticaGroup bg-[#e5e5e5] py-[14px] px-[20px] text-[14px] uppercase font-semibold  text-[#232323] leading-tight shadow hover:no-underline hover:bg-[#bebebe] rounded'
-                // onClick={e => addProductForCompare(e, modalItem)}
+                href='/store-listing'
+                target='_blank'
+                className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
               >
-                +Compare
+                {PDP_LABELS[locale].storelocatorButtonLabel}
               </a>
-            </div> */}
-            {ProductPriceSpiderIncluded && (
-              <div className='mt-[35px] mb-[35px]'>
-                <div className='koh-ps-button'>
-                  <div
-                    className='ps-widget'
-                    ps-sku={`K-${ProductDefaultSKU}`}
-                  ></div>
-                </div>
+            </div>
+            <div className='flex mt-5'>
+              <div
+                className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
+                onClick={() => window.print()}
+              >
+                <HiMiniPrinter size={20} />
+              </div>
+              <div
+                className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
+                onClick={() => setSocial(true)}
+              >
+                <HiShare size={20} />
+              </div>
+            </div>
+            {social && (
+              <div className='ml-20 relative' ref={ref}>
+                <ul
+                  className='flex flex-col cursor-pointer text-[#000] [&_li]:block absolute w-[230px] p-4 shadow-md rounded bg-white'
+                  style={{ top: '-20px' }}
+                >
+                  <li className=''>
+                    <a
+                      data-href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
+                      target='popup'
+                      onClick={() => {
+                        window.open(
+                          `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
+                          'facebook share',
+                          'width=600,height=400'
+                        );
+                      }}
+                      rel='noreferrer'
+                      className='flex bg-[#fff] text-[15px] text-[#325a90] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
+                      title='Share On facebook'
+                    >
+                      <div className='flex inline-flex'>
+                        <div className='flex w-[20px] h-[20px]'>
+                          <Fb />
+                        </div>
+                        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
+                          Facebook
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li className='relative'>
+                    <a
+                      target='popup'
+                      data-href={`http://twitter.com/share?text=${PDP_LABELS[locale].twitterText}&url=${window.location.href}`}
+                      onClick={() => {
+                        window.open(
+                          `http://twitter.com/share?text=${PDP_LABELS[locale].twitterText}&url=${window.location.href}`,
+                          'twitter share',
+                          'width=600,height=400'
+                        );
+                      }}
+                      rel='noreferrer'
+                      className='flex bg-[#fff] text-[15px] text-[#55acee] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
+                      title='Share On twitter'
+                    >
+                      <div className='flex inline-flex'>
+                        <div className='flex w-[20px] h-[20px]'>
+                          <Twitter />
+                        </div>
+                        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
+                          Twitter
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
               </div>
             )}
           </div>
         </div>
-        <div className='flex w-full m-2 flex-col'>
+        <div className='flex w-full lg:m-2 m-0 flex-col'>
           <div className='flex flex-col md:w-2/3 w-full '>
             <div className='breadcrumbs-color hidden md:inline-flex my-[48px] font-HelveticaRoman text-[12px] leading-tight font-light text-[#000]'>
-              {PDP_LABELS.home}{' '}
+              {PDP_LABELS[locale].home}{' '}
               {ProductSection && ProductSection.length > 0 && (
                 <>
-                  <HiOutlineChevronRight size={15} /> {ProductSection[0]}
+                  <HiOutlineChevronRight size={15} />{' '}
+                  <span>{ProductSection[0]}</span>
                 </>
               )}{' '}
               {ProductLocalCategory &&
@@ -423,20 +494,20 @@ export default function DetailsComponent({ productDetailsData }) {
                 ProductLocalCategory.length > 0 && (
                   <>
                     <HiOutlineChevronRight size={15} />{' '}
-                    {ProductLocalCategory[0]}
+                    <span>{ProductLocalCategory[0]}</span>
                   </>
                 )}
             </div>
-            <div className='font-HelveticaRoman text-[14px] text-[#232323] mb-[30px]'>
+            <div className='font-helveticaLight text-[15px] text-[#232323] mb-[30px] mt-[30px] lg:mt-0 text-left'>
               {ProductNarrativeDescription}
             </div>
             {specPdfFile && (
               <div className='mb-[30px] cursor-pointer'>
                 <LinkWithLabel
                   className='inline-flex'
-                  label={PDP_LABELS.specFileLabel}
+                  label={PDP_LABELS[locale].specFileLabel}
                   url={specPdfFile}
-                  icon={<FaFilePdf color='red' />}
+                  icon={<FaRegFilePdf color='red' size={20} />}
                 />
               </div>
             )}
@@ -445,7 +516,7 @@ export default function DetailsComponent({ productDetailsData }) {
               <>
                 <hr />
                 <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
-                  {PDP_LABELS.characteristics}
+                  {PDP_LABELS[locale].characteristics}
                 </div>
                 <ul className='list-disc p-[10px]'>
                   {ProductWebFeatures01 && (
@@ -487,34 +558,13 @@ export default function DetailsComponent({ productDetailsData }) {
                   {ProductWebFeatures13 && (
                     <li className='mb-[15px]'>{ProductWebFeatures13}</li>
                   )}
-                  {ProductWebFeatures14 && (
-                    <li className='mb-[15px]'>{ProductWebFeatures14}</li>
-                  )}
-                  {ProductWebFeatures15 && (
-                    <li className='mb-[15px]'>{ProductWebFeatures15}</li>
-                  )}
-                  {ProductWebFeatures16 && (
-                    <li className='mb-[15px]'>{ProductWebFeatures16}</li>
-                  )}
-                  {ProductWebFeatures17 && (
-                    <li className='mb-[15px]'>{ProductWebFeatures17}</li>
-                  )}
-                  {ProductWebFeatures18 && (
-                    <li className='mb-[15px]'>{ProductWebFeatures18}</li>
-                  )}
-                  {ProductWebFeatures19 && (
-                    <li className='mb-[15px]'>{ProductWebFeatures19}</li>
-                  )}
-                  {ProductWebFeatures20 && (
-                    <li className='mb-[15px]'>{ProductWebFeatures20}</li>
-                  )}
                 </ul>
               </>
             )}
             {ProductWebInstallation01 && (
               <>
                 <div className='text-[15px] font-helveticaGroup leading-tight font-semibold'>
-                  {PDP_LABELS.installation}
+                  {PDP_LABELS[locale].installation}
                 </div>
                 <ul className='list-disc p-[10px]'>
                   {ProductWebInstallation01 && (
@@ -535,19 +585,13 @@ export default function DetailsComponent({ productDetailsData }) {
                   {ProductWebInstallation06 && (
                     <li className='mb-[15px]'>{ProductWebInstallation06}</li>
                   )}
-                  {ProductWebInstallation07 && (
-                    <li className='mb-[15px]'>{ProductWebInstallation07}</li>
-                  )}
-                  {ProductWebInstallation08 && (
-                    <li className='mb-[15px]'>{ProductWebInstallation08}</li>
-                  )}
                 </ul>
               </>
             )}
             {ProductWebMaterial01 && (
               <>
                 <div className='text-[15px] font-helveticaGroup leading-tight font-semibold'>
-                  {PDP_LABELS.material}
+                  {PDP_LABELS[locale].material}
                 </div>
                 <ul className='list-disc p-[10px]'>
                   {ProductWebMaterial01 && (
@@ -559,40 +603,27 @@ export default function DetailsComponent({ productDetailsData }) {
                   {ProductWebMaterial03 && (
                     <li className='mb-[15px]'>{ProductWebMaterial03}</li>
                   )}
-                  {ProductWebMaterial04 && (
-                    <li className='mb-[15px]'>{ProductWebMaterial04}</li>
-                  )}
-                  {ProductWebMaterial05 && (
-                    <li className='mb-[15px]'>{ProductWebMaterial05}</li>
-                  )}
                 </ul>
               </>
             )}
-            {ProductWebHydrotherapy01 && (
+            {ProductWebTechnology01 && (
               <>
                 <div className='text-[15px] font-helveticaGroup leading-tight font-semibold'>
-                  {PDP_LABELS.hydrotherapy}
+                  {PDP_LABELS[locale].technology}
                 </div>
                 <ul className='list-disc p-[10px]'>
-                  {ProductWebHydrotherapy01 && (
-                    <li className='mb-[15px]'>{ProductWebHydrotherapy01}</li>
+                  {ProductWebTechnology01 && (
+                    <li className='mb-[15px]'>{ProductWebTechnology01}</li>
                   )}
-                  {ProductWebHydrotherapy02 && (
-                    <li className='mb-[15px]'>{ProductWebHydrotherapy02}</li>
+                  {ProductWebTechnology02 && (
+                    <li className='mb-[15px]'>{ProductWebTechnology02}</li>
                   )}
-                  {ProductWebHydrotherapy03 && (
-                    <li className='mb-[15px]'>{ProductWebHydrotherapy03}</li>
-                  )}
-                  {ProductWebHydrotherapy04 && (
-                    <li className='mb-[15px]'>{ProductWebHydrotherapy04}</li>
-                  )}
-                  {ProductWebHydrotherapy05 && (
-                    <li className='mb-[15px]'>{ProductWebHydrotherapy05}</li>
+                  {ProductWebTechnology03 && (
+                    <li className='mb-[15px]'>{ProductWebTechnology03}</li>
                   )}
                 </ul>
               </>
             )}
-
             <div className='mb-[20px]'>
               {((front2D && front2D.length > 0) ||
                 (side2D && side2D.length > 0) ||
@@ -602,43 +633,41 @@ export default function DetailsComponent({ productDetailsData }) {
                 <>
                   <hr />
                   <div className='mt-[24px] mb-[40px] font-helveticaLight uppercase text-[20px] leading-tight font-light'>
-                    {PDP_LABELS.resources}
+                    {PDP_LABELS[locale].resources}
                   </div>
                   <div className='pb-[20px] font-helveticaLight text-[17px] uppercase leading-tight font-light'>
-                    {PDP_LABELS.cadTemplate}
+                    {PDP_LABELS[locale].cadTemplate}
                   </div>
 
-                  <div className='flex flex-col mt-[20px] md:mt-0 pl-[10px]'>
+                  <div className='flex flex-col'>
                     {cutOutDXF && (
                       <>
                         <p className='font-helveticaGroup font-semibold text-[14px]'>
-                          {PDP_LABELS.cutOutTemplates}
+                          {PDP_LABELS[locale].cutOutTemplates}
                         </p>
-                        <ul className='inline-flex flex-wrap'>
-                          <HiOutlineDownload />
-
+                        <ul className='inline-flex flex-wrap mb-2'>
+                          <HiOutlineDownload size={20} />
                           <li>
                             <LinkWithLabel
                               url={cutOutDXF.ResourceFullWebURL}
                               label={'DXF'}
-                              className='font-helveticaGroup font-light text-[14px] px-[5px] border-black uppercase border-x'
+                              className='font-helveticaGroup font-light text-[14px] uppercase'
                             />
                           </li>
                         </ul>
                       </>
                     )}
                   </div>
-                  <div className='flex flex-col mt-[20px] md:mt-0 pl-[10px]'>
+                  <div className='flex flex-col'>
                     {bimRevit && (
                       <>
-                        <ul className='inline-flex flex-wrap'>
-                          <HiOutlineDownload />
-
+                        <ul className='inline-flex flex-wrap mb-2'>
+                          <HiOutlineDownload size={20} />
                           <li>
                             <LinkWithLabel
                               url={bimRevit.ResourceFullWebURL}
-                              label={PDP_LABELS.bimRevit}
-                              className='font-helveticaGroup font-light text-[14px] px-[5px] border-black uppercase border-x'
+                              label={PDP_LABELS[locale].bimRevit}
+                              className='font-helveticaGroup font-light text-[14px] uppercase'
                             />
                           </li>
                         </ul>
@@ -646,20 +675,20 @@ export default function DetailsComponent({ productDetailsData }) {
                     )}
                   </div>
 
-                  <div className='flex md:justify-between md:flex-row flex-col p-[10px]'>
+                  <div className='flex md:justify-between md:flex-row flex-col'>
                     {(front2D.length > 0 ||
                       side2D.length > 0 ||
                       plan2D.length > 0) && (
                       <div className='flex'>
                         <div className='flex flex-col'>
                           <p className='font-helveticaGroup font-semibold text-[14px]'>
-                            {PDP_LABELS.cadFiles2D}
+                            {PDP_LABELS[locale].cadFiles2D}
                           </p>
                           {plan2D.length > 0 && (
                             <>
-                              <p>{PDP_LABELS.plan}</p>
-                              <ul className='inline-flex'>
-                                <HiOutlineDownload />
+                              <p>{PDP_LABELS[locale].plan}</p>
+                              <ul className='inline-flex mb-1'>
+                                <HiOutlineDownload size={20} />
                                 {plan2D?.map((el, id) => (
                                   <li key={id}>
                                     <LinkWithLabel
@@ -667,7 +696,10 @@ export default function DetailsComponent({ productDetailsData }) {
                                         PRODUCT_PLAN_NAME_2D[el.ResourceType]
                                       }
                                       url={el.ResourceFullWebURL}
-                                      className='font-helveticaGroup font-light text-[14px] px-[5px] border-black uppercase border-x'
+                                      className={`font-helveticaGroup font-light text-[14px] pr-2 uppercase ${
+                                        id !== plan2D.length - 1 &&
+                                        `border-r border-black`
+                                      }`}
                                     />
                                   </li>
                                 ))}
@@ -677,9 +709,9 @@ export default function DetailsComponent({ productDetailsData }) {
 
                           {front2D.length > 0 && (
                             <>
-                              <p>{PDP_LABELS.front}</p>
-                              <ul className='inline-flex '>
-                                <HiOutlineDownload />
+                              <p>{PDP_LABELS[locale].front}</p>
+                              <ul className='inline-flex mb-1'>
+                                <HiOutlineDownload size={20} />
                                 {front2D?.map((el, id) => (
                                   <li key={id}>
                                     <LinkWithLabel
@@ -687,7 +719,10 @@ export default function DetailsComponent({ productDetailsData }) {
                                         PRODUCT_FRONT_NAME_2D[el.ResourceType]
                                       }
                                       url={el.ResourceFullWebURL}
-                                      className='font-helveticaGroup font-light text-[14px] px-[5px] border-black uppercase border-x'
+                                      className={`font-helveticaGroup font-light text-[14px] pr-2 uppercase ${
+                                        id !== front2D.length - 1 &&
+                                        `border-r border-black`
+                                      }`}
                                     />
                                   </li>
                                 ))}
@@ -697,9 +732,9 @@ export default function DetailsComponent({ productDetailsData }) {
 
                           {side2D.length > 0 && (
                             <>
-                              <p>{PDP_LABELS.side}</p>
-                              <ul className='inline-flex'>
-                                <HiOutlineDownload />
+                              <p>{PDP_LABELS[locale].side}</p>
+                              <ul className='inline-flex mb-1'>
+                                <HiOutlineDownload size={20} />
                                 {side2D?.map((el, id) => (
                                   <li key={id}>
                                     <LinkWithLabel
@@ -707,7 +742,10 @@ export default function DetailsComponent({ productDetailsData }) {
                                       label={
                                         PRODUCT_SIDE_NAME_2D[el.ResourceType]
                                       }
-                                      className='font-helveticaGroup font-light text-[14px] px-[5px] border-black uppercase border-x'
+                                      className={`font-helveticaGroup font-light text-[14px] pr-2 uppercase ${
+                                        id !== side2D.length - 1 &&
+                                        `border-r border-black`
+                                      }`}
                                     />
                                   </li>
                                 ))}
@@ -722,16 +760,19 @@ export default function DetailsComponent({ productDetailsData }) {
                       {PlanView3D.length > 0 && (
                         <>
                           <p className='font-helveticaGroup font-semibold text-[14px]'>
-                            {PDP_LABELS.cadFiles3D}
+                            {PDP_LABELS[locale].cadFiles3D}
                           </p>
-                          <ul className='inline-flex flex-wrap'>
-                            <HiOutlineDownload />
+                          <ul className='inline-flex flex-wrap mb-1'>
+                            <HiOutlineDownload size={20} />
                             {PlanView3D?.map((el, id) => (
                               <li key={id}>
                                 <LinkWithLabel
                                   url={el.ResourceFullWebURL}
                                   label={PRODUCT_PLAN_NAME_3D[el.ResourceType]}
-                                  className='font-helveticaGroup font-light text-[14px] px-[5px] border-black uppercase border-x'
+                                  className={`font-helveticaGroup font-light text-[14px] pr-2 uppercase ${
+                                    id !== PlanView3D.length - 1 &&
+                                    `border-r border-black`
+                                  }`}
                                 />
                               </li>
                             ))}
@@ -746,52 +787,51 @@ export default function DetailsComponent({ productDetailsData }) {
             <hr />
             <div>
               <p className='my-[30px] uppercase font-helveticaLight text-[20px]'>
-                {PDP_LABELS.supportService}
+                {PDP_LABELS[locale].supportService}
               </p>
             </div>
             <hr />
             <div className='mt-[20px]'>
-              <p className='mb-[20px]'>{PDP_LABELS.supportServiceQ}</p>
+              <p className='mb-[20px]'>{PDP_LABELS[locale].supportServiceQ}</p>
               <p className='mb-[5px] text-[#232323] font-helveticaGroup font-semibold text-[14px]'>
-                {PDP_LABELS.contactUs}
+                {PDP_LABELS[locale].contactUs}
               </p>
               <p>
                 <a
-                  href={`tel:${PDP_LABELS.contactUsNumber}`}
+                  href={`${PDP_LABELS[locale].contactUsNumberLink}`}
                   className='font-bold text-[#000]'
                 >
-                  {PDP_LABELS.contactUsNumber}
+                  {PDP_LABELS[locale].contactUsNumber}
                 </a>
               </p>
-              <p>{PDP_LABELS.contactUsTime} </p>
-              <p>{PDP_LABELS.contactUsDay}</p>
+              <p>{PDP_LABELS[locale].contactUsTime} </p>
+              <p>{PDP_LABELS[locale].contactUsDay}</p>
               <p>
-                Enviar e-mail:{' '}
-                <a href='mailto:assistenciatecnica@kohler.com'>
-                  assistenciatecnica@kohler.com
+                <a href='/contact-us-page' target='_blank'>
+                  {PDP_LABELS[locale].emailUS}
                 </a>
               </p>
               <ul className='mt-[10px] list-disc mb-[30px]'>
                 <li>
-                  <Link href='/Cuidados-e-limpeza'>
-                    <a target='_blank'>{PDP_LABELS.careAndCleaning}</a>
+                  <Link href={`/${PDP_LABELS[locale].careCleaningLink}`}>
+                    <a target='_blank'>{PDP_LABELS[locale].careAndCleaning}</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href='/garantia'>
-                    <a target='_blank'>{PDP_LABELS.guarantee}</a>
+                  <Link href={`/${PDP_LABELS[locale].warrantyLink}`}>
+                    <a target='_blank'>{PDP_LABELS[locale].guarantee}</a>
                   </Link>
                 </li>
               </ul>
             </div>
             <hr />
             <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
-              {PDP_LABELS.technicalInformation}
+              {PDP_LABELS[locale].technicalInformation}
             </div>
             <div className='flex flex-col md:flex-row mb-[30px]'>
               <div className='flex flex-col'>
                 <div className='font-helveticaGroup text-[14px] leading-tight font-semibold mb-[10px]'>
-                  {PDP_LABELS.dimension}
+                  {PDP_LABELS[locale].dimension}
                 </div>
                 <div className>
                   <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
@@ -842,10 +882,10 @@ export default function DetailsComponent({ productDetailsData }) {
                     technicalInfoFiles?.map((element, id) => (
                       <div className='inline-flex mt-[10px]' key={id}>
                         <LinkWithLabel
-                          icon={<FaFilePdf color='red' />}
+                          icon={<FaRegFilePdf color='red' />}
                           url={element.ResourceFullWebURL}
                           label={
-                            TECHNICAL_INFORMATION_FILES_NAMES[
+                            TECHNICAL_INFORMATION_FILES_NAMES[locale][
                               element.ResourceType
                             ]
                           }
@@ -856,10 +896,18 @@ export default function DetailsComponent({ productDetailsData }) {
                 </div>
               </div>
               <div className='flex flex-col ml-[20px] mt-[30px] md:mt-0'>
+                {ProductBrandName && (
+                  <>
+                    <div className='font-helveticaGroup text-[14px] leading-tight font-semibold mb-[10px]'>
+                      {PDP_LABELS[locale].collection}
+                    </div>
+                    <div className='mb-[20px]'>{ProductBrandName}</div>
+                  </>
+                )}
                 {ProductMaterial && (
                   <>
                     <div className='font-helveticaGroup text-[14px] leading-tight font-semibold mb-[10px]'>
-                      {PDP_LABELS.material}
+                      {PDP_LABELS[locale].material}
                     </div>
                     <div className='mb-[20px]'>{ProductMaterial}</div>
                   </>
@@ -868,45 +916,45 @@ export default function DetailsComponent({ productDetailsData }) {
                   ProductInstallationType.length > 0 && (
                     <>
                       <div className='font-helveticaGroup text-[14px] leading-tight font-semibold mb-[10px]'>
-                        {PDP_LABELS.installation}
+                        {PDP_LABELS[locale].installation}
                       </div>
                       <div>{ProductInstallationType[0]}</div>
                     </>
                   )}
               </div>
             </div>
-            <hr />
-            <div className='flex flex-col'>
-              {ProductProductLinkType && ProductProductLinkType.length > 0 && (
-                <>
-                  <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
-                    {PDP_LABELS.paresWellWith}
-                  </div>
-                  <div className='flex flex-wrap lg:flex-nowrap flex-row'>
-                    <SimilarProductsCards
-                      productProductLinkType={ProductProductLinkType}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
           </div>
+        </div>
+        <hr />
+        <div className='flex flex-col'>
+          {ProductProductLinkType && ProductProductLinkType.length > 0 && (
+            <>
+              <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
+                {PDP_LABELS[locale].paresWellWith}
+              </div>
+              <div className='flex flex-wrap lg:flex-nowrap flex-row'>
+                <SimilarProductsCards
+                  productProductLinkType={ProductProductLinkType?.slice(0, 4)}
+                />
+              </div>
+            </>
+          )}
         </div>
         {similarProducts && similarProducts.length > 0 && (
           <div className='flex flex-col'>
             <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
-              {PDP_LABELS.similarProducts}
+              {PDP_LABELS[locale].similarProducts}
             </div>
             <div className='flex flex-wrap lg:flex-nowrap flex-row'>
               <SimilarProducts
-                productProductLinkType={similarProducts?.slice(0, 4)}
+                productProductLinkType={similarProducts?.slice(0, 6)}
               />
             </div>
           </div>
         )}
       </section>
-      <Cta fields={CTAObject} />
-      <BackToTop topHeight={0} />
+      <Cta fields={CTAObject[locale]} />
+      <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
 }
@@ -974,5 +1022,6 @@ DetailsComponent.defaultProps = {
         ProductProductType: ''
       }
     }
-  }
+  },
+  locale: ''
 };
