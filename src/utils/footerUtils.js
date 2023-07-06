@@ -15,3 +15,31 @@ export const backtoTopLabels = {
   en: 'Back to top',
   es: 'ir al incio'
 };
+
+export const storeDetailsLabel = {
+  en: {
+    mobile: 'Mobile:',
+    emailAddress: 'Email:',
+    websiteLink: 'Website:',
+    storeTelephoneNumber: 'Telephone:'
+  },
+  es: {
+    mobile: 'Celular:',
+    emailAddress: 'Correo Electrónico:',
+    websiteLink: 'Página Web:',
+    storeTelephoneNumber: 'Teléfono:'
+  }
+};
+
+export const storeLocatorOption = {
+  en: {
+    selectCountry: '--Select Country--',
+    selectState: '--Select State--',
+    selectCity: '--Select City--'
+  },
+  es: {
+    selectCountry: '--Seleccionar País--',
+    selectState: '--Seleccione Estado--',
+    selectCity: '--Ciudad Selecta--'
+  }
+};
