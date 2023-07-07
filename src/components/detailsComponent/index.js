@@ -9,12 +9,14 @@ import {
   HiCheck,
   HiOutlineDownload,
   HiOutlineChevronRight,
+  HiOutlineChevronDown,
   HiShare
 } from 'react-icons/hi';
 import { HiMiniPrinter } from 'react-icons/hi2';
 import { MdOutlineZoomOutMap } from 'react-icons/md';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getProductListing } from '@services/productListingAPI/client';
@@ -47,13 +49,14 @@ import {
   TECHNICAL_INFORMATION_FILES,
   TECHNICAL_INFORMATION_FILES_NAMES,
   DEFAULT_IMAGE_LINK,
-  CTAObject
+  CTAObject,
+  checkForNewProducts,
+  carouselImageFormatter
 } from './helper';
 
 export default function DetailsComponent({ productDetailsData }) {
   const router = useRouter();
   const { locale = '' } = router;
-  console.log('::: router', router);
   const ref = useRef();
   const [colorName, setColorName] = useState('');
   const [carousel, setCarousel] = useState([]);
@@ -71,10 +74,30 @@ export default function DetailsComponent({ productDetailsData }) {
   const [similarProducts, setSimilarProducts] = useState([]);
   const [zoomActive, setZoomActive] = useState(false);
   const [showZoom, showImageZoom] = useState(false);
-  const [skuName, setSkuName] = useState(0);
   const [technicalInfoFiles, setTechnicalInfoFiles] = useState([]);
   const [colorFinishCodeArray, setColorFinisCodeArray] = useState([]);
   const [social, setSocial] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+  const [thumbsPosition, setThumbsPosition] = useState(0);
+  const [imageName, setImageName] = useState('');
+  const [isNewProduct, setIsNewProduct] = useState(false);
+
+  const handlePrevClick = () => {
+    // Your code to display the selected image goes here
+
+    // Check if the currently selected image is the last one
+    if (imageIndex === carousel.length - 1) {
+      // Set the selected image to the first image
+      setImageIndex(0);
+      setThumbsPosition(0);
+      setImageName(carousel[0]?.ResourceName);
+    } else {
+      // Set the selected image to the next image
+      setImageIndex(prevImageIndex => prevImageIndex + 1);
+      setThumbsPosition(imageIndex);
+      setImageName(carousel[imageIndex + 1]?.ResourceName);
+    }
+  };
 
   const {
     data: {
@@ -122,7 +145,7 @@ export default function DetailsComponent({ productDetailsData }) {
         ProductLocalCategory,
         ProductSection,
         ProductProductType,
-        ProductNewProduct
+        ProductMETADESCRIPTION
       }
     } = {}
   } = productDetailsData;
@@ -133,7 +156,8 @@ export default function DetailsComponent({ productDetailsData }) {
     setColorName(item.SKUColorFinishName);
     setSKUNumber(item.SKUSKUNo);
     setColorFileName(item.SKUColorSwatchFilename);
-    setSkuName(0);
+    setImageIndex(0);
+    setThumbsPosition(0);
 
     if (item.SKUSKUNo === ProductDefaultSKU) {
       const defaultItems =
@@ -149,21 +173,35 @@ export default function DetailsComponent({ productDetailsData }) {
 
       setCarousel([...carousel_image_array, ...other_images]);
     } else {
-      const carousel_image_array = item?.links?.ItemResource?.filter(
-        el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
-      );
+      const carousel_image_array =
+        item?.links?.ItemResource?.filter(
+          el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
+        ) || [];
 
       setCarousel(carousel_image_array);
+      const is_new_product = checkForNewProducts(
+        item?.links?.ItemRegion?.find(obj =>
+          Object.keys(obj).includes('RegionReleaseforShipment')
+        )?.RegionReleaseforShipment
+      );
+      setIsNewProduct(is_new_product);
     }
   };
 
   useEffect(() => {
     const color_finish_code_array = ProductItem.filter(
-      el => el.SKUColorFinishCode !== undefined
+      el =>
+        el.SKUColorFinishCode !== undefined &&
+        el?.links?.ItemResource !== undefined
     );
-
     setColorFinisCodeArray(color_finish_code_array);
     const defaultItems = ProductItem?.find(el => el.SKUSKUNo === skuId) || {};
+    const is_new_product = checkForNewProducts(
+      defaultItems?.links?.ItemRegion?.find(obj =>
+        Object.keys(obj).includes('RegionReleaseforShipment')
+      )?.RegionReleaseforShipment
+    );
+    setIsNewProduct(is_new_product);
     const carousel_image_array =
       defaultItems?.links?.ItemResource?.filter(
         el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
@@ -221,6 +259,10 @@ export default function DetailsComponent({ productDetailsData }) {
   }, []);
 
   useEffect(() => {
+    setImageName(carousel[0]?.ResourceName);
+  }, [carousel]);
+
+  useEffect(() => {
     async function fetchSimilarProducts() {
       if (ProductProductType !== undefined) {
         try {
@@ -270,67 +312,137 @@ export default function DetailsComponent({ productDetailsData }) {
 
   return (
     <>
-      <section className='max-w-screen-lg mx-auto bg-white text-[#232323] mb-[50px] lg:p-10 p-2'>
+      <section className='max-w-screen-lg mx-auto bg-white text-[#232323] mb-[50px] p-2'>
         <div className='flex w-full md:flex-row flex-col'>
           {/* Product Carousel start */}
           <div className='flex flex-col md:w-2/3 w-full'>
-            <div id='product_carousel'>
-              <Carousel
-                dynamicHeight={true}
-                infiniteLoop={false}
-                showStatus={false}
-                showIndicators={false}
-                emulateTouch={true}
-                selectedItem={skuName}
-                onChange={e => setSkuName(e)}
-              >
-                {carousel && carousel.length > 0 ? (
-                  carousel?.map((element, id) => (
-                    <div
-                      key={id}
-                      id='product_carousel_image'
-                      className='img-magnifier-container'
-                      onMouseEnter={e => {
-                        setZoomActive(true);
-                        handleMagnifier(e, element.ResourceName);
-                      }}
-                      onMouseLeave={e => {
-                        setZoomActive(false);
-                        handleMagnifier(e, element.ResourceName);
-                      }}
-                    >
-                      <img
-                        // src={imageFormatter(
-                        //   element.ResourceName,
-                        //   ProductNewProduct
-                        // )}
-                        src={element?.ResourceFullWebURL}
-                        id={element.ResourceName}
-                        alt={element.ResourceName}
-                        onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <div>
-                    <img src={imageFormatter()} id={'image1'} alt='image1' />
-                  </div>
-                )}
-              </Carousel>
+            {/* carousel */}
+            <div className='flex lg:p-4 p-0 flex-col-reverse lg:flex-row'>
+              <div className='flex lg:flex-col flex-row lg:w-1/6 items-center'>
+                {carousel &&
+                  carousel
+                    ?.slice(thumbsPosition, thumbsPosition + 3)
+                    ?.map((imgs, id) => {
+                      return (
+                        <div
+                          key={id}
+                          className={`${
+                            imageName === imgs?.ResourceName &&
+                            'border-2 border-black'
+                          } p-1 m-1`}
+                        >
+                          <Image
+                            src={carouselImageFormatter(
+                              imgs?.ResourceName,
+                              isNewProduct
+                            )}
+                            height={60}
+                            width={80}
+                            id={imgs.ResourceName}
+                            alt={imgs.ResourceName}
+                            onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                            onClick={() => {
+                              setImageIndex(carousel.indexOf(imgs));
+                              setImageName(imgs?.ResourceName);
+                            }}
+                          />
+                        </div>
+                      );
+                    })}
+                {carousel?.length > 3 &&
+                  thumbsPosition > -(carousel.length - 3) && (
+                    <>
+                      <button
+                        className='lg:hidden block'
+                        onClick={e => handlePrevClick(e)}
+                      >
+                        <HiOutlineChevronRight size={35} />
+                      </button>
+                      <button
+                        className='lg:block hidden'
+                        onClick={e => handlePrevClick(e)}
+                      >
+                        <HiOutlineChevronDown size={35} />
+                      </button>
+                    </>
+                  )}
+              </div>
+              <div className='lg:w-5/6 sm:w-[95%] w-full p-1 relative'>
+                <div
+                  className='img-magnifier-container sm:flex hidden'
+                  onMouseEnter={e => {
+                    setZoomActive(true);
+                    handleMagnifier(e, 'myImage');
+                  }}
+                  onMouseLeave={e => {
+                    setZoomActive(false);
+                    handleMagnifier(e, 'myImage');
+                  }}
+                >
+                  <img
+                    src={carouselImageFormatter(
+                      carousel[imageIndex]?.ResourceName,
+                      isNewProduct
+                    )}
+                    alt={carousel[imageIndex]?.ResourceName}
+                    id='myImage'
+                    className='w-full h-[250px] md:h-[350px] lg:h-[470px]'
+                    onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                  />
+                </div>
+                <div className='sm:hidden flex'>
+                  <Carousel
+                    dynamicHeight={true}
+                    infiniteLoop={false}
+                    showStatus={false}
+                    showIndicators={false}
+                    emulateTouch={true}
+                    showThumbs={false}
+                    showArrows={false}
+                    selectedItem={imageIndex}
+                  >
+                    {carousel && carousel.length > 0 ? (
+                      carousel?.map((element, id) => (
+                        <div key={id}>
+                          <img
+                            src={carouselImageFormatter(
+                              element?.ResourceName,
+                              isNewProduct
+                            )}
+                            id={element.ResourceName}
+                            alt={element.ResourceName}
+                            onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div>
+                        <img
+                          src={imageFormatter()}
+                          id={'image1'}
+                          alt='image1'
+                        />
+                      </div>
+                    )}
+                  </Carousel>
+                </div>
+                <div
+                  className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0'
+                  onClick={() => showImageZoom(true)}
+                >
+                  <MdOutlineZoomOutMap size={30} />
+                </div>
+              </div>
+
               {showZoom && (
                 <ImageZoomModal
                   showImageZoom={showImageZoom}
-                  skuName={skuName}
+                  skuName={imageIndex}
                   carouselItem={carousel}
                   defaultImageLink={DEFAULT_IMAGE_LINK}
+                  isNewProduct={isNewProduct}
                 />
               )}
-              <div
-                className='md:flex bg-[#e5e5e5] p-3 cursor-pointer justify-end hidden'
-                onClick={() => showImageZoom(true)}
-              >
-                <MdOutlineZoomOutMap size={30} />
-              </div>
             </div>
           </div>
           {/* Product carousel end */}
@@ -339,7 +451,7 @@ export default function DetailsComponent({ productDetailsData }) {
               {ProductBrandName}
             </div>
             <div className='mt-[10px] text-[18px] font-helveticaLight font-light mb-[20px]'>
-              {ProductDescriptionProductShort}
+              {ProductDescriptionProductShort || ProductMETADESCRIPTION}
             </div>
             {skuNumber && (
               <div className='font-helveticaLight text-[16px] leading-tight font-normal text-[#666]'>
@@ -378,6 +490,7 @@ export default function DetailsComponent({ productDetailsData }) {
                       height: '40px',
                       width: '40px'
                     }}
+                    onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                   />
                   {colorFileName === el.SKUColorSwatchFilename && (
                     <div className='absolute top-0 right-0 h-[40px] w-[40px] bg-cover border-2 border-neutral-500'>
@@ -1019,7 +1132,8 @@ DetailsComponent.defaultProps = {
         ProductPriceSpiderIncluded: false,
         ProductLocalCategory: [],
         ProductSection: [],
-        ProductProductType: ''
+        ProductProductType: '',
+        ProductMETADESCRIPTION: ''
       }
     }
   },

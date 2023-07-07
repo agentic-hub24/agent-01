@@ -1,16 +1,16 @@
-export const CarouselImageFormatter = (
+export const carouselImageFormatter = (
   skuResourceName = '',
-  ProductNewProduct = false
+  isNewProduct = false
 ) => {
   if (skuResourceName) {
     return `//kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2F${
-      ProductNewProduct ? '2New' : 'Blank'
+      isNewProduct ? '2New' : 'Blank'
     }&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is{PAWEB%2F${skuResourceName}}`;
   }
   return 'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
 };
 
-export const imageFormatter = (skuResourceName = '') => {
+export const imageFormatter = skuResourceName => {
   if (skuResourceName) {
     return `https://kohler.scene7.com/is/image/PAWEB/${skuResourceName}`;
   }
@@ -20,6 +20,28 @@ export const imageFormatter = (skuResourceName = '') => {
 export const gifLineArtImageFormatter = image => {
   // TODO: Latem link should be here
   return `https://resources.kohler.com/plumbing/kohlerbrazil/lineart/${image}`;
+};
+
+export const checkForNewProducts = dateStr => {
+  // Provided date
+  const providedDate = new Date(dateStr);
+
+  // Current date
+  const currentDate = new Date();
+
+  // Calculate the difference in milliseconds
+  const difference = currentDate - providedDate;
+
+  // Convert milliseconds to years
+  const millisecondsInYear = 1000 * 60 * 60 * 24 * 365;
+  const differenceInYears = difference / millisecondsInYear;
+
+  // Check if the difference is greater than or equal to 1 year
+  if (differenceInYears >= 1) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 export const magnify = (imgID, zoom) => {
@@ -186,7 +208,7 @@ export const PDP_LABELS = {
     warrantyLink: 'garantía-información',
     technicalInformation: 'Información Técnica',
     dimension: 'Dimensión',
-    paresWellWith: 'Combina bien con',
+    paresWellWith: 'COMBINA PERFECTAMENTE CON',
     similarProducts: 'Productos Similares',
     cutOutTemplates: 'Plantilla de recorte',
     bimRevit: 'BIM Revit',
