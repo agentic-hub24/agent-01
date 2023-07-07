@@ -5,14 +5,14 @@ import { DownloadIcon } from '../svgs';
 
 /***
  * @param {cardRows} array
- * @param {isArticleList} boolean
+ * @param {isLiterature} boolean
  * @param {showDownload} boolean
  * @returns
  */
 
 const ArticleCard = ({
   cardRows = [],
-  isArticleList = false,
+  isLiterature = false,
   showDownload = false,
   url
 }) => {
@@ -20,8 +20,8 @@ const ArticleCard = ({
     'w-[290px]',
     'relative',
     'bg-white',
-    isArticleList
-      ? 'mx-0.5 pb-10 bg-gradient-to-r from-[#ffffff] to-[#eeeeee]'
+    isLiterature
+      ? 'mx-2.5 my-5 cursor-pointer shadow-[2px_2px_5px_0_#aaa]'
       : 'mx-2.5 my-5 cursor-pointer lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] shadow-[2px_2px_5px_0_#aaa]'
   );
 
