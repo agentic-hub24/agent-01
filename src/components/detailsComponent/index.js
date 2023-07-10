@@ -56,7 +56,7 @@ import {
   thumbsImageFormatter
 } from './helper';
 
-export default function DetailsComponent({ productDetailsData }) {
+export default function DetailsComponent({ productDetailsData, skuID }) {
   const router = useRouter();
   const { locale = '' } = router;
   const ref = useRef();
@@ -112,6 +112,7 @@ export default function DetailsComponent({ productDetailsData }) {
           ProductProductLinkType = []
         } = {},
         ProductBrandName,
+        ProductProductNo,
         ProductDescriptionProductShort,
         ProductDefaultSKU,
         ProductNarrativeDescription,
@@ -154,7 +155,7 @@ export default function DetailsComponent({ productDetailsData }) {
     } = {}
   } = productDetailsData;
 
-  const skuId = router?.query?.skuid || ProductDefaultSKU; //take product default SKU NO
+  const skuId = skuID.replace('K-', '') || ProductDefaultSKU; //take product default SKU NO
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
@@ -175,21 +176,46 @@ export default function DetailsComponent({ productDetailsData }) {
           PRODUCT_ADDITIONAL_IMAGE.includes(el.ResourceType)
         ) || [];
 
-      setCarousel([...carousel_image_array, ...other_images]);
+      const youtube_link = ProductResource?.filter(
+        el => el?.ResourceType === PRODUCT_RESOURCE_TYPE_VIDEO
+      );
+
+      setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
     } else {
       const carousel_image_array =
         item?.links?.ItemResource?.filter(
           el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
         ) || [];
 
-      setCarousel(carousel_image_array);
-      const is_new_product = checkForNewProducts(
-        item?.links?.ItemRegion?.find(obj =>
-          Object.keys(obj).includes('RegionReleaseforShipment')
-        )?.RegionReleaseforShipment
+      const other_images =
+        ProductResource?.filter(el =>
+          PRODUCT_ADDITIONAL_IMAGE.includes(el.ResourceType)
+        ) || [];
+
+      const youtube_link = ProductResource?.filter(
+        el => el?.ResourceType === PRODUCT_RESOURCE_TYPE_VIDEO
       );
-      setIsNewProduct(is_new_product);
+
+      setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
     }
+    const is_new_product = checkForNewProducts(
+      item?.links?.ItemRegion?.find(obj =>
+        Object.keys(obj).includes('RegionReleaseforShipment')
+      )?.RegionReleaseforShipment
+    );
+    setIsNewProduct(is_new_product);
+
+    const queryParams = {
+      skuid: 'K-' + item.SKUSKUNo
+    }; // Replace with your desired dynamic query parameters
+    // Create the URL with the dynamic query parameters
+    const url = {
+      pathname: `/product-detail/${ProductProductNo}`,
+      query: queryParams
+    };
+
+    // Update the URL
+    router.push(url, undefined, { shallow: true });
   };
 
   useEffect(() => {
@@ -343,7 +369,7 @@ export default function DetailsComponent({ productDetailsData }) {
                           className={`${
                             imageName === imgs?.ResourceName &&
                             'border-2 border-black'
-                          } p-1 m-1`}
+                          } m-1`}
                         >
                           <Image
                             src={thumbsImageFormatter(
@@ -368,16 +394,16 @@ export default function DetailsComponent({ productDetailsData }) {
                   thumbsPosition > -(carousel.length - 3) && (
                     <>
                       <button
-                        className='lg:hidden block'
+                        className='lg:hidden block text-[#e5e5e5]'
                         onClick={e => handlePrevClick(e)}
                       >
                         <HiOutlineChevronRight size={35} />
                       </button>
                       <button
-                        className='lg:block hidden'
+                        className='lg:block hidden text-[#e5e5e5]'
                         onClick={e => handlePrevClick(e)}
                       >
-                        <HiOutlineChevronDown size={35} />
+                        <HiOutlineChevronDown size={45} />
                       </button>
                     </>
                   )}
@@ -945,21 +971,24 @@ export default function DetailsComponent({ productDetailsData }) {
                   <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
                     Videos
                   </div>
-
                   <div className='flex flex-wrap lg:flex-nowrap flex-row pb-4'>
-                    <iframe
-                      width='560'
-                      height='315'
-                      src={`https://www.youtube.com/embed/${youTubeLink[0]?.ResourceName}?rel=0`}
-                      title='YouTube video player'
-                      frameborder='0'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                      allowfullscreen='allowfullscreen'
-                      mozallowfullscreen='mozallowfullscreen'
-                      msallowfullscreen='msallowfullscreen'
-                      oallowfullscreen='oallowfullscreen'
-                      webkitallowfullscreen='webkitallowfullscreen'
-                    ></iframe>
+                    {youTubeLink?.map((item, id) => (
+                      <div key={id} className='pr-4'>
+                        <iframe
+                          width='300'
+                          height='220'
+                          src={`https://www.youtube.com/embed/${item?.ResourceName}?rel=0`}
+                          title='YouTube video player'
+                          frameborder='0'
+                          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                          allowfullscreen='allowfullscreen'
+                          mozallowfullscreen='mozallowfullscreen'
+                          msallowfullscreen='msallowfullscreen'
+                          oallowfullscreen='oallowfullscreen'
+                          webkitallowfullscreen='webkitallowfullscreen'
+                        ></iframe>
+                      </div>
+                    ))}
                   </div>
                 </>
               )}
@@ -1206,5 +1235,5 @@ DetailsComponent.defaultProps = {
       }
     }
   },
-  locale: ''
+  skuID: ''
 };

@@ -1,11 +1,31 @@
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductDetails } from '@services/productListingAPI/client';
 import DetailsComponent from '@components/detailsComponent';
 
-export default function ProductDetailMain({ productDetailsData }) {
-  return <DetailsComponent productDetailsData={productDetailsData} />;
+export default function ProductDetailMain({ productDetailsData, productNo }) {
+  const router = useRouter();
+  const [skuID, setSkuID] = useState('');
+  useEffect(() => {
+    const queryParams = {
+      skuid: 'K-' + productDetailsData?.data?.product?.ProductDefaultSKU
+    }; // Replace with your desired dynamic query parameters
+    setSkuID(queryParams.skuid);
+    // Create the URL with the dynamic query parameters
+    const url = {
+      pathname: `/product-detail/${productNo}`,
+      query: queryParams
+    };
+
+    // Update the URL
+    router.push(url, undefined, { shallow: true });
+  }, [skuID]);
+  return (
+    <DetailsComponent productDetailsData={productDetailsData} skuID={skuID} />
+  );
 }
 
 export async function getServerSideProps(context) {
@@ -44,7 +64,8 @@ export async function getServerSideProps(context) {
       footerNavigationData,
       headerNavigationData,
       world,
-      productDetailsData
+      productDetailsData,
+      productNo
     }
   };
 }

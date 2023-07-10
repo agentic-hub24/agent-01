@@ -130,10 +130,10 @@ export const TECHNICAL_INFORMATION_FILES_NAMES = {
     PartsPDFFileName: 'Peças pdf'
   },
   en: {
-    SpecPDFFileName: 'áspera/ Hoja de especificaciones',
-    HomeownersGuide: 'guía de dueños de casa',
-    InstallationWithoutSPPDF: 'Guia de instalação sem peçus de serviço',
-    PartsPDFFileName: 'Peças pdf'
+    SpecPDFFileName: 'Rough/ Spec Sheet',
+    HomeownersGuide: 'Home owners guide',
+    InstallationWithoutSPPDF: 'Installation guide',
+    PartsPDFFileName: 'Parts'
   }
 };
 export const PRODUCT_GIF_LINE_ART_IMAGE = 'GIFLineArt';
@@ -174,7 +174,6 @@ export const PRODUCT_Side_View_2D = ['DWGSideView', 'DXFSideView'];
 export const PRODUCT_ADDITIONAL_IMAGE = [
   'IMGTOP',
   'IMGFront',
-  'IMGITEMISO',
   'IMGSide',
   'IMGCLOSEROOMVIEW',
   'IMGOVERHEADROOMVIEW',
@@ -187,7 +186,8 @@ export const PRODUCT_ADDITIONAL_IMAGE = [
   'IMGDetail3',
   'IMGDetail4',
   'IMGDetail5',
-  'IMGDetail6'
+  'IMGDetail6',
+  'IMGGlam'
 ];
 
 export const PDP_LABELS = {
