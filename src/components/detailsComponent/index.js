@@ -332,7 +332,6 @@ export default function DetailsComponent({ productDetailsData }) {
             {/* carousel */}
             <div className='flex lg:p-4 p-0 flex-col-reverse lg:flex-row'>
               {/* Custom image thumbs */}
-              {console.log(':::carousel', carousel)}
               <div className='flex lg:flex-col flex-row lg:w-1/6 items-center'>
                 {carousel &&
                   carousel

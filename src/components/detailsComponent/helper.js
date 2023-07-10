@@ -2,7 +2,6 @@ export const carouselImageFormatter = (
   skuResourceName = '',
   isNewProduct = false
 ) => {
-  console.log(':::', skuResourceName);
   if (skuResourceName) {
     return `//kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2F${
       isNewProduct ? '2New' : 'Blank'
