@@ -279,7 +279,7 @@ export const CTAObject = {
   },
   en: {
     internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-    label: 'Ayúdenos a mejorar este sitio',
+    label: 'Help us Improve this Site',
     ariaLabel: 'Help us Improve this Site ',
     visible: true,
     buttonBrandColor: 'None',
