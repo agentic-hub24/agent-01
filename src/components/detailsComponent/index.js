@@ -51,7 +51,9 @@ import {
   DEFAULT_IMAGE_LINK,
   CTAObject,
   checkForNewProducts,
-  carouselImageFormatter
+  carouselImageFormatter,
+  PRODUCT_RESOURCE_TYPE_VIDEO,
+  thumbsImageFormatter
 } from './helper';
 
 export default function DetailsComponent({ productDetailsData }) {
@@ -81,6 +83,8 @@ export default function DetailsComponent({ productDetailsData }) {
   const [thumbsPosition, setThumbsPosition] = useState(0);
   const [imageName, setImageName] = useState('');
   const [isNewProduct, setIsNewProduct] = useState(false);
+  const [hasLinkedprodcts, setHasLinkedproduct] = useState(false);
+  const [youTubeLink, setYoutubeLink] = useState('');
 
   const handlePrevClick = () => {
     // Your code to display the selected image goes here
@@ -214,7 +218,12 @@ export default function DetailsComponent({ productDetailsData }) {
         ) || [];
     }
 
-    setCarousel([...carousel_image_array, ...other_images]);
+    const youtube_link = ProductResource?.filter(
+      item => item.ResourceType === PRODUCT_RESOURCE_TYPE_VIDEO
+    );
+    setYoutubeLink(youtube_link);
+
+    setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
     setColorName(defaultItems?.SKUColorFinishName);
     setSKUNumber(defaultItems?.SKUSKUNo);
     setColorFileName(defaultItems.SKUColorSwatchFilename);
@@ -256,6 +265,10 @@ export default function DetailsComponent({ productDetailsData }) {
       el => el.ResourceType === PRODUCT_BIMRevit
     );
     setBimRevit(bim_revit);
+    const has_linked_products = ProductProductLinkType?.find(
+      ele => ele.ProductATGISACTIVE === true
+    );
+    setHasLinkedproduct(has_linked_products);
   }, []);
 
   useEffect(() => {
@@ -318,6 +331,8 @@ export default function DetailsComponent({ productDetailsData }) {
           <div className='flex flex-col md:w-2/3 w-full'>
             {/* carousel */}
             <div className='flex lg:p-4 p-0 flex-col-reverse lg:flex-row'>
+              {/* Custom image thumbs */}
+              {console.log(':::carousel', carousel)}
               <div className='flex lg:flex-col flex-row lg:w-1/6 items-center'>
                 {carousel &&
                   carousel
@@ -332,9 +347,10 @@ export default function DetailsComponent({ productDetailsData }) {
                           } p-1 m-1`}
                         >
                           <Image
-                            src={carouselImageFormatter(
+                            src={thumbsImageFormatter(
                               imgs?.ResourceName,
-                              isNewProduct
+                              isNewProduct,
+                              imgs?.ResourceType
                             )}
                             height={60}
                             width={80}
@@ -368,28 +384,46 @@ export default function DetailsComponent({ productDetailsData }) {
                   )}
               </div>
               <div className='lg:w-5/6 sm:w-[95%] w-full p-1 relative'>
-                <div
-                  className='img-magnifier-container sm:flex hidden'
-                  onMouseEnter={e => {
-                    setZoomActive(true);
-                    handleMagnifier(e, 'myImage');
-                  }}
-                  onMouseLeave={e => {
-                    setZoomActive(false);
-                    handleMagnifier(e, 'myImage');
-                  }}
-                >
-                  <img
-                    src={carouselImageFormatter(
-                      carousel[imageIndex]?.ResourceName,
-                      isNewProduct
-                    )}
-                    alt={carousel[imageIndex]?.ResourceName}
-                    id='myImage'
-                    className='w-full h-[250px] md:h-[350px] lg:h-[470px]'
-                    onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
-                  />
-                </div>
+                {carousel[imageIndex]?.ResourceType ===
+                PRODUCT_RESOURCE_TYPE_VIDEO ? (
+                  <iframe
+                    height='470'
+                    width='100%'
+                    src={`https://www.youtube.com/embed/${carousel[imageIndex]?.ResourceName}?rel=0`}
+                    title='YouTube video player'
+                    frameborder='0'
+                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                    allowfullscreen='allowfullscreen'
+                    mozallowfullscreen='mozallowfullscreen'
+                    msallowfullscreen='msallowfullscreen'
+                    oallowfullscreen='oallowfullscreen'
+                    webkitallowfullscreen='webkitallowfullscreen'
+                  ></iframe>
+                ) : (
+                  <div
+                    className='img-magnifier-container sm:flex hidden'
+                    onMouseEnter={e => {
+                      setZoomActive(true);
+                      handleMagnifier(e, 'myImage');
+                    }}
+                    onMouseLeave={e => {
+                      setZoomActive(false);
+                      handleMagnifier(e, 'myImage');
+                    }}
+                  >
+                    <img
+                      src={carouselImageFormatter(
+                        carousel[imageIndex]?.ResourceName,
+                        isNewProduct
+                      )}
+                      alt={carousel[imageIndex]?.ResourceName}
+                      id='myImage'
+                      className='w-full h-[250px] md:h-[350px] lg:h-[470px]'
+                      onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                    />
+                  </div>
+                )}
+
                 <div className='sm:hidden flex'>
                   <Carousel
                     dynamicHeight={true}
@@ -403,17 +437,24 @@ export default function DetailsComponent({ productDetailsData }) {
                   >
                     {carousel && carousel.length > 0 ? (
                       carousel?.map((element, id) => (
-                        <div key={id}>
-                          <img
-                            src={carouselImageFormatter(
-                              element?.ResourceName,
-                              isNewProduct
-                            )}
-                            id={element.ResourceName}
-                            alt={element.ResourceName}
-                            onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
-                          />
-                        </div>
+                        <>
+                          {element?.ResourceType !==
+                            PRODUCT_RESOURCE_TYPE_VIDEO && (
+                            <div key={id}>
+                              <img
+                                src={carouselImageFormatter(
+                                  element?.ResourceName,
+                                  isNewProduct
+                                )}
+                                id={element.ResourceName}
+                                alt={element.ResourceName}
+                                onError={e =>
+                                  (e.target.src = DEFAULT_IMAGE_LINK)
+                                }
+                              />
+                            </div>
+                          )}
+                        </>
                       ))
                     ) : (
                       <div>
@@ -444,6 +485,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 />
               )}
             </div>
+            {/* Carousel end */}
           </div>
           {/* Product carousel end */}
           <div className='flex flex-col md:w-1/3 w-full lg:px-[15px]'>
@@ -898,6 +940,32 @@ export default function DetailsComponent({ productDetailsData }) {
               )}
             </div>
             <hr />
+            <div className='flex flex-col'>
+              {youTubeLink && youTubeLink.length > 0 && (
+                <>
+                  <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
+                    Videos
+                  </div>
+
+                  <div className='flex flex-wrap lg:flex-nowrap flex-row pb-4'>
+                    <iframe
+                      width='560'
+                      height='315'
+                      src={`https://www.youtube.com/embed/${youTubeLink[0]?.ResourceName}?rel=0`}
+                      title='YouTube video player'
+                      frameborder='0'
+                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                      allowfullscreen='allowfullscreen'
+                      mozallowfullscreen='mozallowfullscreen'
+                      msallowfullscreen='msallowfullscreen'
+                      oallowfullscreen='oallowfullscreen'
+                      webkitallowfullscreen='webkitallowfullscreen'
+                    ></iframe>
+                  </div>
+                </>
+              )}
+            </div>
+            <hr />
             <div>
               <p className='my-[30px] uppercase font-helveticaLight text-[20px]'>
                 {PDP_LABELS[locale].supportService}
@@ -1042,9 +1110,11 @@ export default function DetailsComponent({ productDetailsData }) {
         <div className='flex flex-col'>
           {ProductProductLinkType && ProductProductLinkType.length > 0 && (
             <>
-              <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
-                {PDP_LABELS[locale].paresWellWith}
-              </div>
+              {hasLinkedprodcts && (
+                <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
+                  {PDP_LABELS[locale].paresWellWith}
+                </div>
+              )}
               <div className='flex flex-wrap lg:flex-nowrap flex-row'>
                 <SimilarProductsCards
                   productProductLinkType={ProductProductLinkType?.slice(0, 4)}

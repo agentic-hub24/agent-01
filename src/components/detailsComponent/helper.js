@@ -2,6 +2,7 @@ export const carouselImageFormatter = (
   skuResourceName = '',
   isNewProduct = false
 ) => {
+  console.log(':::', skuResourceName);
   if (skuResourceName) {
     return `//kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2F${
       isNewProduct ? '2New' : 'Blank'
@@ -115,6 +116,7 @@ export const DEFAULT_IMAGE_LINK =
   'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
 
 export const PRODUCT_RESOURCE_TYPE_SPEC_DOC = 'SpecPDFFileName';
+export const PRODUCT_RESOURCE_TYPE_VIDEO = 'YouTubeVideo';
 export const TECHNICAL_INFORMATION_FILES = [
   'InstallationWithoutSPPDF',
   'SpecPDFFileName',
@@ -173,9 +175,20 @@ export const PRODUCT_Side_View_2D = ['DWGSideView', 'DXFSideView'];
 export const PRODUCT_ADDITIONAL_IMAGE = [
   'IMGTOP',
   'IMGFront',
+  'IMGITEMISO',
+  'IMGSide',
   'IMGCLOSEROOMVIEW',
   'IMGOVERHEADROOMVIEW',
-  'IMGCLOSEROOMVIEWInUse'
+  'IMGCLOSEROOMVIEWInUse',
+  'IMGCLOSEROOMVIEWProductDetail',
+  'IMGCLOSEROOMVIEWWithWaterEffects',
+  'IMGCLOSEROOMVIEWWithWaterEffects',
+  'IMGDetail1',
+  'IMGDetail2',
+  'IMGDetail3',
+  'IMGDetail4',
+  'IMGDetail5',
+  'IMGDetail6'
 ];
 
 export const PDP_LABELS = {
@@ -271,5 +284,13 @@ export const CTAObject = {
     visible: true,
     buttonBrandColor: 'None',
     ctaType: 'Text Link'
+  }
+};
+
+export const thumbsImageFormatter = (url, isNewProduct, type) => {
+  if (type === PRODUCT_RESOURCE_TYPE_VIDEO) {
+    return `http://img.youtube.com/vi/${url}/maxresdefault.jpg`;
+  } else {
+    return carouselImageFormatter(url, isNewProduct);
   }
 };
