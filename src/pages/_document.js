@@ -20,7 +20,11 @@ class MyDocument extends Document {
             async
           /> */}
           {/* one trust cookie script ends  */}
-          {/* <script type='text/javascript' async src='/js/newrelic.js'></script> */}
+          <script
+            type='text/javascript'
+            async
+            src={process.env.NEXT_PUBLIC_NEW_RELIC}
+          ></script>
           {/* PS meta data> */}
           {/* <meta name='ps-key' content='1730-61731e79166c1200213fbaf9' />
           <meta name='ps-country' content='BR' />
