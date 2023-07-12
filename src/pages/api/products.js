@@ -161,6 +161,14 @@ const products = async (req, res) => {
                 filterData += `LitersPerFlush eq '${req.body.LitersPerFlush}'`;
             }
 
+            if(req.body.toilet_type){
+
+                filterData += (filterData != '') ? "and ": "";
+
+                filterData += `ProductInstallationType_esMX eq '${req.body.toilet_type}' or IntelligentToilet_esMX eq '${req.body.toilet_type}' or ProductConfiguration_esMX eq '${req.body.toilet_type}' `;
+
+            }
+
             if(req.body.NumberOfHoles_esMX){
                 filterData += (filterData != '') ? "and ": ""; 
                 filterData += `NumberOfHoles_esMX eq '${req.body.NumberOfHoles_esMX}'`;
@@ -206,9 +214,16 @@ const products = async (req, res) => {
                     response["searchResults"]["specificationCount"] = specificationCount;
                     response["searchResults"]["totalSearchResults"] = productsCount + specificationCount;
                 }
+                if(response["@search.facets"]["IntelligentToilet_esMX"].length){
+                    response["@search.facets"]["IntelligentToilet_esMX"] = response["@search.facets"]["IntelligentToilet_esMX"].filter((item)=> {
+                        if(item.value==="Sí" || item.value==="Yes" || item.value==="Yeah"){
+                            return item;
+                        }
+                    })
+                }
                 response["@search.facets"]["toilet_type"] = [...response["@search.facets"]["ProductConfiguration_esMX"] , 
                ...response["@search.facets"]["ProductInstallationType_esMX"], 
-               response["@search.facets"]["IntelligentToilet_esMX"][1] ]
+               ...response["@search.facets"]["IntelligentToilet_esMX"] ]
             }
             return res.status(200).json({ response:response});
         }catch (error) {
