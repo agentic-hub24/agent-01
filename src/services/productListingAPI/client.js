@@ -58,3 +58,15 @@ export async function getProductDetails(lang, value) {
     console.log(err);
   }
 }
+
+export async function getYoutubeMetaData(id) {
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${'AIzaSyCWBaOBNtP0CoP4PVre0uXwp2fz_K2iCqI'}`
+    );
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}

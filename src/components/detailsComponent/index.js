@@ -12,14 +12,17 @@ import {
   HiOutlineChevronDown,
   HiShare
 } from 'react-icons/hi';
-import { HiMiniPrinter } from 'react-icons/hi2';
+import { HiMiniPrinter, HiPlay } from 'react-icons/hi2';
 import { MdOutlineZoomOutMap } from 'react-icons/md';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getProductListing } from '@services/productListingAPI/client';
+import {
+  getProductListing,
+  getYoutubeMetaData
+} from '@services/productListingAPI/client';
 import Cta from '@components/Cta';
 import BackToTop from '@components/backToTop';
 import { Fb, Twitter } from '@components/svgs';
@@ -55,6 +58,7 @@ import {
   PRODUCT_RESOURCE_TYPE_VIDEO,
   thumbsImageFormatter
 } from './helper';
+import VideoModal from './videoModal';
 
 export default function DetailsComponent({ productDetailsData, skuID }) {
   const router = useRouter();
@@ -84,7 +88,9 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [imageName, setImageName] = useState('');
   const [isNewProduct, setIsNewProduct] = useState(false);
   const [hasLinkedprodcts, setHasLinkedproduct] = useState(false);
-  const [youTubeLink, setYoutubeLink] = useState('');
+  const [youTubeLink, setYoutubeLink] = useState([]);
+  const [youtubeMetaData, setYoutubeMetaData] = useState([]);
+  const [youtubeLinkOpen, setYoutubeLinkOpen] = useState({});
 
   const handlePrevClick = () => {
     // Your code to display the selected image goes here
@@ -300,6 +306,20 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   useEffect(() => {
     setImageName(carousel[0]?.ResourceName);
   }, [carousel]);
+
+  useEffect(() => {
+    async function fetchMetaData() {
+      let responseArray = await Promise.all(
+        youTubeLink.map(async i => {
+          return { i, metaData: await getYoutubeMetaData(i?.ResourceName) };
+        })
+      );
+
+      setYoutubeMetaData(responseArray);
+    }
+
+    fetchMetaData();
+  }, [youTubeLink]);
 
   useEffect(() => {
     async function fetchSimilarProducts() {
@@ -966,27 +986,46 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
             </div>
             <hr />
             <div className='flex flex-col'>
-              {youTubeLink && youTubeLink.length > 0 && (
+              {youtubeMetaData && youtubeMetaData.length > 0 && (
                 <>
                   <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
                     Videos
                   </div>
-                  <div className='flex flex-wrap lg:flex-nowrap flex-row pb-4'>
-                    {youTubeLink?.map((item, id) => (
-                      <div key={id} className='pr-4'>
-                        <iframe
-                          width='300'
-                          height='220'
-                          src={`https://www.youtube.com/embed/${item?.ResourceName}?rel=0`}
-                          title='YouTube video player'
-                          frameborder='0'
-                          allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                          allowfullscreen='allowfullscreen'
-                          mozallowfullscreen='mozallowfullscreen'
-                          msallowfullscreen='msallowfullscreen'
-                          oallowfullscreen='oallowfullscreen'
-                          webkitallowfullscreen='webkitallowfullscreen'
-                        ></iframe>
+                  <div className='flex flex-wrap lg:flex-nowrap md:flex-row flex-col pb-4'>
+                    {youtubeMetaData?.map((item, id) => (
+                      <div key={id} className='pr-4 md:w-1/3 w-full pb-4'>
+                        <div className='relative'>
+                          <img
+                            src={
+                              item?.metaData?.items[0]?.snippet?.thumbnails
+                                ?.default?.url
+                            }
+                            onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                            className='w-full'
+                            alt='youtube thumbnail image'
+                          />
+
+                          <div
+                            className='absolute top-[40%] right-[40%] h-[50px] w-[50px] bg-black opacity-40 border-2 rounded-full border-neutral-500 cursor-pointer'
+                            onClick={() => setYoutubeLinkOpen(item)}
+                          >
+                            <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-[#fff]'>
+                              <HiPlay size={30} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className='font-helveticaLight text-[14px] font-bold text-[#232323] mb-1 leading-tight'>
+                          {item?.metaData?.items[0]?.snippet?.title}
+                        </div>
+                        <div className='font-helveticaLight text-[12px] text-[#232323] mb-1 leading-tight'>
+                          {item?.metaData?.items[0]?.snippet?.description}
+                        </div>
+                        {Object.keys(youtubeLinkOpen).length > 0 && (
+                          <VideoModal
+                            item={youtubeLinkOpen}
+                            setYoutubeLinkOpen={e => setYoutubeLinkOpen(e)}
+                          />
+                        )}
                       </div>
                     ))}
                   </div>
