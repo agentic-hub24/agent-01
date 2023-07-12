@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import FilterAccordion from './FilterAccordion';
 import FilterItems from './FilterItems';
-import { staticLabelsPLP } from './helper';
+import { staticLabelsPLP, filterMapping } from './helper';
 
 export default function FilterContent({
   filterOptions,
@@ -15,7 +15,7 @@ export default function FilterContent({
   pageType,
   searchValue,
   currentPageValue,
-  labelMappingSections
+  locale
 }) {
   const categoryType =
     pageType === 'spec'
@@ -32,27 +32,10 @@ export default function FilterContent({
 
   const [showCategoryList, setShowCategory] = useState(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState();
-  const [labelList, setLabelList] = useState([]);
 
   useEffect(() => {
     setIsMobileFilterOpen(false);
   }, [selectedFilter]);
-
-  useEffect(() => {
-    const newArr = [];
-    labelMappingSections?.filter(el => {
-      if (filterkeys.includes(el?.fields?.pimNodeName)) {
-        return newArr.push({
-          [el.fields.pimNodeName]: {
-            label: el.fields.labelName,
-            type: el.fields.labelType.toLowerCase()
-          }
-        });
-      }
-    });
-    const arr = [Object.assign({}, ...newArr)];
-    setLabelList(arr);
-  }, []);
 
   const formatRedirectionUrl = urlName => {
     return `results/Category/${urlName.replace(
@@ -73,7 +56,7 @@ export default function FilterContent({
           <div className='flex justify-between pb-[22px] mt-[14px] mb-[22px]  border-b-2'>
             <div className='flex'>
               <h3 className='font-helveticaLight leading-tight text-xl font-normal'>
-                {staticLabelsPLP.category}
+                {staticLabelsPLP[locale].category}
               </h3>
             </div>
             <div className='flex mt-[5px]'>
@@ -95,7 +78,7 @@ export default function FilterContent({
                 }
                 className='font-helveticaLight leading-relaxed text-[14px] font-normal'
               >
-                {staticLabelsPLP.showAll}
+                {staticLabelsPLP[locale].showAll}
               </Link>
             </div>
           </div>
@@ -159,7 +142,7 @@ export default function FilterContent({
             <div className='flex justify-between pb-[22px] mt-[14px] mb-[22px] border-b-2'>
               <div className='flex'>
                 <h3 className='font-helveticaLight leading-tight text-xl font-normal'>
-                  {staticLabelsPLP.filterby}
+                  {staticLabelsPLP[locale].filterby}
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
@@ -167,13 +150,13 @@ export default function FilterContent({
                   href={`/browse/${slug}/${subSlug}`}
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
-                  {staticLabelsPLP.clearAll}
+                  {staticLabelsPLP[locale].clearAll}
                 </a>
               </div>
             </div>
 
             {filterkeys.map((option, i) => {
-              const filterType = labelList?.[0]?.[option]?.type;
+              const filterType = filterMapping?.[0]?.[option]?.type;
 
               let minValue = 0;
               let maxValue = 0;
@@ -189,10 +172,10 @@ export default function FilterContent({
 
               return (
                 searchFacetsNode?.[option]?.length > 0 && (
-                  <FilterAccordion header={labelList?.[0]?.[option]?.label}>
+                  <FilterAccordion header={filterMapping?.[0]?.[option]?.label}>
                     <FilterItems
                       filterOption={searchFacetsNode?.[option]}
-                      filterType={labelList?.[0]?.[option]?.type}
+                      filterType={filterMapping?.[0]?.[option]?.type}
                       filterName={option}
                       minRange={minValue}
                       maxRange={maxValue}
@@ -213,7 +196,7 @@ export default function FilterContent({
           className='m-0 mb-[20px] outline-none bg-white text-[#232323] inline-block border border-solid border-gray-300 rounded-md font-HelveticaRoman text-lg font-normal text-center w-full py-5 px-8 cursor-pointer '
           onClick={toggleMobileFilter}
         >
-          <span>{staticLabelsPLP.buttonMDLabel}</span>
+          <span>{staticLabelsPLP[locale].buttonMDLabel}</span>
         </div>
 
         {/* Mobile filter content */}
@@ -222,7 +205,7 @@ export default function FilterContent({
             <div className='flex justify-between pb-[22px] mt-[14px] mb-[22px] border-b-2'>
               <div className='flex'>
                 <h3 className='font-helveticaLight leading-tight text-xl font-normal'>
-                  {staticLabelsPLP.category}
+                  {staticLabelsPLP[locale].category}
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
@@ -230,7 +213,7 @@ export default function FilterContent({
                   href={`/browse/${slug}`}
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
-                  {staticLabelsPLP.showAll}
+                  {staticLabelsPLP[locale].showAll}
                 </a>
               </div>
             </div>
@@ -273,7 +256,7 @@ export default function FilterContent({
             <div className='flex justify-between pb-[22px] mt-[14px] mb-[22px] border-b-2'>
               <div className='flex'>
                 <h3 className='font-helveticaLight leading-tight text-xl font-normal'>
-                  {staticLabelsPLP.filterby}
+                  {staticLabelsPLP[locale].filterby}
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
@@ -281,13 +264,13 @@ export default function FilterContent({
                   href={`/browse/${slug}/${subSlug}`}
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
-                  {staticLabelsPLP.clearAll}
+                  {staticLabelsPLP[locale].clearAll}
                 </a>
               </div>
             </div>
 
             {filterkeys.map((option, i) => {
-              const filterType = labelList?.[0]?.[option]?.type;
+              const filterType = filterMapping?.[0]?.[option]?.type;
 
               let minValue = 0;
               let maxValue = 0;
@@ -303,12 +286,12 @@ export default function FilterContent({
 
               return searchFacetsNode?.[option]?.length > 0 ? (
                 <FilterAccordion
-                  header={labelList?.[0]?.[option]?.label}
+                  header={filterMapping?.[0]?.[option]?.label}
                   subSlug={subSlug}
                 >
                   <FilterItems
                     filterOption={searchFacetsNode?.[option]}
-                    filterType={labelList?.[0]?.[option]?.type}
+                    filterType={filterMapping?.[0]?.[option]?.type}
                     filterName={option}
                     minRange={minValue}
                     maxRange={maxValue}

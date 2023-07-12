@@ -11,12 +11,20 @@ export const colorImageFormatter = colorid => {
   }
 };
 
-export const selectOptions = [
-  { label: 'Order by', value: '' },
-  { label: 'Relevance', value: '' },
-  { label: 'Name A-Z', value: 'ProductBrandName asc' },
-  { label: 'Name Z-A', value: 'ProductBrandName desc' }
-];
+export const selectOptions = {
+  en: [
+    { label: 'Order by', value: '' },
+    { label: 'Relevance', value: '' },
+    { label: 'Name A-Z', value: 'ProductBrandName asc' },
+    { label: 'Name Z-A', value: 'ProductBrandName desc' }
+  ],
+  es: [
+    { label: 'Ordenar por', value: '' },
+    { label: 'Relevancia', value: '' },
+    { label: 'Nombre A-Z', value: 'ProductBrandName asc' },
+    { label: 'Nombre Z-A', value: 'ProductBrandName desc' }
+  ]
+};
 
 export const filterMapping = [
   {
@@ -46,21 +54,44 @@ export const filterImageFormatter = value => {
 };
 
 export const staticLabelsPLP = {
-  filterby: 'Filtrar Por:',
-  clearAll: 'Limpar Tudo',
-  category: 'Categoria:',
-  showAll: 'Mostre Tudo',
-  buttonMDLabel: 'Categorias e Filtros'
+  en: {
+    filterby: 'Filter by:',
+    clearAll: 'Clear all',
+    category: 'Category:',
+    showAll: 'Showall',
+    buttonMDLabel: 'Categories and filters'
+  },
+  es: {
+    filterby: 'Filtrar Por:',
+    clearAll: 'Borrar Tudo',
+    category: 'Categoría:',
+    showAll: 'Mostrar Tudo',
+    buttonMDLabel: 'Categorías y Filtros'
+  }
 };
 
 export const DEFAULT_IMAGE_LINK =
   'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
 
 export const CTAObject = {
-  internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-  label: 'Ajude-nos a Melhorar este Site',
-  ariaLabel: 'Help us Improve this Site ',
-  visible: true,
-  buttonBrandColor: 'None',
-  ctaType: 'Text Link'
+  es: {
+    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
+    label: 'Ayúdenos a mejorar este sitio',
+    ariaLabel: 'Help us Improve this Site ',
+    visible: true,
+    buttonBrandColor: 'None',
+    ctaType: 'Text Link'
+  },
+  en: {
+    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
+    label: 'Help us Improve this Site',
+    ariaLabel: 'Help us Improve this Site ',
+    visible: true,
+    buttonBrandColor: 'None',
+    ctaType: 'Text Link'
+  }
+};
+
+export const formatterHeader = header => {
+  return header.replace(/\+/g, ' ');
 };

@@ -1,38 +1,22 @@
 import { useState, useEffect } from 'react';
 import { getProductListing } from '@services/productListingAPI/client';
-import CarouselComponent from '@components/Carousel';
 import Cta from '@components/Cta';
 import BackToTop from '@components/backToTop';
 import FilterContent from './FilterContent';
 import PLPCards from './PLPCards';
 import PLPHeader from './PLPHeader';
 import PLPOrderBySelect from './PLPOrderBySelect';
-import { CTAObject } from './helper';
+import { CTAObject, selectOptions, formatterHeader } from './helper';
 
 export default function ProductListing({
   productListingData,
   requestBody,
   params: { slug, sub_slug },
-  // addProductForCompare,
-  // removeFromCompare,
-  pageData
+  locale
 }) {
   const {
     response: { value }
   } = productListingData;
-
-  const carouselItem =
-    pageData &&
-    pageData?.pageSections &&
-    pageData?.pageSections[0]?.fields?.carouselItem;
-
-  const labelMappingArr = pageData?.labelMappingSections?.filter(
-    item => item?.fields?.DropdownItems === undefined
-  );
-
-  const sortingArray = pageData?.labelMappingSections?.filter(
-    item => item?.fields?.DropdownItems !== undefined
-  );
 
   const [productValueArray, setProductValueArray] = useState([]);
   const [isHovering, setIsHovering] = useState(false);
@@ -40,12 +24,10 @@ export default function ProductListing({
   const [skuId, setSkuId] = useState('');
   const [apiRequestBody, setApiRequestBody] = useState(requestBody);
   const [selectedFilterCount, setSelectedFilterCount] = useState();
-  const [innerWidth, setInnerWidth] = useState(0);
 
   useEffect(() => {
     setApiRequestBody(requestBody);
     setProductValueArray(value);
-    setInnerWidth(window.innerWidth);
   }, [value, requestBody]);
 
   const handleMouseOver = id => {
@@ -84,21 +66,16 @@ export default function ProductListing({
   };
   return (
     <>
-      {pageData && pageData?.pageSections && (
-        <CarouselComponent
-          carouselItem={pageData?.pageSections[0]?.fields?.carouselItem}
-        />
-      )}
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
         <div className='flex justify-between flex-wrap md:flex-nowrap'>
           <PLPHeader
             productCount={productValueArray?.length}
-            pageHeading={pageData.pageHeading}
+            pageHeading={formatterHeader(sub_slug)}
           />
           {/* order by select -- start ==> TODO: Select option from CTFL */}
           <PLPOrderBySelect
             orderBySelect={e => orderBySelect(e)}
-            sortingArray={sortingArray}
+            sortingArray={selectOptions[locale]}
           />
           {/* order by select -- end  */}
         </div>
@@ -110,7 +87,7 @@ export default function ProductListing({
             filterSelect={filterSelect}
             selectedFilter={apiRequestBody}
             selectedFilterCount={selectedFilterCount}
-            labelMappingSections={labelMappingArr}
+            locale={locale}
           />
           {/* cards div */}
           <div className='flex md:ml-[30px] mb-[20px] mt-[20px] pb-[20px] md:w-3/4 flex-wrap'>
@@ -124,21 +101,14 @@ export default function ProductListing({
               handleModalOpen={e => handleModalOpen(e)}
               handleModalClose={e => handleModalClose(e)}
               modalOpen={modalOpen}
-              // addProductForCompare={addProductForCompare}
-              // removeFromCompare={removeFromCompare}
               slug={slug}
               sub_slug={sub_slug}
             />
           </div>
         </div>
       </section>
-      <Cta fields={CTAObject} />
-
-      <BackToTop
-        topHeight={
-          innerWidth < 768 ? 200 : carouselItem === undefined ? 0 : 400
-        }
-      />
+      <Cta fields={CTAObject[locale]} />
+      <BackToTop topHeight={0} />
     </>
   );
 }
