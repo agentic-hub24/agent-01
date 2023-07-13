@@ -997,6 +997,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                         <div className='relative'>
                           <img
                             src={
+                              item?.metaData?.items &&
                               item?.metaData?.items[0]?.snippet?.thumbnails
                                 ?.default?.url
                             }
@@ -1015,10 +1016,12 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           </div>
                         </div>
                         <div className='font-helveticaLight text-[14px] font-bold text-[#232323] mb-1 leading-tight'>
-                          {item?.metaData?.items[0]?.snippet?.title}
+                          {item?.metaData?.items &&
+                            item?.metaData?.items[0]?.snippet?.title}
                         </div>
                         <div className='font-helveticaLight text-[12px] text-[#232323] mb-1 leading-tight'>
-                          {item?.metaData?.items[0]?.snippet?.description}
+                          {item?.metaData?.items &&
+                            item?.metaData?.items[0]?.snippet?.description}
                         </div>
                         {Object.keys(youtubeLinkOpen).length > 0 && (
                           <VideoModal
