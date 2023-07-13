@@ -23,7 +23,8 @@ const nextConfig = {
   env: {
     API_BASEURL: process.env.API_BASEURL,
     environment: process.env.environment,
-    API_AUTH: process.env.API_AUTH
+    API_AUTH: process.env.API_AUTH,
+    YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY
   },
   compiler: {
     removeConsole: true

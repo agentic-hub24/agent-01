@@ -310,7 +310,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   useEffect(() => {
     async function fetchMetaData() {
       let responseArray = await Promise.all(
-        youTubeLink.map(async i => {
+        youTubeLink?.map(async i => {
           return { i, metaData: await getYoutubeMetaData(i?.ResourceName) };
         })
       );
