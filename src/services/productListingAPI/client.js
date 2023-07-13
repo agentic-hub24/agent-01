@@ -60,10 +60,8 @@ export async function getProductDetails(lang, value) {
 
 export async function getYoutubeMetaData(id) {
   try {
-    const key = process.env.YOUTUBE_API_KEY;
-    const res = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${key}`
-    );
+    const apiBaseURL = process.env.API_BASEURL;
+    const res = await fetch(`${apiBaseURL}/api/youtube?id=${id}`);
     const data = await res.json();
     return data;
   } catch (err) {
