@@ -1,4 +1,10 @@
+import { removeQuotesFromString } from '@utils/footerUtils';
+
 export async function getProductListing(requestBody) {
+  var newObj = {};
+  for (var i in requestBody) {
+    newObj[i] = removeQuotesFromString(requestBody[i]);
+  }
   try {
     console.log('process.env.API_AUTH ', process.env.API_AUTH);
     const apiBaseURL = process.env.API_BASEURL;
@@ -9,7 +15,7 @@ export async function getProductListing(requestBody) {
         Authorization: process.env.API_AUTH,
         'Access-Control-Allow-Origin': '*'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(newObj)
     });
     const data = await res.json();
     console.log('fron end getting res ');

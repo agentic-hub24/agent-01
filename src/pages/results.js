@@ -7,6 +7,7 @@ import { getProductListing } from '@services/productListingAPI/client';
 import SearchPage from '@components/Search';
 import SearchNotFound from '@components/Search/SearchNotFound';
 import SearchSuggestion from '@components/Search/SearchSuggestion';
+import { removeQuotesFromString } from '@utils/footerUtils';
 
 export default function ResultPage({
   productListingData,
@@ -51,35 +52,36 @@ export default function ResultPage({
 }
 
 export async function getServerSideProps(context) {
-  const { preview, query } = context;
-  const searchValue = query?.search;
-  const currentPage = query?.currentPage;
+  const { preview, query, locale } = context;
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
+  const searchValue = removeQuotesFromString(query?.search);
+  const currentPage = removeQuotesFromString(query?.currentPage);
   const pageType = query?.type ? query?.type : '';
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const query1 = await client.getEntries({
-    content_type: '',
-    'fields.slug[match]': ``,
-    'metadata.tags.sys.id[in]': '',
+    content_type: 'latamLandingPage',
+    'fields.slug': '/es',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: ''
+    locale: lc
   });
   const query2 = client.getEntries({
     content_type: 'header',
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: ''
+    locale: lc
   });
   const query3 = client.getEntries({
     content_type: 'footer',
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: ''
+    locale: lc
   });
 
   const world = await client.getEntries({
     content_type: 'worldwideMenu',
     include: 7,
-    locale: ''
+    locale: lc
   });
 
   const results = await Promise.all([query1, query2, query3]);
@@ -88,7 +90,8 @@ export async function getServerSideProps(context) {
   const headerNavigationData = results[1];
   const footerNavigationData = results[2];
 
-  const pageData = res?.items[0]?.fields;
+  // const pageData = res?.items[0]?.fields;
+  const pageData = {};
 
   //PLP API CALL --> Start
   const requestBody = {
@@ -96,6 +99,7 @@ export async function getServerSideProps(context) {
     CurrentPage: currentPage ? currentPage : ''
   };
   const productListingData = await getProductListing(requestBody);
+  console.log('resp here ', productListingData);
   //   // PLP API --> end
 
   return {
