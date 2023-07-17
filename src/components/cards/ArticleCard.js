@@ -14,6 +14,7 @@ const ArticleCard = ({
   cardRows = [],
   isLiterature = false,
   showDownload = false,
+  isIntelligent = false,
   url
 }) => {
   const wrapperDivClass = cx(
@@ -22,7 +23,9 @@ const ArticleCard = ({
     'bg-white',
     isLiterature
       ? 'mx-2.5 my-5 cursor-pointer shadow-[2px_2px_5px_0_#aaa]'
-      : 'mx-2.5 my-5 cursor-pointer lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] shadow-[2px_2px_5px_0_#aaa]'
+      : `mx-2.5 my-5 cursor-pointer lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] ${
+          !isIntelligent && `shadow-[2px_2px_5px_0_#aaa]`
+        }`
   );
 
   /***
