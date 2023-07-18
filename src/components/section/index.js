@@ -58,8 +58,13 @@ const Section = ({ fields, sys, position, pageHeading }) => {
     return <EmbededScript fields={fields} pageHeading={pageHeading} />;
   } else if (sectionType === 'cta') {
     return <Cta fields={fields} />;
-  } else if (sectionType === 'imageContentSection') {
-    return <MediaItem assets={fields?.mediaItem} />;
+  } else if (
+    sectionType === 'imageContentSection' ||
+    sectionType === 'mediaItem'
+  ) {
+    return (
+      <MediaItem assets={fields?.mediaItem || [{ fields }]} height='550px' /> //formatting fields if media item is not present
+    );
   } else if (sectionType === 'textHeadingImageContentSection') {
     return <TextHeadingImageContentSection fields={fields} />;
   } else if (sectionType === 'sideBySideContentBlock') {

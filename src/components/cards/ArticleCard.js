@@ -15,6 +15,7 @@ const ArticleCard = ({
   isLiterature = false,
   showDownload = false,
   isIntelligent = false,
+  isBidetSeat = false,
   url
 }) => {
   const wrapperDivClass = cx(
@@ -23,9 +24,13 @@ const ArticleCard = ({
     'bg-white',
     isLiterature
       ? 'mx-2.5 my-5 cursor-pointer shadow-[2px_2px_5px_0_#aaa]'
-      : `mx-2.5 my-5 cursor-pointer lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] ${
-          !isIntelligent && `shadow-[2px_2px_5px_0_#aaa]`
-        }`
+      : `mx-2.5 my-5 cursor-pointer ${
+          !isIntelligent &&
+          !isBidetSeat &&
+          `lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] 
+           shadow-[2px_2px_5px_0_#aaa]`
+        }`,
+    isBidetSeat && 'w-[480px]'
   );
 
   /***
@@ -33,23 +38,34 @@ const ArticleCard = ({
    */
   const renderCards = fields => (
     <article>
+      {console.log('fields cards===>', fields)}
       <figure>
         <MediaItem assets={fields?.mediaItem} />
       </figure>
-      <h4 className='text-2xl p-5 text-[#333333] m-auto font-medium font-helveticaLight cursor-pointer'>
+      <h4
+        className={`text-2xl p-5 text-[#333333] m-auto  cursor-pointer ${
+          isBidetSeat || isIntelligent
+            ? 'm-0 text-[16px] text-left font-bold font-helveticaGroup'
+            : 'font-medium font-helveticaLight'
+        }`}
+      >
         {fields?.heading}
       </h4>
-      <h5 className='pt-0 pr-9 pb-6 pl-9 text-[#666] font-helveticaLight'>
+      <h5
+        className={`pt-0 pr-9 pb-3 pl-9 text-[#666] font-helveticaLight ${
+          (isBidetSeat || isIntelligent) && 'text-left pl-5'
+        }`}
+      >
         {fields?.paragraphText}
       </h5>
-      {showDownload && (
+      {fields.cta && (
         <a
           href={fields?.cta[0]?.fields?.url}
           target='_blank'
-          className='justify-center flex w-full text-[16px] hover:underline font-helveticaGroup'
+          className='justify-left pl-5 flex w-full text-[16px] hover:no-underline font-helveticaGroup'
           rel='noreferrer'
         >
-          <DownloadIcon />
+          {/* <DownloadIcon /> */}
           {fields?.cta[0]?.fields?.label}
         </a>
       )}

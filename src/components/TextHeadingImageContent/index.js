@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import MediaVideo from '@components/MediaItem/MediaVideo';
+import MediaItem from '@components/MediaItem/MediaItem';
 import { RichText } from '@components/RichText';
 
 export default function TextHeadingImageContentSection({ fields }) {
@@ -22,9 +22,10 @@ export default function TextHeadingImageContentSection({ fields }) {
       {fields?.cta && (
         <Link href='/store-listing'>{fields?.cta[0]?.fields?.label}</Link>
       )}
+
       {fields?.mediaItem && (
         <div className='pt-4'>
-          <MediaVideo fields={fields?.mediaItem} height='550px' />
+          <MediaItem assets={fields?.mediaItem} height='550px' />
         </div>
       )}
       <div className={`${'border-b pb-2 pt-6'}`}></div>
