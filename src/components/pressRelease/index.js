@@ -3,7 +3,6 @@ import Cta from '@components/Cta';
 import { RichText } from '@components/RichText';
 
 const PressRelease = ({ pageData }) => {
-  console.log('dd ', pageData);
   const { pageHeading, pageSections } = pageData;
   // Preparing tabs button exluding bottom help us link
   const ctaButtons = pageSections.filter(
@@ -24,11 +23,13 @@ const PressRelease = ({ pageData }) => {
 
   // preparing default tabs data which will loaded first
   const defaultTabData = textHeadingImageContentSection.filter(item =>
-    item.fields.internalTitle.includes('Recent')
+    item.fields.internalTitle
+      .toLowerCase()
+      .includes(ctaButtons?.[0].fields?.label.toLowerCase())
   );
 
   const [activeButton, setActiveButton] = useState(
-    ctaButtons?.[0].fields?.internalTitle
+    ctaButtons?.[0].fields?.label
   );
   const [tabsData, setTabsData] = useState(defaultTabData);
 
@@ -50,12 +51,10 @@ const PressRelease = ({ pageData }) => {
 
   // Preparing tab data based on button clicked
   const createTabData = btnIntTitle => {
-    let title = 'Press Releases';
-    if (btnIntTitle.includes('CTA 1')) {
-      title = 'Recent';
-    }
     const data = textHeadingImageContentSection.filter(item =>
-      item.fields.internalTitle.includes(title)
+      item.fields.internalTitle
+        .toLowerCase()
+        .includes(btnIntTitle.toLowerCase())
     );
     setTabsData(data);
   };
@@ -74,11 +73,11 @@ const PressRelease = ({ pageData }) => {
                     <button
                       key={fields?.label}
                       className={`text-[18px] font-[500] py-2 px-4 rounded-md mr-4 ${
-                        activeButton === fields?.internalTitle
+                        activeButton === fields?.label
                           ? 'bg-[#232323]  text-[#fff]'
                           : 'bg-[#e5e5e5] text-[#000]'
                       }`}
-                      onClick={() => handleTabs(fields?.internalTitle)}
+                      onClick={() => handleTabs(fields?.label)}
                     >
                       {fields?.label}
                     </button>
