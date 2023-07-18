@@ -6,9 +6,9 @@ class MyDocument extends Document {
       <Html lang='en-US' className='light'>
         <Head>
           {/* one trust cookie script starts */}
-          {/* <script
+          <script
             type='text/javascript'
-            src='https://cdn.cookielaw.org/consent/0f99d1d9-de19-4f4d-b3b8-76416322c67c/OtAutoBlock.js'
+            src='https://cdn.cookielaw.org/consent/29e9d447-96cb-4b2d-87be-2141feb07d99/OtAutoBlock.js'
             async
           />
 
@@ -16,9 +16,9 @@ class MyDocument extends Document {
             src='https://cdn.cookielaw.org/scripttemplates/otSDKStub.js'
             type='text/javascript'
             // charset='UTF-8'
-            data-domain-script='0f99d1d9-de19-4f4d-b3b8-76416322c67c'
+            data-domain-script='29e9d447-96cb-4b2d-87be-2141feb07d99'
             async
-          /> */}
+          />
           {/* one trust cookie script ends  */}
           <script
             type='text/javascript'

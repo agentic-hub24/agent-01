@@ -285,24 +285,13 @@ a {
   background-color: #ddd;
   color: white;
 }
-
-#product_carousel_image img {
-  width: 550px;
-  height: 450px;
-}
-
-#product_carousel .slider {
-  background-image: linear-gradient(to bottom, #fff 0, #fff 96%);
-}
-
 .img-magnifier-container {
   position: relative;
+  width: 100%;
 }
-
-#product_carousel .carousel img {
+#product_carousel img {
   pointer-events: auto !important;
 }
-
 .img-magnifier-glass {
   position: absolute;
   border: 4px solid white;
@@ -310,8 +299,8 @@ a {
   border-radius: 50%;
   cursor: none;
   /*Set the size of the magnifier glass:*/
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -405,4 +394,9 @@ element.style {
 
 .banner-text p {
   font-size: 18px;
+}
+
+.rich-text h4 {
+  color: #000;
+  font-family: HelveticaNeueLT-Roman
 }

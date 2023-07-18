@@ -1,3 +1,15 @@
+export const carouselImageFormatter = (
+  skuResourceName = '',
+  isNewProduct = false
+) => {
+  if (skuResourceName) {
+    return `//kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2F${
+      isNewProduct ? '2New' : 'Blank'
+    }&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is{PAWEB%2F${skuResourceName}}`;
+  }
+  return 'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
+};
+
 export const imageFormatter = skuResourceName => {
   if (skuResourceName) {
     return `https://kohler.scene7.com/is/image/PAWEB/${skuResourceName}`;
@@ -8,6 +20,28 @@ export const imageFormatter = skuResourceName => {
 export const gifLineArtImageFormatter = image => {
   // TODO: Latem link should be here
   return `https://resources.kohler.com/plumbing/kohlerbrazil/lineart/${image}`;
+};
+
+export const checkForNewProducts = dateStr => {
+  // Provided date
+  const providedDate = new Date(dateStr);
+
+  // Current date
+  const currentDate = new Date();
+
+  // Calculate the difference in milliseconds
+  const difference = currentDate - providedDate;
+
+  // Convert milliseconds to years
+  const millisecondsInYear = 1000 * 60 * 60 * 24 * 365;
+  const differenceInYears = difference / millisecondsInYear;
+
+  // Check if the difference is greater than or equal to 1 year
+  if (differenceInYears >= 1) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 export const magnify = (imgID, zoom) => {
@@ -77,18 +111,11 @@ export const magnify = (imgID, zoom) => {
   }
 };
 
-export const formattedSlugName = subSlugForBreadCrumbs => {
-  return subSlugForBreadCrumbs.replace(/\+/g, ' ');
-};
-
-export const formattedUrl = ProductLocalCategory => {
-  return ProductLocalCategory.replace(/ /g, '+');
-};
-
 export const DEFAULT_IMAGE_LINK =
   'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
 
 export const PRODUCT_RESOURCE_TYPE_SPEC_DOC = 'SpecPDFFileName';
+export const PRODUCT_RESOURCE_TYPE_VIDEO = 'YouTubeVideo';
 export const TECHNICAL_INFORMATION_FILES = [
   'InstallationWithoutSPPDF',
   'SpecPDFFileName',
@@ -96,10 +123,18 @@ export const TECHNICAL_INFORMATION_FILES = [
   'PartsPDFFileName'
 ];
 export const TECHNICAL_INFORMATION_FILES_NAMES = {
-  SpecPDFFileName: 'Folha in/ Spec âspera',
-  HomeownersGuide: 'Guia do proprietário',
-  InstallationWithoutSPPDF: 'Guia de instalação sem peçus de serviço',
-  PartsPDFFileName: 'Peças pdf'
+  es: {
+    SpecPDFFileName: 'áspera/ Hoja de especificaciones',
+    HomeownersGuide: 'guía de dueños de casa',
+    InstallationWithoutSPPDF: 'Guia de instalação sem peçus de serviço',
+    PartsPDFFileName: 'Peças pdf'
+  },
+  en: {
+    SpecPDFFileName: 'Rough/ Spec Sheet',
+    HomeownersGuide: 'Home owners guide',
+    InstallationWithoutSPPDF: 'Installation guide',
+    PartsPDFFileName: 'Parts'
+  }
 };
 export const PRODUCT_GIF_LINE_ART_IMAGE = 'GIFLineArt';
 export const PRODUCT_CAROUSEL_IMAGE = 'IMGITEMISO';
@@ -139,47 +174,122 @@ export const PRODUCT_Side_View_2D = ['DWGSideView', 'DXFSideView'];
 export const PRODUCT_ADDITIONAL_IMAGE = [
   'IMGTOP',
   'IMGFront',
+  'IMGSide',
   'IMGCLOSEROOMVIEW',
   'IMGOVERHEADROOMVIEW',
-  'IMGCLOSEROOMVIEWInUse'
+  'IMGCLOSEROOMVIEWInUse',
+  'IMGCLOSEROOMVIEWProductDetail',
+  'IMGCLOSEROOMVIEWWithWaterEffects',
+  'IMGCLOSEROOMVIEWWithWaterEffects',
+  'IMGDetail1',
+  'IMGDetail2',
+  'IMGDetail3',
+  'IMGDetail4',
+  'IMGDetail5',
+  'IMGDetail6',
+  'IMGGlam'
 ];
 
 export const PDP_LABELS = {
-  colorName: 'Cor:',
-  home: 'Casa',
-  specFileLabel: 'Dimensões e Características',
-  characteristics: 'Características',
-  installation: 'Instalação',
-  material: 'Material',
-  hydrotherapy: 'Hidroterapia',
-  resources: 'Recursos',
-  cadTemplate: 'modelos de CAD',
-  cadFiles2D: 'Arquivos CAD 2D:',
-  plan: 'Plano',
-  front: 'Frente',
-  side: 'Lado',
-  cadFiles3D: 'Arquivos CAD 3D:',
-  supportService: 'Serviço de suporte',
-  supportServiceQ: 'Você tem alguma pergunta sobre este produto?',
-  contactUs: 'Contate-nos:',
-  contactUsNumber: '0800-4-564537',
-  contactUsTime: '8:00am - 5:00pm (CentralTime Zone)',
-  contactUsDay: 'segunda a sexta',
-  careAndCleaning: 'Cuidados e limpeza',
-  guarantee: 'Garantia',
-  technicalInformation: 'Informação técnica',
-  dimension: 'Dimensões',
-  paresWellWith: 'pares bem com',
-  similarProducts: 'Produtos Similares',
-  cutOutTemplates: 'moldes recortados',
-  bimRevit: 'BIM Revit'
+  es: {
+    colorName: 'Color:',
+    storelocatorButtonLabel: 'Donde Comprar',
+    home: 'Inicio',
+    specFileLabel: 'Dimensiones y Medidas',
+    characteristics: 'Características',
+    installation: 'Instalación',
+    material: 'Material',
+    resources: 'Recursos',
+    cadTemplate: 'modelos de CAD',
+    cadFiles2D: 'Archivos CAD 2D:',
+    plan: 'Plan',
+    front: 'Fuente',
+    side: 'Lado',
+    cadFiles3D: 'Archivos CAD 3D:',
+    supportService: 'Servicio y Soporte',
+    supportServiceQ: '¿Tiene alguna pregunta sobre este producto?',
+    contactUs: 'Llámanos:',
+    contactUsNumber: '+001-920 451 4418 ext. 74418',
+    contactUsNumberLink: 'tel:+0019204514418,74418',
+    contactUsTime: '8:00am - 5:00pm  (Zona Horaria Central)',
+    contactUsDay: 'De Lunes a Viernes',
+    emailUS: 'Escríbenos',
+    careAndCleaning: 'Cuidado y Limpieza',
+    careCleaningLink: 'cuidado-y-limpieza',
+    guarantee: 'Información de la Garantía',
+    warrantyLink: 'garantía-información',
+    technicalInformation: 'Información Técnica',
+    dimension: 'Dimensión',
+    paresWellWith: 'COMBINA PERFECTAMENTE CON',
+    similarProducts: 'Productos Similares',
+    cutOutTemplates: 'Plantilla de recorte',
+    bimRevit: 'BIM Revit',
+    twitterText: 'Estoy compartiendo en twitter!',
+    collection: 'Colección',
+    technology: 'Tecnología'
+  },
+  en: {
+    colorName: 'Color:',
+    home: 'Home',
+    storelocatorButtonLabel: 'Store Locator',
+    specFileLabel: 'Dimensions & Measurements',
+    characteristics: 'Features',
+    installation: 'Installation',
+    material: 'Material',
+    resources: 'Resource',
+    cadTemplate: 'CAD Modules',
+    cadFiles2D: 'CAD Files 2D:',
+    plan: 'Plan',
+    front: 'Front',
+    side: 'Side',
+    cadFiles3D: 'CAD Files 3D:',
+    supportService: 'Service & Support',
+    supportServiceQ: 'Have a question about this product?',
+    contactUs: 'Call us:',
+    contactUsNumber: '1800-103-2244',
+    contactUsNumberLink: 'tel:+1800-103-2244',
+    contactUsTime: '10:00hrs to 18:00hrs (IST)',
+    contactUsDay: 'Monday to Saturday',
+    emailUS: 'Email Us',
+    careAndCleaning: 'Care and Cleaning tips',
+    careCleaningLink: 'care-and-cleaning',
+    guarantee: 'Warranty Information',
+    warrantyLink: 'warranty',
+    technicalInformation: 'Technical Information',
+    dimension: 'Dimensions',
+    paresWellWith: 'Pairs Well With',
+    similarProducts: 'Similar Products',
+    cutOutTemplates: 'Cut out Templates',
+    bimRevit: 'BIM Revit',
+    twitterText: 'I am sharing on twitter!',
+    collection: 'Collection',
+    technology: 'Technology'
+  }
 };
 
 export const CTAObject = {
-  internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-  label: 'Ajude-nos a Melhorar este Site',
-  ariaLabel: 'Help us Improve this Site ',
-  visible: true,
-  buttonBrandColor: 'None',
-  ctaType: 'Text Link'
+  es: {
+    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
+    label: 'Ayúdenos a mejorar este sitio',
+    ariaLabel: 'Help us Improve this Site ',
+    visible: true,
+    buttonBrandColor: 'None',
+    ctaType: 'Text Link'
+  },
+  en: {
+    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
+    label: 'Help us Improve this Site',
+    ariaLabel: 'Help us Improve this Site ',
+    visible: true,
+    buttonBrandColor: 'None',
+    ctaType: 'Text Link'
+  }
+};
+
+export const thumbsImageFormatter = (url, isNewProduct, type) => {
+  if (type === PRODUCT_RESOURCE_TYPE_VIDEO) {
+    return `http://img.youtube.com/vi/${url}/maxresdefault.jpg`;
+  } else {
+    return carouselImageFormatter(url, isNewProduct);
+  }
 };

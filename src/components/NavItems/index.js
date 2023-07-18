@@ -14,7 +14,7 @@ const NavItems = ({
   const [cookieClass, setCookieClass] = useState('');
 
   useEffect(() => {
-    if (navItem?.fields?.label === 'Cookies Settings') {
+    if (navItem?.fields?.label.trim() === 'Cookies Settings') {
       setCookieClass('ot-sdk-show-settings');
     }
   }, []);
@@ -30,7 +30,9 @@ const NavItems = ({
           key={navItem?.fields?.sys?.id}
           target={navItem?.fields?.openerType === 'New Tab' ? '_blank' : ''}
           id={
-            navItem?.fields?.label === 'Cookies Settings' ? 'ot-sdk-link' : ''
+            navItem?.fields?.label.trim() === 'Cookies Settings'
+              ? 'ot-sdk-link'
+              : ''
           }
           className={cookieClass}
           style={{ textDecoration: 'none', width: '100%' }}
