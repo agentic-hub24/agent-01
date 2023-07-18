@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import Section from '@components/section';
 
 function Landing({ pageData }) {
+  console.log('page data ', pageData);
   return (
     <>
       {pageData?.pageSections?.map((section, index) => (
