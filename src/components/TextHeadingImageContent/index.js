@@ -24,7 +24,7 @@ export default function TextHeadingImageContentSection({ fields }) {
       )}
       {fields?.mediaItem && (
         <div className='pt-4'>
-          <MediaVideo fields={fields?.mediaItem} />
+          <MediaVideo fields={fields?.mediaItem} height='550px' />
         </div>
       )}
       <div className={`${'border-b pb-2 pt-6'}`}></div>
