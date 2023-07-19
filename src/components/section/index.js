@@ -2,8 +2,11 @@ import React from 'react';
 import CarouselComponent from '@components/Carousel';
 import Cta from '@components/Cta';
 import HomeSection from '@components/HomeSection';
+import MediaItem from '@components/MediaItem/MediaItem';
+import SideBySideContent from '@components/SideBySideContent';
 import StoreListing from '@components/StoreListing';
 import StoreListingLocator from '@components/StoreListingLocator';
+import TextHeadingImageContentSection from '@components/TextHeadingImageContent';
 import ArticleContent from '@components/articleContent';
 import EmbededScript from '@components/embededScript';
 import TextContent from '@components/textContent';
@@ -55,6 +58,17 @@ const Section = ({ fields, sys, position, pageHeading }) => {
     return <EmbededScript fields={fields} pageHeading={pageHeading} />;
   } else if (sectionType === 'cta') {
     return <Cta fields={fields} />;
+  } else if (
+    sectionType === 'imageContentSection' ||
+    sectionType === 'mediaItem'
+  ) {
+    return (
+      <MediaItem assets={fields?.mediaItem || [{ fields }]} height='550px' /> //formatting fields if media item is not present
+    );
+  } else if (sectionType === 'textHeadingImageContentSection') {
+    return <TextHeadingImageContentSection fields={fields} />;
+  } else if (sectionType === 'sideBySideContentBlock') {
+    return <SideBySideContent fields={fields} />;
   }
   // render multiple type of sections
   return <HomeSection homePageData={fields} />;
