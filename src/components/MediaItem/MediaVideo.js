@@ -14,8 +14,8 @@ export function VideoModal({ item, height = '350px' }) {
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
           allowfullscreen='allowfullscreen'
           mozallowfullscreen='mozallowfullscreen'
-          msallowfullscreen='msallowfullscreen'
-          oallowfullscreen='oallowfullscreen'
+          // msallowfullscreen='msallowfullscreen'
+          // oallowfullscreen='oallowfullscreen'
           webkitallowfullscreen='webkitallowfullscreen'
           className='w-full'
         ></iframe>
