@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import cx from 'classnames';
 import MediaItem from '@components/MediaItem/MediaItem';
-import { DownloadIcon } from '../svgs';
 
 /***
  * @param {cardRows} array
@@ -13,10 +12,8 @@ import { DownloadIcon } from '../svgs';
 const ArticleCard = ({
   cardRows = [],
   isLiterature = false,
-  showDownload = false,
   isIntelligent = false,
-  isBidetSeat = false,
-  url
+  isBidetSeat = false
 }) => {
   const wrapperDivClass = cx(
     'w-[290px]',
@@ -59,16 +56,15 @@ const ArticleCard = ({
         {fields?.paragraphText}
       </h5>
       {fields?.cta &&
-        fields?.cta?.map((item, id) => (
+        fields?.cta?.map(({ fields, sys }, index) => (
           <a
-            href={item?.fields?.url}
-            target='_blank'
-            className='justify-left pl-5 flex w-full text-[16px] hover:no-underline font-helveticaGroup'
+            key={sys?.id}
+            href={fields?.url}
+            target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
+            className='justify-center flex w-full text-[16px] hover:underline font-helveticaGroup'
             rel='noreferrer'
-            key={id}
           >
-            {/* <DownloadIcon /> */}
-            {item?.fields?.label}
+            {fields?.label}
           </a>
         ))}
     </article>
