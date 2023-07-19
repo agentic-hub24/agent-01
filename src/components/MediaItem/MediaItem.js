@@ -5,7 +5,7 @@ const MediaItem = ({ assets, height }) => {
   return (
     <div className='mx-auto max-w-screen-lg flex justify-center w-full h-full'>
       {assets?.map(({ fields, sys }) => (
-        <div key={sys} className='w-full h-full'>
+        <div key={sys} className='w-full h-full flex justify-center'>
           {fields?.type === 'Image' && (
             <img
               src={`https:${fields?.asset?.fields?.file?.url}`}
@@ -15,7 +15,7 @@ const MediaItem = ({ assets, height }) => {
             />
           )}
           {fields?.type === 'Video' && (
-            <MediaVideo fields={assets} height={height} />
+            <MediaVideo fields={fields} height={height} />
           )}
         </div>
       ))}

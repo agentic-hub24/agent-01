@@ -29,12 +29,10 @@ export default function MediaVideo({ fields, height }) {
   const [youtubeLinkOpen, setYoutubeLinkOpen] = useState({});
   useEffect(() => {
     async function fetchMetaData() {
-      let responseArray = await getYoutubeMetaData(
-        fields[0]?.fields?.description
-      );
+      let responseArray = await getYoutubeMetaData(fields?.description);
       setYoutubeMetaData(responseArray);
     }
-    if (fields && fields[0]?.fields?.type === 'Video') {
+    if (fields && fields?.type === 'Video') {
       fetchMetaData();
     }
   }, []);
@@ -64,7 +62,7 @@ export default function MediaVideo({ fields, height }) {
       )}
       {Object.keys(youtubeLinkOpen).length > 0 && (
         <VideoModal
-          item={fields[0]?.fields?.description} // youtube video id
+          item={fields?.description} // youtube video id
           height={height}
         />
       )}

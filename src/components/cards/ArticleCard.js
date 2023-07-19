@@ -49,7 +49,7 @@ const ArticleCard = ({
           isWaterFilterationES ||
           isWaterFilterationEN
             ? 'm-0 text-[16px] text-left font-bold font-helveticaGroup'
-            : 'font-medium font-helveticaLight'
+            : 'font-medium font-helveticaLight text-center'
         }`}
       >
         {fields?.heading}
