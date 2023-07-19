@@ -19,9 +19,21 @@ export default function TextHeadingImageContentSection({ fields }) {
         />
       ))}
 
-      {fields?.cta && (
-        <Link href='/store-listing'>{fields?.cta[0]?.fields?.label}</Link>
-      )}
+      <div className='pt-5'>
+        {fields?.cta &&
+          fields?.cta.map(({ fields, sys }, id) => (
+            <div className='pt-2' key={sys?.id}>
+              <a
+                href={fields?.url}
+                target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
+                className={`flex w-full text-[16px] font-HelveticaRoman justify-left hover:no-underline`}
+                rel='noreferrer'
+              >
+                {fields?.label}
+              </a>
+            </div>
+          ))}
+      </div>
 
       {fields?.mediaItem && (
         <div className='pt-4'>

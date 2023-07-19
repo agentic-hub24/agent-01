@@ -13,7 +13,9 @@ const ArticleCard = ({
   isLiterature = false,
   isIntelligent = false,
   isBidetSeat = false,
-  isCadSymbol = false
+  isCadSymbol = false,
+  isWaterFilterationES = false,
+  isWaterFilterationEN = false
 }) => {
   const wrapperDivClass = cx(
     'w-[290px]',
@@ -23,11 +25,13 @@ const ArticleCard = ({
       ? 'mx-2.5 my-5 cursor-pointer shadow-[2px_2px_5px_0_#aaa]'
       : `mx-2.5 my-5 cursor-pointer ${
           !isIntelligent &&
+          !isWaterFilterationES &&
+          !isWaterFilterationEN &&
           !isBidetSeat &&
           `lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] 
            shadow-[2px_2px_5px_0_#aaa]`
         }`,
-    isBidetSeat && 'w-[480px]'
+    (isBidetSeat || isWaterFilterationES) && 'w-[480px]'
   );
 
   /***
@@ -40,7 +44,10 @@ const ArticleCard = ({
       </figure>
       <h4
         className={`text-2xl p-5 text-[#333333] m-auto  cursor-pointer ${
-          isBidetSeat || isIntelligent
+          isBidetSeat ||
+          isIntelligent ||
+          isWaterFilterationES ||
+          isWaterFilterationEN
             ? 'm-0 text-[16px] text-left font-bold font-helveticaGroup'
             : 'font-medium font-helveticaLight'
         }`}
@@ -49,7 +56,12 @@ const ArticleCard = ({
       </h4>
       <h5
         className={`pt-0 pr-9 pb-3 text-[#666] font-helveticaLight ${
-          isBidetSeat || isIntelligent ? 'text-left pl-5' : 'pl-9'
+          isBidetSeat ||
+          isIntelligent ||
+          isWaterFilterationES ||
+          isWaterFilterationEN
+            ? 'text-left pl-5'
+            : 'pl-9'
         }`}
       >
         {fields?.paragraphText}
