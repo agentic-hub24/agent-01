@@ -398,5 +398,15 @@ element.style {
 
 .rich-text h4 {
   color: #000;
-  font-family: HelveticaNeueLT-Roman
+  font-family: HelveticaNeueLT-Roman;
+}
+
+.rich-text h3 {
+  font-size: 24px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 1.1;
+  font-weight: 500;
+  color: #000;
+  font-family: HelveticaNeueLT-Roman;
 }

@@ -1,20 +1,25 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element */
+import MediaVideo from './MediaVideo';
 
-const MediaItem = ({ assets }) => {
+const MediaItem = ({ assets, height }) => {
   return (
-    <>
+    <div className='mx-auto max-w-screen-lg flex justify-center w-full h-full'>
       {assets?.map(({ fields, sys }) => (
-        <Image
-          src={`https:${fields?.asset?.fields?.file?.url}`}
-          width={290}
-          height={220}
-          key={sys?.id}
-          alt={fields?.altText}
-          className='cursor-pointer'
-          title={fields?.altText}
-        />
+        <div key={sys} className='w-full h-full flex justify-center'>
+          {fields?.type === 'Image' && (
+            <img
+              src={`https:${fields?.asset?.fields?.file?.url}`}
+              key={sys?.id}
+              alt={fields?.altText}
+              title={fields?.altText}
+            />
+          )}
+          {fields?.type === 'Video' && (
+            <MediaVideo fields={fields} height={height} />
+          )}
+        </div>
       ))}
-    </>
+    </div>
   );
 };
 

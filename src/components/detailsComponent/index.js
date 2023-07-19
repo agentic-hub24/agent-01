@@ -999,7 +999,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                             src={
                               item?.metaData?.items &&
                               item?.metaData?.items[0]?.snippet?.thumbnails
-                                ?.default?.url
+                                ?.maxres?.url
                             }
                             onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                             className='w-full'
