@@ -5,7 +5,6 @@ import MediaItem from '@components/MediaItem/MediaItem';
 /***
  * @param {cardRows} array
  * @param {isLiterature} boolean
- * @param {showDownload} boolean
  * @returns
  */
 
@@ -13,7 +12,8 @@ const ArticleCard = ({
   cardRows = [],
   isLiterature = false,
   isIntelligent = false,
-  isBidetSeat = false
+  isBidetSeat = false,
+  isCadSymbol = false
 }) => {
   const wrapperDivClass = cx(
     'w-[290px]',
@@ -34,8 +34,7 @@ const ArticleCard = ({
    * Purpose of creating this function is to render cards with or without link
    */
   const renderCards = fields => (
-    <article>
-      {console.log('fields cards===>', fields)}
+    <article className='pb-4'>
       <figure>
         <MediaItem assets={fields?.mediaItem} />
       </figure>
@@ -61,7 +60,11 @@ const ArticleCard = ({
             key={sys?.id}
             href={fields?.url}
             target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
-            className='justify-center flex w-full text-[16px] hover:underline font-helveticaGroup'
+            className={`flex w-full text-[16px] ${
+              isCadSymbol
+                ? 'helveticaLight justify-center'
+                : 'font-helveticaGroup justify-left hover:no-underline pl-5'
+            }`}
             rel='noreferrer'
           >
             {fields?.label}

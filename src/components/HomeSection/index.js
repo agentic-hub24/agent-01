@@ -2,11 +2,11 @@ import ArticleCard from '@components/cards/ArticleCard';
 
 const HomeSection = ({ homePageData }) => {
   const isLiterature = homePageData?.internalTitle.includes('Literature');
+  const isCadSymbol = homePageData?.internalTitle.includes('CAD Symbols');
   const isIntelligent = homePageData?.internalTitle.includes(
     'Intelligent Toilets'
   );
   const isBidetSeat = homePageData?.internalTitle.includes('Bidet Seats');
-  const isCadSymbol = homePageData?.internalTitle.includes('CAD Symbols');
 
   return (
     <section className={`${!isIntelligent && !isBidetSeat && 'bg-[#e3e3e3]'}`}>
@@ -21,17 +21,16 @@ const HomeSection = ({ homePageData }) => {
             !isBidetSeat && 'mx-10 md:mx-16 lg:mx-8'
           }`}
         >
-          <div className='text-center flex mx-10 md:mx-16 lg:mx-8 flex-wrap'>
-            {homePageData?.cardRows?.map(({ fields, sys }) => (
-              <ArticleCard
-                key={sys?.id}
-                cardRows={fields?.cardItem}
-                isLiterature={isLiterature || isCadSymbol}
-                isIntelligent={isIntelligent}
-                isBidetSeat={isBidetSeat}
-              />
-            ))}
-          </div>
+          {homePageData?.cardRows?.map(({ fields, sys }) => (
+            <ArticleCard
+              key={sys?.id}
+              cardRows={fields?.cardItem}
+              isLiterature={isLiterature || isCadSymbol}
+              isCadSymbol={isCadSymbol}
+              isIntelligent={isIntelligent}
+              isBidetSeat={isBidetSeat}
+            />
+          ))}
         </div>
       </div>
     </section>
