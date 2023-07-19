@@ -4,10 +4,10 @@ import { HiPlay } from 'react-icons/hi2';
 import { getYoutubeMetaData } from '@services/productListingAPI/client';
 import { DEFAULT_IMAGE_LINK } from '@components/detailsComponent/helper';
 
-export function VideoModal({ item, setYoutubeLinkOpen, height }) {
+export function VideoModal({ item, height = '350px' }) {
   return (
     <>
-      <div className={`flex items-stretch w-full lg:h-[${height}] h-auto`}>
+      <div className={`flex items-stretch w-full `} style={{ height: height }}>
         <iframe
           src={`https://www.youtube.com/embed/${item}?rel=0`}
           title='YouTube video player'
@@ -19,12 +19,6 @@ export function VideoModal({ item, setYoutubeLinkOpen, height }) {
           webkitallowfullscreen='webkitallowfullscreen'
           className='w-full'
         ></iframe>
-      </div>
-      <div
-        className='absolute top-0 right-0 text-[26px] md:p-2 cursor-pointer'
-        onClick={() => setYoutubeLinkOpen({})}
-      >
-        x
       </div>
     </>
   );
@@ -71,7 +65,6 @@ export default function MediaVideo({ fields, height }) {
       {Object.keys(youtubeLinkOpen).length > 0 && (
         <VideoModal
           item={fields[0]?.fields?.description} // youtube video id
-          setYoutubeLinkOpen={e => setYoutubeLinkOpen(e)}
           height={height}
         />
       )}

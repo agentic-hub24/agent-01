@@ -52,23 +52,25 @@ const ArticleCard = ({
         {fields?.heading}
       </h4>
       <h5
-        className={`pt-0 pr-9 pb-3 pl-9 text-[#666] font-helveticaLight ${
-          (isBidetSeat || isIntelligent) && 'text-left pl-5'
+        className={`pt-0 pr-9 pb-3 text-[#666] font-helveticaLight ${
+          isBidetSeat || isIntelligent ? 'text-left pl-5' : 'pl-9'
         }`}
       >
         {fields?.paragraphText}
       </h5>
-      {fields.cta && (
-        <a
-          href={fields?.cta[0]?.fields?.url}
-          target='_blank'
-          className='justify-left pl-5 flex w-full text-[16px] hover:no-underline font-helveticaGroup'
-          rel='noreferrer'
-        >
-          {/* <DownloadIcon /> */}
-          {fields?.cta[0]?.fields?.label}
-        </a>
-      )}
+      {fields?.cta &&
+        fields?.cta?.map((item, id) => (
+          <a
+            href={item?.fields?.url}
+            target='_blank'
+            className='justify-left pl-5 flex w-full text-[16px] hover:no-underline font-helveticaGroup'
+            rel='noreferrer'
+            key={id}
+          >
+            {/* <DownloadIcon /> */}
+            {item?.fields?.label}
+          </a>
+        ))}
     </article>
   );
   return (

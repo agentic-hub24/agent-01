@@ -5,7 +5,7 @@ const MediaItem = ({ assets, height }) => {
   return (
     <div className='mx-auto max-w-screen-lg flex justify-center w-full h-full'>
       {assets?.map(({ fields, sys }) => (
-        <div key={sys} className='w-full'>
+        <div key={sys} className='w-full h-full'>
           {fields?.type === 'Image' && (
             <img
               src={`https:${fields?.asset?.fields?.file?.url}`}
