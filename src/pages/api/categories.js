@@ -14,35 +14,51 @@ const categories = async (req, res) => {
                 res.status(405).send({ error: 'Only POST requests allowed'})
                 return
             }
-            req.body = JSON.parse(req.body);
             
             let bodyData = {
                 "count":true,
                 "top":1000,
                 "skip":0,
                 "search":"*",
-                "facets":["ProductLocalCategory_esMX,count:20"],
                 "filter":""
             }
-            const mainCategores = process.env.mainCategores.split(",");
-            const bathroomSubCategories = process.env.bathroomSubCategories.split(",");
-            const kitchenSubCategories = process.env.kitchenSubCategories.split(",");
-            if(req.body.ProductSection_esMX){
-                if(!mainCategores.includes(req.body.ProductSection_esMX)){
-                    res.status(405).send({error: 'Please enter the correct value for ProductSection_esMX'})
+            let regionMainCategory = (req.body.lang==="en") ? "RegionSubCategory" : "RegionSubCategory_esMX";
+            let regionProductCategory = (req.body.lang==="en") ? "RegionProductCategoryLocal" : "RegionProductCategoryLocal_esMX";
+
+
+            bodyData["facets"] = [`${regionProductCategory},count:100`, `${regionMainCategory},count:100`];
+
+            const categores = (req.body.lang==="en") ? process.env.mainCategores.split(",") : process.env.mainCategores_esMX.split(",");
+
+            const bathroomSubCategories = (req.body.lang==="en") ? process.env.bathroomSubCategories.split(",") : process.env.bathroomSubCategories_esMX.split(",");
+
+            const kitchenSubCategories = (req.body.lang==="en") ? process.env.kitchenSubCategories.split(",") : process.env.kitchenSubCategories_esMX.split(",");
+
+
+            const commercialSubCategories = (req.body.lang==="en") ? process.env.commercialSubCategories.split(",") : process.env.commercialSubCategories_esMX.split(",");
+
+            const showerSubCategories = (req.body.lang==="en") ? process.env.showerSubCategories.split(",") : process.env.showerSubCategories_esMX.split(",");
+            
+            if(req.body.category){
+                if(!categores.includes(req.body.category)){
+                    res.status(405).send({error: 'Please enter the correct value for category'})
                     return
                 }
-                let filterSubCategory = kitchenSubCategories;
-                if(req.body.ProductSection_esMX === mainCategores[0]){
+                let filterSubCategory = commercialSubCategories;
+                if(req.body.category === categores[0]){
                     filterSubCategory = bathroomSubCategories;
-                }
+                }else if(req.body.category === categores[1]){
+                    filterSubCategory = kitchenSubCategories;
+                } else if(req.body.category === categores[2]){
+                    filterSubCategory = showerSubCategories;
+                }  
 
-                bodyData["filter"] = `ProductSection_esMX eq '${req.body.ProductSection_esMX}'`;
+                bodyData["filter"] = `${regionMainCategory} eq '${req.body.category}' and search.in(${regionProductCategory}, '${filterSubCategory.toString()}', ',')`;
             }else{
-                res.status(405).send({ error: 'ProductSection_esMX field is required.'})
+                res.status(405).send({ error: 'category field is required.'})
                 return
             }
-            console.log(bodyData)
+            console.log("bodyData", bodyData)
             let response = await fetch(process.env.ACS_PLP_API_URL,
                 {
                     body: JSON.stringify(bodyData),
