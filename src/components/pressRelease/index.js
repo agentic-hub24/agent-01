@@ -86,7 +86,7 @@ const PressRelease = ({ pageData }) => {
             </div>
             <div className='block lg:hidden'>
               <select
-                className='w-[50%] border-solid border-2 border-grey'
+                className='w-[98%] border-solid border-2 border-grey'
                 onChange={handleSelect}
               >
                 {ctaButtons?.map(
@@ -95,7 +95,7 @@ const PressRelease = ({ pageData }) => {
                       <option
                         key={fields?.label}
                         className='text-[12px]'
-                        value={fields?.internalTitle}
+                        value={fields?.label}
                       >
                         {fields?.label}
                       </option>
