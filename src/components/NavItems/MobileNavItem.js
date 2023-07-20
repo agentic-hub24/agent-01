@@ -4,8 +4,6 @@ import Link from 'next/link';
 const MobileNavItem = ({
   navItem,
   classNames,
-  stylePro,
-  justifyProp,
   linkClass,
   svgElement,
   secondaryNavItemFuncMobile,
@@ -37,10 +35,7 @@ const MobileNavItem = ({
           rel='noreferrer'
           onClick={() => handleCloseHandle()}
         >
-          <div
-            className={linkClass}
-            style={{ padding: stylePro, justifyContent: justifyProp }}
-          >
+          <div className={linkClass}>
             {/* {socialIcon ? <span className="mr-1">{socialIcon}</span> : null} */}
             {navItem?.fields?.label ? (
               <>
@@ -60,8 +55,6 @@ MobileNavItem.defaultProps = {
   secondaryNavItemFuncMobile: () => {},
   navItem: {},
   classNames: '',
-  stylePro: '',
-  justifyProp: '',
   linkClass: '',
   svgElement: <></>,
   handleCloseHandle: () => {}

@@ -4,8 +4,6 @@ import Link from 'next/link';
 const NavItems = ({
   navItem,
   classNames,
-  stylePro,
-  justifyProp,
   linkClass,
   secondaryNavItemFunc,
   handleCloseHandle
@@ -39,10 +37,7 @@ const NavItems = ({
           rel='noreferrer'
           onClick={() => handleCloseHandle()}
         >
-          <div
-            className={linkClass}
-            style={{ padding: stylePro, justifyContent: justifyProp }}
-          >
+          <div className={linkClass}>
             {/* {socialIcon ? <span className="mr-1">{socialIcon}</span> : null} */}
             {navItem?.fields?.label ? (
               <>
@@ -62,7 +57,5 @@ NavItems.defaultProps = {
   handleCloseHandle: () => {},
   navItem: {},
   classNames: '',
-  stylePro: '',
-  justifyProp: '',
   linkClass: ''
 };
