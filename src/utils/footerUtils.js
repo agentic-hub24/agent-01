@@ -11,6 +11,11 @@ export const searchLabel = {
   en: 'Search'
 };
 
+export const backtoTopLabels = {
+  en: 'Back to top',
+  es: 'ir al incio'
+};
+
 export const storeDetailsLabel = {
   en: {
     mobile: 'Mobile:',

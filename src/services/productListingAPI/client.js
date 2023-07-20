@@ -1,6 +1,5 @@
 export async function getProductListing(requestBody) {
   try {
-    console.log('process.env.API_AUTH ', process.env.API_AUTH);
     const apiBaseURL = process.env.API_BASEURL;
     const res = await fetch(`${apiBaseURL}/api/products`, {
       method: 'POST',
@@ -52,6 +51,17 @@ export async function getProductDetails(lang, value) {
         }
       }
     );
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getYoutubeMetaData(id) {
+  try {
+    const apiBaseURL = process.env.API_BASEURL;
+    const res = await fetch(`${apiBaseURL}/api/youtube?id=${id}`);
     const data = await res.json();
     return data;
   } catch (err) {
