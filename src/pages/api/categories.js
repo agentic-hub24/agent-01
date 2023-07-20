@@ -58,7 +58,7 @@ const categories = async (req, res) => {
                 res.status(405).send({ error: 'category field is required.'})
                 return
             }
-            console.log("bodyData", bodyData)
+            
             let response = await fetch(process.env.ACS_PLP_API_URL,
                 {
                     body: JSON.stringify(bodyData),
