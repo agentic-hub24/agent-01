@@ -115,7 +115,10 @@ export const DEFAULT_IMAGE_LINK =
   'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
 
 export const PRODUCT_RESOURCE_TYPE_SPEC_DOC = 'SpecPDFFileName';
-export const PRODUCT_RESOURCE_TYPE_VIDEO = 'YouTubeVideo';
+export const PRODUCT_RESOURCE_TYPE_VIDEO = [
+  'YouTubeVideo',
+  'YouTubeInstallVideo'
+];
 export const TECHNICAL_INFORMATION_FILES = [
   'InstallationWithoutSPPDF',
   'SpecPDFFileName',
@@ -181,6 +184,7 @@ export const PRODUCT_ADDITIONAL_IMAGE = [
   'IMGCLOSEROOMVIEWProductDetail',
   'IMGCLOSEROOMVIEWWithWaterEffects',
   'IMGCLOSEROOMVIEWWithWaterEffects',
+  'IMGPARTIALROOMVIEW',
   'IMGDetail1',
   'IMGDetail2',
   'IMGDetail3',
@@ -287,8 +291,8 @@ export const CTAObject = {
 };
 
 export const thumbsImageFormatter = (url, isNewProduct, type) => {
-  if (type === PRODUCT_RESOURCE_TYPE_VIDEO) {
-    return `http://img.youtube.com/vi/${url}/maxresdefault.jpg`;
+  if (PRODUCT_RESOURCE_TYPE_VIDEO.includes(type)) {
+    return `http://img.youtube.com/vi/${url}/hqdefault.jpg`;
   } else {
     return carouselImageFormatter(url, isNewProduct);
   }
