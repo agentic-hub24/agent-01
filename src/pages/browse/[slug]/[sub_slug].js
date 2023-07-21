@@ -44,18 +44,23 @@ export async function getServerSideProps(context) {
   });
   //PLP API CALL --> Start
   const requestBody = {
-    ProductATGDefaultCategory_PT: params.sub_slug.replace(/\+/g, ' ')
+    search: '',
+    orderby: '',
+    RegionProductCategoryLocal: params.sub_slug.replace(/\+/g, ' '),
+    RegionProductCategoryLocal_esMX: ''
   };
   const productListingData = await getProductListing(requestBody);
   // PLP API --> end
+
   return {
     props: {
       footerNavigationData,
       headerNavigationData,
       world,
-      //   productListingData,
+      productListingData,
       params,
-      locale
+      locale,
+      requestBody
     }
   };
 }

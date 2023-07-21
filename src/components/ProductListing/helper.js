@@ -43,18 +43,25 @@ export const filterMapping = [
     SKUColorFinishCode: { label: 'color/finish', type: 'image' },
     ProductInstallationType: { label: 'installation type', type: 'list' },
     ProductNumberofHandles: { label: 'number of identifiers', type: 'list' },
-    ProductProductType_PT: { label: 'product type', type: 'list' },
+    ProductProductType: { label: 'product type', type: 'list' },
     ProductOverallWidthMm: { label: 'width', type: 'range' },
-    ProductATGDefaultCategory_PT: { label: 'category', type: 'list' },
+    RegionProductCategoryLocal: { label: 'category', type: 'list' },
     NumberOfHoles: { label: 'number of holes', type: 'list' },
-    ProductMaterial_PT: { label: 'material', type: 'list' },
-    ProductConfiguration_PT: { label: 'settings', type: 'list' },
-    ProductShape_PT: { label: 'bowl shape, form', type: 'list' },
+    ProductMaterial: { label: 'material', type: 'list' },
+    ProductConfiguration: { label: 'settings', type: 'list' },
+    ProductShape: { label: 'bowl shape, form', type: 'list' },
     LitersPerFlush: { label: 'liters per discharge', type: 'list' },
-    NightLight_PT: { label: 'night light', type: 'list' },
+    NightLight: { label: 'night light', type: 'list' },
     ProductLitersPerMinute: { label: 'liters per minute', type: 'range' },
     SprayType: { label: 'spray type', type: 'image' },
-    ProductOverallLengthMm: { label: 'total length', type: 'range' }
+    ProductOverallLengthMm: { label: 'total length', type: 'range' },
+    ProductNewProduct: { label: 'New', type: 'checkbox' },
+    toilet_type: { label: 'toilet type', type: 'list' },
+    HandleStyle: { label: 'Handle style', type: 'list' },
+    TouchlessFaucet: { label: 'touchless faucet', type: 'list' },
+    IntelligentToilet: { label: 'intelligent toilet', type: 'list' },
+    BowlShape: { label: 'bowl shape', type: 'list' },
+    BidetFunctionality: { label: 'bidet functionality', type: 'list' }
   }
 ];
 

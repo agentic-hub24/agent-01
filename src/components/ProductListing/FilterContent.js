@@ -20,17 +20,14 @@ export default function FilterContent({
   const categoryType =
     pageType === 'spec'
       ? 'SpecATGDefaultCategory_PT'
-      : 'ProductATGDefaultCategory_PT';
+      : 'RegionProductCategoryLocal';
   const categoryArr = filterOptions?.response['@search.facets']?.[categoryType];
   const searchFacetsNode = filterOptions?.response?.['@search.facets'];
   const filterkeys = Object.keys(searchFacetsNode).filter(
     el =>
-      !['ProductATGDefaultCategory_PT', 'SpecATGDefaultCategory_PT'].includes(
-        el
-      )
+      !['RegionProductCategoryLocal', 'SpecATGDefaultCategory_PT'].includes(el)
   );
 
-  const [showCategoryList, setShowCategory] = useState(false);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState();
 
   useEffect(() => {
@@ -108,12 +105,12 @@ export default function FilterContent({
                       className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'
                     >
                       <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
-                        {selectedFilter?.['ProductATGDefaultCategory_PT']}
+                        {selectedFilter?.['RegionProductCategoryLocal']}
                       </span>
                       <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
                         ({filterOptions?.response?.['@odata.count']})
                       </span>
-                      <span className='absolute mt-[10px] right-4 text-gray-400 font-normal text-base'>
+                      <span className='absolute mt-[10px] right-2 text-gray-400 font-normal text-base'>
                         x
                       </span>
                     </button>
@@ -226,7 +223,7 @@ export default function FilterContent({
                       className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'
                     >
                       <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
-                        {selectedFilter?.['ProductATGDefaultCategory_PT']}
+                        {selectedFilter?.['RegionProductCategoryLocal']}
                       </span>
                       <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
                         ({filterOptions?.response?.['@odata.count']})

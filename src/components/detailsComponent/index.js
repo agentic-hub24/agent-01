@@ -156,7 +156,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         ProductLocalCategory,
         ProductSection,
         ProductProductType,
-        ProductMETADESCRIPTION
+        ProductMETADESCRIPTION,
+        ProductNewProduct
       }
     } = {}
   } = productDetailsData;
@@ -462,7 +463,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <img
                       src={carouselImageFormatter(
                         carousel[imageIndex]?.ResourceName,
-                        isNewProduct
+                        ProductNewProduct
                       )}
                       alt={carousel[imageIndex]?.ResourceName}
                       id='myImage'

@@ -23,7 +23,7 @@ export default function ProductListing({
   const [modalOpen, setModalOpen] = useState(false);
   const [skuId, setSkuId] = useState('');
   const [apiRequestBody, setApiRequestBody] = useState(requestBody);
-  const [selectedFilterCount, setSelectedFilterCount] = useState();
+  const [selectedFilterCount, setSelectedFilterCount] = useState({});
 
   useEffect(() => {
     setApiRequestBody(requestBody);
@@ -69,7 +69,7 @@ export default function ProductListing({
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
         <div className='flex justify-between flex-wrap md:flex-nowrap'>
           <PLPHeader
-            productCount={productValueArray?.length}
+            productCount={productListingData?.response?.['@odata.count']}
             pageHeading={formatterHeader(sub_slug)}
           />
           {/* order by select -- start ==> TODO: Select option from CTFL */}
@@ -108,7 +108,7 @@ export default function ProductListing({
         </div>
       </section>
       <Cta fields={CTAObject[locale]} />
-      <BackToTop topHeight={0} />
+      <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
 }

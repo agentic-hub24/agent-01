@@ -61,9 +61,7 @@ export default function SearchPage({
     setSelectedFilterCount({ ...selectedFilterCount, ...filterCount });
     setApiRequestBody({ ...apiRequestBody, ...filterRequest });
     const postBody = { ...apiRequestBody, ...filterRequest };
-    console.log(postBody);
     const data = await getProductListing(postBody);
-    console.log(data, 'response');
     setProductValueArray(data?.response?.value);
     setListingData(data);
   };
@@ -84,9 +82,6 @@ export default function SearchPage({
         setApiRequestBody({ ...apiRequestBody, CurrentPage: 1 });
         postBody = { ...apiRequestBody, CurrentPage: 1 };
       }
-
-      console.log('post body ', postBody)
-
       const data = await getProductListing(postBody);
 
       setListingData(data);

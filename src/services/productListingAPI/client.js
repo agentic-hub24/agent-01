@@ -6,12 +6,12 @@ export async function getProductListing(requestBody) {
       headers: {
         mode: 'no-cors',
         Authorization: process.env.API_AUTH,
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(requestBody)
     });
     const data = await res.json();
-    console.log('fron end getting res ');
     return data;
   } catch (err) {
     console.log(err);
