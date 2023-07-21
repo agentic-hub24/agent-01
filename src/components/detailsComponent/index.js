@@ -78,7 +78,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [cutOutDXF, setCutOutDXF] = useState([]);
   const [bimRevit, setBimRevit] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
-  const [zoomActive, setZoomActive] = useState(false);
+  const [zoomActive, setZoomActive] = useState(true);
   const [showZoom, showImageZoom] = useState(false);
   const [technicalInfoFiles, setTechnicalInfoFiles] = useState([]);
   const [colorFinishCodeArray, setColorFinisCodeArray] = useState([]);
@@ -366,7 +366,9 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     let glass = document.getElementsByClassName('img-magnifier-glass');
     !zoomActive
       ? magnify(myImageId, 3)
-      : glass[0].parentNode.removeChild(glass[0]);
+      : glass && glass.length > 0 && zoomActive
+      ? glass[0].parentNode.removeChild(glass[0])
+      : false;
   };
 
   return (
@@ -464,7 +466,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                       )}
                       alt={carousel[imageIndex]?.ResourceName}
                       id='myImage'
-                      className='w-full h-[250px] md:h-[350px] lg:h-[470px]'
+                      className='w-full'
                       onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                     />
                   </div>

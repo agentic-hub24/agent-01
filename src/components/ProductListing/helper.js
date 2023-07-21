@@ -1,3 +1,15 @@
+export const carouselImageFormatter = (
+  skuResourceName = '',
+  isNewProduct = false
+) => {
+  if (skuResourceName) {
+    return `//kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2F${
+      isNewProduct ? '2New' : 'Blank'
+    }&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is{PAWEB%2F${skuResourceName}}`;
+  }
+  return 'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
+};
+
 export const imageFormatter = skuResourceName => {
   if (skuResourceName) {
     return `https://kohler.scene7.com/is/image/PAWEB/${skuResourceName}`;
@@ -59,14 +71,16 @@ export const staticLabelsPLP = {
     clearAll: 'Clear all',
     category: 'Category:',
     showAll: 'Showall',
-    buttonMDLabel: 'Categories and filters'
+    buttonMDLabel: 'Categories & filters',
+    colorLabel: 'Selected Color'
   },
   es: {
     filterby: 'Filtrar Por:',
     clearAll: 'Borrar Tudo',
     category: 'Categoría:',
     showAll: 'Mostrar Tudo',
-    buttonMDLabel: 'Categorías y Filtros'
+    buttonMDLabel: 'Categorías y Filtros',
+    colorLabel: 'Seleccione Color'
   }
 };
 
@@ -94,4 +108,15 @@ export const CTAObject = {
 
 export const formatterHeader = header => {
   return header.replace(/\+/g, ' ');
+};
+
+export const SHOWALL_LABELS = {
+  es: {
+    categoryButton: 'Categorías y Filtros',
+    category: 'Categoría'
+  },
+  en: {
+    categoryButton: 'Category & Filters',
+    category: 'Category'
+  }
 };

@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
+import { HiOutlinePlus } from 'react-icons/hi';
 import Link from 'next/link';
 import PLPModal from './PLPModal';
-import { imageFormatter, DEFAULT_IMAGE_LINK } from './helper';
+import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
 
 export default function PLPCards({
   handleMouseOver,
@@ -12,24 +13,8 @@ export default function PLPCards({
   handleModalOpen,
   handleModalClose,
   modalOpen,
-  slug,
-  sub_slug,
-  showAll
-  // addProductForCompare,
-  // removeFromCompare
+  locale
 }) {
-  // const compareLabelCheck = id => {
-  //   const localStorageCheck =
-  //     JSON.parse(localStorage.getItem('theArray')) || [];
-  //   if (localStorageCheck !== null) {
-  //     return (
-  //       localStorageCheck.find(function (el) {
-  //         return el.ProductProductNo === id;
-  //       }) !== undefined
-  //     );
-  //   }
-  // };
-
   return (
     <>
       {productValueArray?.map((item, index) => {
@@ -40,29 +25,32 @@ export default function PLPCards({
                 handleMouseOver(item.SkuNumber);
               }}
               onMouseOut={() => handleMouseOut(item.SkuNumber)}
-              className='h-[380px] hover:shadow-2xl text-[#232323] bg-[#f9f9f9] md:basis-1/4 basis-1/3 grow mr-[2px] mb-[5px] ml-[2px] md:max-w-[33%] max-w-[50%]'
+              className='h-[380px] hover:shadow-2xl text-[#232323] bg-[#f9f9f9] md:basis-1/4 basis-1/3 grow mr-[2px] mb-[5px] ml-[2px] md:max-w-[33%] max-w-[50%] relative'
             >
-              {isHovering && skuId === item?.SkuNumber && !showAll && (
-                <p className='text-right px-[5px] text-2xl font-bold'>
-                  <button onClick={() => handleModalOpen(item?.SkuNumber)}>
-                    +
-                  </button>
-                </p>
-              )}
-              <div className='mb-[10px] flex justify-center border-4 border-neutral-50'>
+              <div className='mb-[10px] mt-2 flex justify-center border-4 border-neutral-50 '>
                 <img
-                  src={imageFormatter(item?.SkuResourceImgName)}
+                  src={carouselImageFormatter(
+                    item?.SkuResourceImgName,
+                    item?.ProductNewProduct
+                  )}
                   alt={item?.SkuResourceImgName}
                   className='h-[147px] w-[196px]'
                   onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                 />
               </div>
+              {isHovering && skuId === item?.SkuNumber && (
+                <div
+                  className='text-right px-[5px] text-2xl font-bold absolute top-0 right-0 p-2 cursor-pointer'
+                  onClick={() => handleModalOpen(item?.SkuNumber)}
+                >
+                  <HiOutlinePlus size={20} />
+                </div>
+              )}
               <Link
                 href={{
-                  pathname: `/product-detail/${item.ProductProductNo}?skuid=${skuId}`
+                  pathname: `/product-detail/${item.ProductProductNo}`
                 }}
-                as={`/product-detail/${item.ProductProductNo}?skuid=${skuId}`}
-                className=''
+                passHref
                 key={index}
               >
                 <div>
@@ -78,39 +66,15 @@ export default function PLPCards({
                   </p>
                 </div>
               </Link>
-              {/* {isHovering &&
-                  skuId === item?.SkuNumber &&
-                  !showAll && (
-                    <div className='my-[60px] text-center'>
-                      {!compareLabelCheck(item.ProductProductNo) ? (
-                        <a
-                          className='uppercase font-HelveticaRoman text-[14px] cursor-pointer'
-                          onClick={e => addProductForCompare(e, item)}
-                        >
-                          +Compare
-                        </a>
-                      ) : (
-                        <a
-                          className='uppercase font-HelveticaRoman text-[14px] cursor-pointer'
-                          onClick={e =>
-                            removeFromCompare(e, item.ProductProductNo)
-                          }
-                        >
-                          -To Compare
-                        </a>
-                      )}
-                    </div>
-                  )} */}
             </div>
 
             {modalOpen && skuId === item?.SkuNumber && (
               <PLPModal
                 handleModalClose={handleModalClose}
                 modalItem={item}
-                showAll={showAll}
-                // addProductForCompare={addProductForCompare}
-                // removeFromCompare={removeFromCompare}
-                // compareLabelCheck={compareLabelCheck}
+                ProductProductNo={item.ProductProductNo}
+                locale={locale}
+                skuId={skuId}
               />
             )}
           </>

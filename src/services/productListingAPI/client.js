@@ -18,7 +18,7 @@ export async function getProductListing(requestBody) {
   }
 }
 
-export async function getProductCategory(slug) {
+export async function getProductCategory(requestBody) {
   try {
     const apiBaseURL = process.env.API_BASEURL;
     const res = await fetch(`${apiBaseURL}/api/categories`, {
@@ -26,9 +26,10 @@ export async function getProductCategory(slug) {
       headers: {
         mode: 'no-cors',
         Authorization: process.env.API_AUTH,
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ ProductSection_PT: slug })
+      body: JSON.stringify(requestBody)
     });
     const data = await res.json();
     return data;
