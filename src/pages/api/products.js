@@ -243,7 +243,7 @@ const products = async (req, res) => {
             bodyData["filter"] = filterData;
 
 
-            let response = await apiCalling(bodyData);
+            let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
 
             response["paginationData"] = {};
             response["searchResults"] = {};
@@ -313,30 +313,27 @@ const products = async (req, res) => {
         }
     });
 };
-async function apiCalling(bodyData){
-    console.log(bodyData)
-    let response = await fetch(process.env.ACS_PLP_API_URL,
-        {
-            body: JSON.stringify(bodyData),
-            // withCredentials: true,
-            headers: {
-                "api-key":process.env.ACS_API_KEY,
-                'Content-Type': "application/json;charset=UTF-8",
-            },
-            method: 'POST'
-        }
-    );
+
+export async function apiCalling(bodyData, url) {
+    let response = await fetch(url, {
+        body: JSON.stringify(bodyData),
+        headers: {
+            'api-key': process.env.ACS_API_KEY,
+            'Content-Type': 'application/json;charset=UTF-8'
+        },
+        method: 'POST'
+    });
     response = await response.json();
-    if(response.error || response.status >= 400){
-        // console.log("response.error", response.error)
-        throw response.error
+    if (response.error || response.status >= 400) {
+        console.log("response error", response.error)
+        throw response.error;
     }
     return response;
 }
 
 async function getSpecificationCount(bodyData){
     bodyData["top"] = 2000;
-    let response = await apiCalling(bodyData);
+    let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
     let products = response.value;
     let specificationCount =0;
     const SpecATGDefaultCategory_esMX = {};
