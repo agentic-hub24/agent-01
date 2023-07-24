@@ -145,10 +145,10 @@ export default function SearchPage({
           <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
             <div className='flex justify-between flex-wrap md:flex-nowrap'>
               <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
-              <PLPOrderBySelect
+              {/* <PLPOrderBySelect
                 sortingArray={sortingArray}
                 orderBySelect={e => orderBySelect(e)}
-              />
+              /> */}
             </div>
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
               <FilterContent
@@ -172,10 +172,10 @@ export default function SearchPage({
             <div className='flex justify-between flex-wrap md:flex-nowrap'>
               <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
 
-              <PLPOrderBySelect
+              {/* <PLPOrderBySelect
                 sortingArray={sortingArray}
                 orderBySelect={e => orderBySelect(e)}
-              />
+              /> */}
             </div>
 
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>

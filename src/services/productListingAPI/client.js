@@ -1,4 +1,10 @@
+import { removeQuotesFromString } from '@utils/footerUtils';
+
 export async function getProductListing(requestBody) {
+  var newObj = {};
+  for (var i in requestBody) {
+    newObj[i] = removeQuotesFromString(requestBody[i]);
+  }
   try {
     const apiBaseURL = process.env.API_BASEURL;
     const res = await fetch(`${apiBaseURL}/api/products`, {
@@ -9,7 +15,7 @@ export async function getProductListing(requestBody) {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(newObj)
     });
     const data = await res.json();
     return data;
