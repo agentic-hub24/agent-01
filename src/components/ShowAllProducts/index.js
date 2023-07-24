@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 import PLPCards from '@components/ProductListing/PLPCards';
-import { SHOWALL_LABELS } from '@components/ProductListing/helper';
+import {
+  SHOWALL_LABELS,
+  staticLabelsPLP
+} from '@components/ProductListing/helper';
 
 export default function ShowAllProducts({
   params,
@@ -142,17 +145,25 @@ export default function ShowAllProducts({
                   </span>
                 </a>
                 <div className='flex flex-wrap'>
-                  <PLPCards
-                    handleMouseOut={e => handleMouseOut(e)}
-                    handleMouseOver={e => handleMouseOver(e)}
-                    isHovering={isHovering}
-                    skuId={skuId}
-                    productValueArray={cardData.cardItem}
-                    locale={locale}
-                    handleModalOpen={e => handleModalOpen(e)}
-                    handleModalClose={e => handleModalClose(e)}
-                    modalOpen={modalOpen}
-                  />
+                  {cardData.cardItem && cardData.cardItem.length > 0 ? (
+                    cardData.cardItem?.map((item, index) => {
+                      return (
+                        <PLPCards
+                          handleMouseOut={e => handleMouseOut(e)}
+                          handleMouseOver={e => handleMouseOver(e)}
+                          isHovering={isHovering}
+                          skuId={skuId}
+                          item={item}
+                          handleModalOpen={e => handleModalOpen(e)}
+                          handleModalClose={e => handleModalClose(e)}
+                          modalOpen={modalOpen}
+                          key={index}
+                        />
+                      );
+                    })
+                  ) : (
+                    <div>{staticLabelsPLP[locale].noProductFound}</div>
+                  )}
                 </div>
               </div>
             ))}

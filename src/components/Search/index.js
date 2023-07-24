@@ -5,7 +5,11 @@ import Cta from '@components/Cta';
 import FilterContent from '@components/ProductListing/FilterContent';
 import PLPCards from '@components/ProductListing/PLPCards';
 import PLPOrderBySelect from '@components/ProductListing/PLPOrderBySelect';
-import { selectOptions, CTAObject } from '@components/ProductListing/helper';
+import {
+  selectOptions,
+  CTAObject,
+  staticLabelsPLP
+} from '@components/ProductListing/helper';
 import Pagination from './Pagination';
 import SpecCard from './SpecCard';
 
@@ -189,14 +193,22 @@ export default function SearchPage({
               {/* cards div */}
               <div className='flex md:ml-[30px] mb-[20px] pt-[12px] pb-[20px] md:w-3/4 flex-wrap'>
                 {/* Repeater div 1 */}
-                <PLPCards
-                  handleMouseOut={e => handleMouseOut(e)}
-                  handleMouseOver={e => handleMouseOver(e)}
-                  isHovering={isHovering}
-                  skuId={skuId}
-                  showAll={true}
-                  productValueArray={productValueArray}
-                />
+                {productValueArray && productValueArray.length > 0 ? (
+                  productValueArray?.map((item, index) => {
+                    return (
+                      <PLPCards
+                        handleMouseOut={e => handleMouseOut(e)}
+                        handleMouseOver={e => handleMouseOver(e)}
+                        isHovering={isHovering}
+                        skuId={skuId}
+                        item={item}
+                        key={index}
+                      />
+                    );
+                  })
+                ) : (
+                  <div>{staticLabelsPLP[locale].noProductFound}</div>
+                )}
               </div>
             </div>
           </section>
