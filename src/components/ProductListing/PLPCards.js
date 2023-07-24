@@ -8,78 +8,71 @@ export default function PLPCards({
   handleMouseOver,
   handleMouseOut,
   isHovering,
-  productValueArray,
   skuId,
   handleModalOpen,
   handleModalClose,
   modalOpen,
-  locale
+  locale,
+  item
 }) {
   return (
     <>
-      {productValueArray?.map((item, index) => {
-        return (
-          <>
-            <div
-              onMouseOver={() => {
-                handleMouseOver(item.SkuNumber);
-              }}
-              onMouseOut={() => handleMouseOut(item.SkuNumber)}
-              className='h-[380px] hover:shadow-2xl text-[#232323] bg-[#f9f9f9] md:basis-1/4 basis-1/3 grow mr-[2px] mb-[5px] ml-[2px] md:max-w-[33%] max-w-[50%] relative'
-            >
-              <div className='mb-[10px] mt-2 flex justify-center border-4 border-neutral-50 '>
-                <img
-                  src={carouselImageFormatter(
-                    item?.SkuResourceImgName,
-                    item?.ProductNewProduct
-                  )}
-                  alt={item?.SkuResourceImgName}
-                  className='h-[147px] w-[196px]'
-                  onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
-                />
-              </div>
-              {isHovering && skuId === item?.SkuNumber && (
-                <div
-                  className='text-right px-[5px] text-2xl font-bold absolute top-0 right-0 p-2 cursor-pointer'
-                  onClick={() => handleModalOpen(item?.SkuNumber)}
-                >
-                  <HiOutlinePlus size={20} />
-                </div>
-              )}
-              <Link
-                href={{
-                  pathname: `/product-detail/${item.ProductProductNo}`
-                }}
-                passHref
-                key={index}
-              >
-                <div>
-                  <div className='mb-[20px] px-[10px] text-center font-helvetica leading-tight text-ellipsis text-[14px] text-[#232323] hover:cursor-pointer'>
-                    <span>{item.ProductBrandName}</span>
-                    <span>{item.ProductDescriptionProductShort_PT}</span>
-                    {item.ProductOverallLengthMm && (
-                      <span> {item.ProductOverallLengthMm}mm </span>
-                    )}
-                  </div>
-                  <p className='font-HelveticaRoman text-[#666] text-[12px] leading-tight text-center mb-[3px] hover:cursor-pointer'>
-                    {item.SkuNumber}
-                  </p>
-                </div>
-              </Link>
-            </div>
-
-            {modalOpen && skuId === item?.SkuNumber && (
-              <PLPModal
-                handleModalClose={handleModalClose}
-                modalItem={item}
-                ProductProductNo={item.ProductProductNo}
-                locale={locale}
-                skuId={skuId}
-              />
+      <div
+        onMouseOver={() => {
+          handleMouseOver(item.SkuNumber);
+        }}
+        onMouseOut={() => handleMouseOut(item.SkuNumber)}
+        className='h-[380px] hover:shadow-2xl text-[#232323] bg-[#f9f9f9] md:basis-1/4 basis-1/3 grow mr-[2px] mb-[5px] ml-[2px] md:max-w-[33%] max-w-[50%] relative'
+      >
+        <div className='mb-[10px] mt-2 flex justify-center border-4 border-neutral-50 '>
+          <img
+            src={carouselImageFormatter(
+              item?.SkuResourceImgName,
+              item?.ProductNewProduct
             )}
-          </>
-        );
-      })}
+            alt={item?.SkuResourceImgName}
+            className='h-[147px] w-[196px]'
+            onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+          />
+        </div>
+        {isHovering && skuId === item?.SkuNumber && (
+          <div
+            className='text-right px-[5px] text-2xl font-bold absolute top-0 right-0 p-2 cursor-pointer'
+            onClick={() => handleModalOpen(item?.SkuNumber)}
+          >
+            <HiOutlinePlus size={20} />
+          </div>
+        )}
+        <Link
+          href={{
+            pathname: `/product-detail/${item.ProductProductNo}`
+          }}
+          passHref
+        >
+          <div>
+            <div className='mb-[20px] px-[10px] text-center font-helvetica leading-tight text-ellipsis text-[14px] text-[#232323] hover:cursor-pointer'>
+              <span>{item.ProductBrandName}</span>
+              <span>{item.ProductDescriptionProductShort_PT}</span>
+              {item.ProductOverallLengthMm && (
+                <span> {item.ProductOverallLengthMm}mm </span>
+              )}
+            </div>
+            <p className='font-HelveticaRoman text-[#666] text-[12px] leading-tight text-center mb-[3px] hover:cursor-pointer'>
+              {item.SkuNumber}
+            </p>
+          </div>
+        </Link>
+      </div>
+
+      {modalOpen && skuId === item?.SkuNumber && (
+        <PLPModal
+          handleModalClose={handleModalClose}
+          modalItem={item}
+          ProductProductNo={item.ProductProductNo}
+          locale={locale}
+          skuId={skuId}
+        />
+      )}
     </>
   );
 }
@@ -89,9 +82,9 @@ PLPCards.defaultProps = {
   handleMouseOut: () => {},
   isHovering: false,
   skuId: '',
-  productValueArray: [],
   handleModalOpen: () => {},
   handleModalClose: () => {},
   modalOpen: false,
-  showAll: false
+  locale: 'en',
+  item: {}
 };

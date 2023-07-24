@@ -6,7 +6,12 @@ import FilterContent from './FilterContent';
 import PLPCards from './PLPCards';
 import PLPHeader from './PLPHeader';
 import PLPOrderBySelect from './PLPOrderBySelect';
-import { CTAObject, selectOptions, formatterHeader } from './helper';
+import {
+  CTAObject,
+  selectOptions,
+  formatterHeader,
+  staticLabelsPLP
+} from './helper';
 
 export default function ProductListing({
   productListingData,
@@ -23,7 +28,7 @@ export default function ProductListing({
   const [modalOpen, setModalOpen] = useState(false);
   const [skuId, setSkuId] = useState('');
   const [apiRequestBody, setApiRequestBody] = useState(requestBody);
-  const [selectedFilterCount, setSelectedFilterCount] = useState({});
+  const [selectedFilterCount, setSelectedFilterCount] = useState();
 
   useEffect(() => {
     setApiRequestBody(requestBody);
@@ -92,18 +97,25 @@ export default function ProductListing({
           {/* cards div */}
           <div className='flex md:ml-[30px] mb-[20px] mt-[20px] pb-[20px] md:w-3/4 flex-wrap'>
             {/* Repeater div 1 */}
-            <PLPCards
-              handleMouseOut={e => handleMouseOut(e)}
-              handleMouseOver={e => handleMouseOver(e)}
-              isHovering={isHovering}
-              skuId={skuId}
-              productValueArray={productValueArray}
-              handleModalOpen={e => handleModalOpen(e)}
-              handleModalClose={e => handleModalClose(e)}
-              modalOpen={modalOpen}
-              slug={slug}
-              sub_slug={sub_slug}
-            />
+            {productValueArray && productValueArray.length > 0 ? (
+              productValueArray?.map((item, index) => {
+                return (
+                  <PLPCards
+                    handleMouseOut={e => handleMouseOut(e)}
+                    handleMouseOver={e => handleMouseOver(e)}
+                    isHovering={isHovering}
+                    skuId={skuId}
+                    item={item}
+                    handleModalOpen={e => handleModalOpen(e)}
+                    handleModalClose={e => handleModalClose(e)}
+                    modalOpen={modalOpen}
+                    key={index}
+                  />
+                );
+              })
+            ) : (
+              <div>{staticLabelsPLP[locale].noProductFound}</div>
+            )}
           </div>
         </div>
       </section>

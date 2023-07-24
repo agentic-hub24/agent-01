@@ -49,11 +49,11 @@ export const filterMapping = [
     NumberOfHoles: { label: 'number of holes', type: 'list' },
     ProductMaterial: { label: 'material', type: 'list' },
     ProductConfiguration: { label: 'settings', type: 'list' },
-    ProductShape: { label: 'bowl shape, form', type: 'list' },
+    ProductShape: { label: 'product shape', type: 'list' },
     LitersPerFlush: { label: 'liters per discharge', type: 'list' },
     NightLight: { label: 'night light', type: 'list' },
     ProductLitersPerMinute: { label: 'liters per minute', type: 'range' },
-    SprayType: { label: 'spray type', type: 'image' },
+    SprayType: { label: 'spray type', type: 'list' },
     ProductOverallLengthMm: { label: 'total length', type: 'range' },
     ProductNewProduct: { label: 'New', type: 'checkbox' },
     toilet_type: { label: 'toilet type', type: 'list' },
@@ -79,7 +79,9 @@ export const staticLabelsPLP = {
     category: 'Category:',
     showAll: 'Showall',
     buttonMDLabel: 'Categories & filters',
-    colorLabel: 'Selected Color'
+    colorLabel: 'Selected Color',
+    noProductFound:
+      'Sorry! No product found in this combination. Please reset the filter and try again.'
   },
   es: {
     filterby: 'Filtrar Por:',
@@ -87,7 +89,9 @@ export const staticLabelsPLP = {
     category: 'Categoría:',
     showAll: 'Mostrar Tudo',
     buttonMDLabel: 'Categorías y Filtros',
-    colorLabel: 'Seleccione Color'
+    colorLabel: 'Seleccione Color',
+    noProductFound:
+      '¡Lo siento! No se ha encontrado ningún producto en esta combinación. Restablece el filtro y vuelve a intentarlo.'
   }
 };
 
