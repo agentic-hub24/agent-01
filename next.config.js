@@ -40,7 +40,7 @@ const nextConfig = {
   i18n: {
     locales: ['default', 'en', 'es'],
     defaultLocale: 'default',
-    localeDetection: false
+    localeDetection: true
   }
 };
 
