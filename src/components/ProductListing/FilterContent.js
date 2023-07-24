@@ -152,7 +152,7 @@ export default function FilterContent({
             </div>
 
             {filterkeys.map((option, i) => {
-              const filterType = filterMapping?.[0]?.[option]?.type;
+              const filterType = filterMapping?.[0]?.[locale]?.[option]?.type;
 
               let minValue = 0;
               let maxValue = 0;
@@ -168,10 +168,12 @@ export default function FilterContent({
 
               return (
                 searchFacetsNode?.[option]?.length > 0 && (
-                  <FilterAccordion header={filterMapping?.[0]?.[option]?.label}>
+                  <FilterAccordion
+                    header={filterMapping?.[0]?.[locale]?.[option]?.label}
+                  >
                     <FilterItems
                       filterOption={searchFacetsNode?.[option]}
-                      filterType={filterMapping?.[0]?.[option]?.type}
+                      filterType={filterMapping?.[0]?.[locale]?.[option]?.type}
                       filterName={option}
                       minRange={minValue}
                       maxRange={maxValue}
@@ -266,7 +268,7 @@ export default function FilterContent({
             </div>
 
             {filterkeys.map((option, i) => {
-              const filterType = filterMapping?.[0]?.[option]?.type;
+              const filterType = filterMapping?.[0]?.[locale]?.[option]?.type;
 
               let minValue = 0;
               let maxValue = 0;
@@ -282,12 +284,12 @@ export default function FilterContent({
 
               return searchFacetsNode?.[option]?.length > 0 ? (
                 <FilterAccordion
-                  header={filterMapping?.[0]?.[option]?.label}
+                  header={filterMapping?.[0]?.[locale]?.[option]?.label}
                   subSlug={subSlug}
                 >
                   <FilterItems
                     filterOption={searchFacetsNode?.[option]}
-                    filterType={filterMapping?.[0]?.[option]?.type}
+                    filterType={filterMapping?.[0]?.[locale]?.[option]?.type}
                     filterName={option}
                     minRange={minValue}
                     maxRange={maxValue}

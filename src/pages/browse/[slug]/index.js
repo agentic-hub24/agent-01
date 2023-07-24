@@ -17,7 +17,7 @@ export default function AllListing({ params, locale, categoryProductData }) {
 export async function getServerSideProps(context) {
   const { params, locale, preview } = context;
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
-  const languageAPI = ['default', 'es'].includes(locale) ? 'es-mx' : 'en';
+  const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
 
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const footerNavigationData = await client.getEntries({

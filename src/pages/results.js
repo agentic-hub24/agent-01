@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
@@ -15,8 +14,6 @@ export default function ResultPage({
   pageType,
   pageData
 }) {
-  const router = useRouter();
-
   useEffect(() => {
     if (
       typeof window !== 'undefined' &&
@@ -60,7 +57,7 @@ export async function getServerSideProps(context) {
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const query1 = await client.getEntries({
     content_type: 'latamLandingPage',
-    'fields.slug': '/es',
+    'fields.slug': '',
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
     locale: lc
@@ -86,12 +83,8 @@ export async function getServerSideProps(context) {
 
   const results = await Promise.all([query1, query2, query3]);
 
-  const res = results[0];
   const headerNavigationData = results[1];
   const footerNavigationData = results[2];
-
-  // const pageData = res?.items[0]?.fields;
-  const pageData = {};
 
   //PLP API CALL --> Start
   const requestBody = {
@@ -99,22 +92,16 @@ export async function getServerSideProps(context) {
     CurrentPage: currentPage ? currentPage : ''
   };
   const productListingData = await getProductListing(requestBody);
-  console.log('resp here ', productListingData);
   //   // PLP API --> end
 
   return {
     props: {
       headerNavigationData,
       footerNavigationData,
-      pageData,
       world,
       productListingData,
       requestBody,
       pageType
     }
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every specified seconds
-    //revalidate: process.env.CONTENT_REVALIDATION_TIME ?? 10
   };
 }

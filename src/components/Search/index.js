@@ -17,27 +17,19 @@ export default function SearchPage({
   productListingData,
   requestBody,
   params,
-  pageType,
-  pageData
+  pageType
 }) {
   const {
     response: { value, searchResults, paginationData }
   } = productListingData;
   const router = useRouter();
   const [productValueArray, setProductValueArray] = useState([]);
-  const [isHovering, setIsHovering] = useState(false);
+
   const [skuId, setSkuId] = useState('');
   const [apiRequestBody, setApiRequestBody] = useState();
   const [selectedFilterCount, setSelectedFilterCount] = useState();
   const [activeIndex, setActiveIndex] = useState();
   const [ListingData, setListingData] = useState(productListingData);
-  const labelMappingArr = pageData?.labelMappingSections?.filter(
-    item => item?.fields?.DropdownItems === undefined
-  );
-
-  const sortingArray = pageData?.labelMappingSections?.filter(
-    item => item?.fields?.DropdownItems !== undefined
-  );
 
   useEffect(() => {
     setListingData(productListingData);
@@ -48,11 +40,9 @@ export default function SearchPage({
 
   const handleMouseOver = id => {
     setSkuId(id);
-    setIsHovering(true);
   };
 
   const handleMouseOut = () => {
-    setIsHovering(false);
     setSkuId('');
   };
   const orderBySelect = async e => {
@@ -92,6 +82,7 @@ export default function SearchPage({
       setProductValueArray(data?.response?.value);
     }
   };
+
   const handlePageChange = async page => {
     router.push(
       `/results?${pageType && `type=${pageType}&`}search=${
@@ -105,22 +96,24 @@ export default function SearchPage({
       <div className='text-center bg-gray-200'>
         <div className='pt-[100px] pb-[0px] text-black'>
           <h1 className='font-sans font-light text-5xl leading-1'>
-            Buscar resultados para &quot;{requestBody?.search}&quot;
+            {`${staticLabelsPLP[router.locale].searchForLabel} ${
+              requestBody?.search
+            }`}
           </h1>
           <p className='my-5 font-sans font-bold text-xl leading-none'>
             {searchResults?.totalSearchResults}
-            &nbsp;Procurar resultados
+            &nbsp;{staticLabelsPLP[router.locale].totalProductLabel}
           </p>
           <div className='relative mb-20'>
             <ul className='block list-none mx-auto py-30 pb-40 text-center shadow-none border-none bg-transparent'>
               <li
-                className={`inline-block mx-30 rounded-4 mr-[100px] ${
+                className={`inline-block mx-30 rounded-4 lg:mr-[100px] ${
                   activeIndex === 0 ? 'text-white bg-black' : 'bg-transparent'
                 }`}
                 onClick={() => onClickPageType(0)}
               >
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
-                  Produto
+                  {staticLabelsPLP[router.locale].product}
                   <span>({searchResults?.productsCount})</span>
                 </span>
               </li>
@@ -145,20 +138,19 @@ export default function SearchPage({
           <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
             <div className='flex justify-between flex-wrap md:flex-nowrap'>
               <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
-              {/* <PLPOrderBySelect
-                sortingArray={sortingArray}
+              <PLPOrderBySelect
+                sortingArray={selectOptions[router.locale]}
                 orderBySelect={e => orderBySelect(e)}
-              /> */}
+              />
             </div>
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
               <FilterContent
                 filterOptions={ListingData}
                 showAll={true}
-                pageType={'producto'}
+                pageType={'spec'}
                 searchValue={requestBody?.search}
                 slug={params?.slug}
                 selectedFilter={apiRequestBody}
-                labelMappingSections={labelMappingArr}
                 locale={router.locale}
               />
               <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-20px w-full md:w-2/3 lg:w-2/3'>
@@ -173,10 +165,10 @@ export default function SearchPage({
             <div className='flex justify-between flex-wrap md:flex-nowrap'>
               <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
 
-              {/* <PLPOrderBySelect
-                sortingArray={sortingArray}
+              <PLPOrderBySelect
+                sortingArray={selectOptions[router.locale]}
                 orderBySelect={e => orderBySelect(e)}
-              /> */}
+              />
             </div>
 
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
@@ -189,7 +181,6 @@ export default function SearchPage({
                 searchValue={requestBody?.search}
                 currentPageValue={1}
                 slug={params?.slug}
-                labelMappingSections={labelMappingArr}
                 locale={router.locale}
               />
               {/* cards div */}
@@ -201,7 +192,6 @@ export default function SearchPage({
                       <PLPCards
                         handleMouseOut={e => handleMouseOut(e)}
                         handleMouseOver={e => handleMouseOver(e)}
-                        isHovering={isHovering}
                         skuId={skuId}
                         item={item}
                         key={index}
