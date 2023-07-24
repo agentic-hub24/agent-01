@@ -327,7 +327,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       if (ProductProductType !== undefined) {
         try {
           const requestBody = {
-            ProductProductType_PT: ProductProductType
+            ProductProductType: ProductProductType
           };
           const productListingData = await getProductListing(requestBody);
           const filteredData =

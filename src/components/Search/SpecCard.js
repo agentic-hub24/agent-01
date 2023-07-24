@@ -3,7 +3,7 @@ import { imageFormatter } from '@components/ProductListing/helper';
 import SearchAccordion from './SearchAccordion';
 import SpecItems from './SpecItems';
 
-export default function SpecCard({ productValueArray, skuId, showAll }) {
+export default function SpecCard({ productValueArray, locale = 'en' }) {
   return (
     <>
       {productValueArray?.map(item => {
@@ -30,22 +30,30 @@ export default function SpecCard({ productValueArray, skuId, showAll }) {
                       {' '}
                       {item.ProductDefaultSKU}
                     </span>
-                    {item?.ProductDescriptionProductShort_PT && (
+                    {item?.ProductDescriptionProductShort && (
                       <span className='display:block mb-10 font-medium font-sans text-base leading-5 text-blue-500'>
-                        {item?.ProductDescriptionProductShort_PT}
+                        {item?.ProductDescriptionProductShort}
                       </span>
                     )}
                   </div>
                 </Link>
                 {(item?.SpecPDFFileName || item?.InstallationWithoutSPPDF) && (
                   <SearchAccordion header='Technical Information Downloads'>
-                    <SpecItems downloadLink={item} linkType='technical' />
+                    <SpecItems
+                      downloadLink={item}
+                      linkType='technical'
+                      locale={locale}
+                    />
                   </SearchAccordion>
                 )}
                 {(item?.DWGPlanView || item?.ThreeDDXF) && (
                   <>
                     <SearchAccordion header='Template & Symbol Downloads'>
-                      <SpecItems downloadLink={item} linkType='template' />
+                      <SpecItems
+                        downloadLink={item}
+                        linkType='template'
+                        locale={locale}
+                      />
                     </SearchAccordion>
                   </>
                 )}

@@ -19,13 +19,12 @@ export default function FilterContent({
 }) {
   const categoryType =
     pageType === 'spec'
-      ? 'SpecATGDefaultCategory_PT'
+      ? 'SpecATGDefaultCategory'
       : 'RegionProductCategoryLocal';
   const categoryArr = filterOptions?.response['@search.facets']?.[categoryType];
   const searchFacetsNode = filterOptions?.response?.['@search.facets'];
   const filterkeys = Object.keys(searchFacetsNode).filter(
-    el =>
-      !['RegionProductCategoryLocal', 'SpecATGDefaultCategory_PT'].includes(el)
+    el => !['RegionProductCategoryLocal', 'SpecATGDefaultCategory'].includes(el)
   );
 
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState();
@@ -318,6 +317,5 @@ FilterContent.defaultProps = {
   subSlug: '',
   filterSelect: () => {},
   selectedFilter: {},
-  selectedFilterCount: '',
-  labelMappingSections: []
+  selectedFilterCount: ''
 };

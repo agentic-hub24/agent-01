@@ -154,11 +154,12 @@ export default function SearchPage({
               <FilterContent
                 filterOptions={ListingData}
                 showAll={true}
-                pageType={'spec'}
+                pageType={'producto'}
                 searchValue={requestBody?.search}
                 slug={params?.slug}
                 selectedFilter={apiRequestBody}
                 labelMappingSections={labelMappingArr}
+                locale={router.locale}
               />
               <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-20px w-full md:w-2/3 lg:w-2/3'>
                 <SpecCard skuId={skuId} productValueArray={productValueArray} />
@@ -189,6 +190,7 @@ export default function SearchPage({
                 currentPageValue={1}
                 slug={params?.slug}
                 labelMappingSections={labelMappingArr}
+                locale={router.locale}
               />
               {/* cards div */}
               <div className='flex md:ml-[30px] mb-[20px] pt-[12px] pb-[20px] md:w-3/4 flex-wrap'>
@@ -207,7 +209,7 @@ export default function SearchPage({
                     );
                   })
                 ) : (
-                  <div>{staticLabelsPLP[locale].noProductFound}</div>
+                  <div>{staticLabelsPLP[router.locale].noProductFound}</div>
                 )}
               </div>
             </div>

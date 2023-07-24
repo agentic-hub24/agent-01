@@ -130,13 +130,16 @@ export const TECHNICAL_INFORMATION_FILES_NAMES = {
     SpecPDFFileName: 'áspera/ Hoja de especificaciones',
     HomeownersGuide: 'guía de dueños de casa',
     InstallationWithoutSPPDF: 'Guia de instalação sem peçus de serviço',
-    PartsPDFFileName: 'Peças pdf'
+    PartsPDFFileName: 'Peças pdf',
+    HomeguideWithoutSPPDF:
+      'Guía de propietarios de viviendas sin pieza de servicio'
   },
   en: {
-    SpecPDFFileName: 'Rough/ Spec Sheet',
+    SpecPDFFileName: 'Rough in/ Spec Sheet',
     HomeownersGuide: 'Home owners guide',
     InstallationWithoutSPPDF: 'Installation guide',
-    PartsPDFFileName: 'Parts'
+    PartsPDFFileName: 'Parts',
+    HomeguideWithoutSPPDF: 'Home owners guide without service part'
   }
 };
 export const PRODUCT_GIF_LINE_ART_IMAGE = 'GIFLineArt';
