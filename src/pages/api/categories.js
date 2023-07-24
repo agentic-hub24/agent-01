@@ -138,6 +138,11 @@ const categories = async (req, res) => {
                     delete response.value[i]["RegionSubCategory_esMX"];
                     
                 }
+
+                response["@search.facets"]["RegionProductCategoryLocal"] = response["@search.facets"]["RegionProductCategoryLocal_esMX"];
+                response["@search.facets"]["RegionSubCategory"] = response["@search.facets"]["RegionSubCategory_esMX"];
+                delete response["@search.facets"]["RegionProductCategoryLocal_esMX"];
+                delete response["@search.facets"]["RegionSubCategory_esMX"];
             }
             
             return res.status(200).json({ response:response });
