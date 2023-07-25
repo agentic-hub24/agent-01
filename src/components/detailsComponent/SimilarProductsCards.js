@@ -29,7 +29,7 @@ export default function SimilarProductsCards({ productProductLinkType }) {
                 >
                   <div className='mb-[20px] px-[10px] text-center font-helvetica leading-tight text-ellipsis text-[14px] text-[#232323] hover:cursor-pointer'>
                     <span>{item?.ProductBrandName}</span>
-                    <span>{item?.ProductDescriptionProductShort_PT}</span>
+                    <span>{item?.ProductDescriptionProductShort}</span>
                   </div>
                   <p className='font-HelveticaRoman text-[#666] text-[12px] leading-tight text-center mb-[3px]'>
                     {item.ProductDefaultSKU}

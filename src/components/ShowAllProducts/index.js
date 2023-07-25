@@ -2,13 +2,21 @@ import { useState, useEffect } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 import PLPCards from '@components/ProductListing/PLPCards';
+import {
+  SHOWALL_LABELS,
+  staticLabelsPLP
+} from '@components/ProductListing/helper';
 
-export default function ShowAllProducts({ pageSlug, categoryProductData }) {
+export default function ShowAllProducts({
+  params,
+  locale,
+  categoryProductData
+}) {
   const router = useRouter();
   const subSlug = router?.query?.subSlug?.replace(/\+/g, ' ');
   const categoryArr =
     categoryProductData?.response?.['@search.facets']
-      ?.ProductATGDefaultCategory_PT;
+      ?.RegionProductCategoryLocal;
 
   const productCardData = categoryProductData?.response?.value;
 
@@ -34,13 +42,11 @@ export default function ShowAllProducts({ pageSlug, categoryProductData }) {
     const newArr = [];
     categoryArr?.filter(item1 => {
       return productCardData.some(item2 => {
-        if (item2.ProductATGDefaultCategory_PT === item1.value) {
+        if (item2.RegionProductCategoryLocal === item1.value) {
           return newArr.push({
-            ProductATGDefaultCategory_PT: item1.value,
+            RegionProductCategoryLocal: item1.value,
             cardItem: productCardData
-              .filter(
-                item3 => item3.ProductATGDefaultCategory_PT === item1.value
-              )
+              .filter(item3 => item3.RegionProductCategoryLocal === item1.value)
               .slice(0, 3)
           });
         }
@@ -69,7 +75,7 @@ export default function ShowAllProducts({ pageSlug, categoryProductData }) {
   };
 
   const formatRedirectionUrl = urlName => {
-    return `${pageSlug}/${urlName.replace(/ /g, '+')}`;
+    return `${params?.slug}/${urlName.replace(/ /g, '+')}`;
   };
 
   return (
@@ -78,7 +84,7 @@ export default function ShowAllProducts({ pageSlug, categoryProductData }) {
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto px-[10px]'>
         <div className='pt-[50px] md:pb-[22px] mb-[8px] mx-[10px]'>
           <h2 className='font-helveticaLight text-3xl leading-normal font-normal uppercase'>
-            {pageSlug}
+            {params?.slug}
           </h2>
         </div>
         <div className='border-b md:hidden'></div>
@@ -90,7 +96,7 @@ export default function ShowAllProducts({ pageSlug, categoryProductData }) {
                 className='p-[20px] font-HelveticaRoman'
                 onClick={() => setShowCategory(!showCategoryList)}
               >
-                Categorias e Filtros
+                {SHOWALL_LABELS[locale].categoryButton}
               </button>
             </div>
             <div
@@ -99,7 +105,7 @@ export default function ShowAllProducts({ pageSlug, categoryProductData }) {
               <div className='flex mx-[10px]'>
                 {/* TODO: dynamic label */}
                 <h3 className='font-helveticaLight text-2xl leading-normal pb-[22px]'>
-                  Categoria:
+                  {SHOWALL_LABELS[locale].category}:
                 </h3>
               </div>
               <div className='border-b-2 '></div>
@@ -125,31 +131,39 @@ export default function ShowAllProducts({ pageSlug, categoryProductData }) {
               <div
                 className='flex flex-col'
                 key={index}
-                id={cardData?.ProductATGDefaultCategory_PT}
+                id={cardData?.RegionProductCategoryLocal}
               >
                 <a
                   href={formatRedirectionUrl(
-                    cardData?.ProductATGDefaultCategory_PT
+                    cardData?.RegionProductCategoryLocal
                   )}
                   className='flex text-[#232323] hover:underline font-helveticaLight text-2xl leading-tight font-light py-[22px]'
                 >
-                  <span>{cardData?.ProductATGDefaultCategory_PT} </span>
+                  <span>{cardData?.RegionProductCategoryLocal} </span>
                   <span className='ml-[5px] mt-[3px]'>
                     <HiOutlineChevronRight size={25} />
                   </span>
                 </a>
                 <div className='flex flex-wrap'>
-                  <PLPCards
-                    handleMouseOut={e => handleMouseOut(e)}
-                    handleMouseOver={e => handleMouseOver(e)}
-                    isHovering={isHovering}
-                    skuId={skuId}
-                    productValueArray={cardData.cardItem}
-                    handleModalOpen={e => handleModalOpen(e)}
-                    handleModalClose={e => handleModalClose(e)}
-                    modalOpen={modalOpen}
-                    showAll={true}
-                  />
+                  {cardData.cardItem && cardData.cardItem.length > 0 ? (
+                    cardData.cardItem?.map((item, index) => {
+                      return (
+                        <PLPCards
+                          handleMouseOut={e => handleMouseOut(e)}
+                          handleMouseOver={e => handleMouseOver(e)}
+                          isHovering={isHovering}
+                          skuId={skuId}
+                          item={item}
+                          handleModalOpen={e => handleModalOpen(e)}
+                          handleModalClose={e => handleModalClose(e)}
+                          modalOpen={modalOpen}
+                          key={index}
+                        />
+                      );
+                    })
+                  ) : (
+                    <div>{staticLabelsPLP[locale].noProductFound}</div>
+                  )}
                 </div>
               </div>
             ))}

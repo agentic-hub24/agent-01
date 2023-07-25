@@ -249,12 +249,11 @@ export default function HeaderSection({ navData = {}, world }) {
                       secondaryNavItemFuncMobile={(e, data) =>
                         secondaryNavItemFuncMobile(e, data)
                       }
-                      justifyProp='space-between'
                       svgElement={handleIcon(
                         navItem?.fields?.label,
                         navItem?.fields?.url
                       )}
-                      linkClass='text-[#000] flex'
+                      linkClass='text-[#000] flex justify-between'
                       classNames='uppercase font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b'
                     />
                     {secondaryNavItemMobile &&

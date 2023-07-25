@@ -1,22 +1,76 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react';
-import { TickSvg } from '../svgs';
+import { useState, useEffect } from 'react';
+import { HiCheck, HiX } from 'react-icons/hi';
+import { getProductDetails } from '@services/productListingAPI/client';
 import {
-  colorImageFormatter,
   imageFormatter,
-  DEFAULT_IMAGE_LINK
+  carouselImageFormatter,
+  DEFAULT_IMAGE_LINK,
+  staticLabelsPLP
 } from './helper';
 
 export default function PLPModal({
   handleModalClose,
   modalItem,
-  showAll
-  // addProductForCompare,
-  // removeFromCompare,
-  // compareLabelCheck
+  ProductProductNo,
+  locale,
+  skuId
 }) {
   const [showColorName, setShowColorName] = useState(false);
+  const [modalValues, setModalValues] = useState({});
+  const [colorName, setColorName] = useState('');
+  const [skuNumber, setSKUNumber] = useState('');
+  const [colorFinishCodeArray, setColorFinisCodeArray] = useState([]);
+  const [colorFileName, setColorFileName] = useState('');
+  const [image, setImage] = useState({});
+  const [loader, setLoader] = useState(true);
 
+  //product api call
+  useEffect(() => {
+    const languageAPI = ['default', 'es'].includes(locale) ? 'es-mx' : 'en';
+    async function fetchData() {
+      const productDetailsData = await getProductDetails(
+        languageAPI,
+        ProductProductNo
+      );
+      setModalValues(productDetailsData?.data?.product);
+    }
+    fetchData();
+  }, []);
+
+  // if API data is available
+  useEffect(() => {
+    const defaultItems =
+      modalValues?.links?.ProductItem?.find(el => el.SKUSKUNo === skuId) || {};
+    setColorName(defaultItems?.SKUColorFinishName);
+    setSKUNumber(defaultItems?.SKUSKUNo);
+    setColorFileName(defaultItems.SKUColorSwatchFilename);
+
+    const color_finish_code_array = modalValues?.links?.ProductItem.filter(
+      el =>
+        el.SKUColorFinishCode !== undefined &&
+        el?.links?.ItemResource !== undefined
+    )?.slice(0, 7);
+    setColorFinisCodeArray(color_finish_code_array);
+    const carousel_image =
+      defaultItems?.links?.ItemResource?.find(
+        el => el.ResourceType === 'IMGITEMISO'
+      ) || [];
+    setImage(carousel_image);
+    setLoader(false);
+  }, [modalValues]);
+
+  // Color tiles are clickable
+  const setColorImageFeature = (e, item) => {
+    e.preventDefault();
+    setColorName(item.SKUColorFinishName);
+    setSKUNumber(item.SKUSKUNo);
+    setColorFileName(item.SKUColorSwatchFilename);
+    const carousel_image =
+      item?.links?.ItemResource?.find(el => el.ResourceType === 'IMGITEMISO') ||
+      [];
+    setImage(carousel_image);
+  };
   return (
     <div
       className='relative z-50'
@@ -32,79 +86,91 @@ export default function PLPModal({
             <div className='flex'>
               <div className='flex'>
                 <img
-                  src={imageFormatter(modalItem.SkuResourceImgName)}
-                  alt={modalItem.SkuResourceImgName}
+                  src={carouselImageFormatter(
+                    image.ResourceName,
+                    modalValues?.ProductNewProduct
+                  )}
+                  alt={image.ResourceName}
                   className='h-[415px] w-[570px]'
                   onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                 />
               </div>
-              <div className='flex flex-col'>
-                <p className='text-right p-[20px] text-lg font-bold'>
-                  <button onClick={() => handleModalClose()}>X</button>
-                </p>
-                <div className='py-[18px] px-[48px]'>
-                  <span className='font-helvetica font-bold leading-tight text-[#232323] text-[18px]'>
-                    {modalItem.ProductBrandName}
-                  </span>
-                  <span className='font-helvetica leading-normal text-[#232323] text-[18px]'>
-                    {modalItem.ProductDescriptionProductShort_PT} Ø
-                    {modalItem.ProductOverallLengthMm}mm
-                  </span>
-                  <p className='font-helvetica leading-relaxed text-[16px] font-normal text-[#666] mt-[20px]'>
-                    {modalItem.SkuNumber}
-                  </p>
-                  <div className='mt-[20px]'>
-                    {/* TODO: label from CTFL */}
-                    <span className='font-helvetica font-bold leading-none text-[#232323] text-[17px] pr-[10px]'>
-                      Selecione a cores:
-                    </span>
-                    {/* TODO: put color name from API */}
-                    <span className='font-helveticaLight font-light leading-none text-[#2b2e38] text-[16px]'>
-                      {modalItem.SKUColorFinishName_PT}
-                    </span>
+              {loader ? (
+                <div className='flex flex-col md:w-1/3 w-full lg:px-[15px] py-[15px]'>
+                  Loading
+                </div>
+              ) : (
+                <div className='flex flex-col md:w-1/3 w-full lg:px-[15px] py-[15px]'>
+                  <div className='text-[22px] font-helveticaLight font-semibold'>
+                    {modalValues.ProductBrandName}
                   </div>
-                  <div
-                    className='my-[10px] relative inline-block'
-                    onMouseOver={() => setShowColorName(true)}
-                    onMouseOut={() => setShowColorName(false)}
-                  >
-                    <img
-                      src={colorImageFormatter(modalItem.SKUColorFinishCode)}
-                      alt={modalItem.SKUColorFinishCode}
-                      className='h-[27px] w-[27px]'
-                    />
-                    <div className='absolute top-0 right-0 h-[27px] w-[27px] bg-cover border-2 border-neutral-500'>
-                      <TickSvg />
+                  <div className='mt-[10px] text-[18px] font-helveticaLight font-light mb-[20px]'>
+                    {modalValues.ProductDescriptionProductShort ||
+                      modalValues.ProductMETADESCRIPTION}
+                  </div>
+                  {skuNumber && (
+                    <div className='font-helveticaLight text-[16px] leading-tight font-normal text-[#666]'>
+                      K-{skuNumber}
                     </div>
-                    {showColorName && (
-                      <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max'>
-                        {modalItem.SKUColorFinishName_PT}
+                  )}
+                  <div className='mt-[20px] mb-[10px]'>
+                    <span className='p-[5px] font-helveticaGroup font-semibold text-[15px] leading-tight text-[#000] uppercase'>
+                      {staticLabelsPLP[locale].colorLabel} :
+                    </span>
+                    {colorName && (
+                      <span className='ml-[10px] font-helveticaLight text-[14px] leading-tight font-light'>
+                        {colorName}
                       </span>
                     )}
                   </div>
-                  {/* TODO: onclick event for compare; button label from CTFL */}
-                  {/* {!showAll && (
-                    <div className='mt-[10px]'>
-                      {!compareLabelCheck(modalItem.ProductProductNo) ? (
-                        <a
-                          className='font-helveticaGroup bg-[#e5e5e5] py-[14px] px-[20px] text-[14px] uppercase font-semibold  text-[#232323] leading-tight shadow hover:no-underline hover:bg-[#bebebe]'
-                          onClick={e => addProductForCompare(e, modalItem)}
-                        >
-                          +Compare
-                        </a>
-                      ) : (
-                        <a
-                          className='font-helveticaGroup bg-[#e5e5e5] py-[14px] px-[20px] text-[14px] uppercase font-semibold  text-[#232323] leading-tight shadow hover:no-underline hover:bg-[#bebebe]'
-                          onClick={e =>
-                            removeFromCompare(e, modalItem.ProductProductNo)
-                          }
-                        >
-                          -To Compare
-                        </a>
-                      )}
-                    </div>
-                  )} */}
+                  <div className='flex flex-wrap'>
+                    {colorFinishCodeArray?.map((el, index) => (
+                      <div
+                        key={index}
+                        className='mx-1 relative inline-block pb-2'
+                        onClick={e => setColorImageFeature(e, el)}
+                        onMouseOver={e => {
+                          e.preventDefault();
+                          setShowColorName(el.SKUColorFinishName);
+                        }}
+                        onMouseOut={e => {
+                          e.preventDefault();
+                          setShowColorName('');
+                        }}
+                      >
+                        <img
+                          src={imageFormatter(el.SKUColorSwatchFilename)}
+                          alt={el?.SKUColorSwatchFilename}
+                          style={{
+                            height: '40px',
+                            width: '40px'
+                          }}
+                          onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                        />
+                        {colorFileName === el.SKUColorSwatchFilename && (
+                          <div className='absolute top-0 right-0 h-[40px] w-[40px] bg-cover border-2 border-neutral-500'>
+                            <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-[#fff]'>
+                              <HiCheck size={30} />
+                            </div>
+                          </div>
+                        )}
+                        {showColorName &&
+                          showColorName === el.SKUColorFinishName && (
+                            <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max z-10'>
+                              {el.SKUColorFinishName}
+                            </span>
+                          )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
+              )}
+
+              <div
+                className='absolute top-0 right-0 p-3 opacity-50 hover:opacity-95 cursor-pointer'
+                onClick={() => handleModalClose()}
+              >
+                <HiX size={30} />
               </div>
             </div>
           </div>
@@ -117,5 +183,7 @@ export default function PLPModal({
 PLPModal.defaultProps = {
   modalItem: {},
   handleModalClose: () => {},
-  showAll: false
+  ProductProductNo: '',
+  locale: 'en',
+  skuId: ''
 };

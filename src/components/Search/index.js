@@ -5,7 +5,11 @@ import Cta from '@components/Cta';
 import FilterContent from '@components/ProductListing/FilterContent';
 import PLPCards from '@components/ProductListing/PLPCards';
 import PLPOrderBySelect from '@components/ProductListing/PLPOrderBySelect';
-import { selectOptions, CTAObject } from '@components/ProductListing/helper';
+import {
+  selectOptions,
+  CTAObject,
+  staticLabelsPLP
+} from '@components/ProductListing/helper';
 import Pagination from './Pagination';
 import SpecCard from './SpecCard';
 
@@ -14,26 +18,19 @@ export default function SearchPage({
   requestBody,
   params,
   pageType,
-  pageData
+  locale
 }) {
   const {
     response: { value, searchResults, paginationData }
   } = productListingData;
   const router = useRouter();
   const [productValueArray, setProductValueArray] = useState([]);
-  const [isHovering, setIsHovering] = useState(false);
+
   const [skuId, setSkuId] = useState('');
   const [apiRequestBody, setApiRequestBody] = useState();
   const [selectedFilterCount, setSelectedFilterCount] = useState();
   const [activeIndex, setActiveIndex] = useState();
   const [ListingData, setListingData] = useState(productListingData);
-  const labelMappingArr = pageData?.labelMappingSections?.filter(
-    item => item?.fields?.DropdownItems === undefined
-  );
-
-  const sortingArray = pageData?.labelMappingSections?.filter(
-    item => item?.fields?.DropdownItems !== undefined
-  );
 
   useEffect(() => {
     setListingData(productListingData);
@@ -44,11 +41,9 @@ export default function SearchPage({
 
   const handleMouseOver = id => {
     setSkuId(id);
-    setIsHovering(true);
   };
 
   const handleMouseOut = () => {
-    setIsHovering(false);
     setSkuId('');
   };
   const orderBySelect = async e => {
@@ -61,18 +56,16 @@ export default function SearchPage({
     setSelectedFilterCount({ ...selectedFilterCount, ...filterCount });
     setApiRequestBody({ ...apiRequestBody, ...filterRequest });
     const postBody = { ...apiRequestBody, ...filterRequest };
-    console.log(postBody);
     const data = await getProductListing(postBody);
-    console.log(data, 'response');
     setProductValueArray(data?.response?.value);
     setListingData(data);
   };
   const onClickPageType = async index => {
     if (params?.slug) {
       router.push(
-        `/results?type=${index === 1 ? `spec` : `producto`}&search=${
-          requestBody?.search
-        }${index === 1 ? `` : `&currentPage=1`}`
+        `/results/Category/${params?.slug}?type=${
+          index === 1 ? `spec` : `producto`
+        }&search=${requestBody?.search}${index === 1 ? `` : `&currentPage=1`}`
       );
     } else {
       setActiveIndex(index);
@@ -84,15 +77,13 @@ export default function SearchPage({
         setApiRequestBody({ ...apiRequestBody, CurrentPage: 1 });
         postBody = { ...apiRequestBody, CurrentPage: 1 };
       }
-
-      console.log('post body ', postBody)
-
       const data = await getProductListing(postBody);
 
       setListingData(data);
       setProductValueArray(data?.response?.value);
     }
   };
+
   const handlePageChange = async page => {
     router.push(
       `/results?${pageType && `type=${pageType}&`}search=${
@@ -106,22 +97,23 @@ export default function SearchPage({
       <div className='text-center bg-gray-200'>
         <div className='pt-[100px] pb-[0px] text-black'>
           <h1 className='font-sans font-light text-5xl leading-1'>
-            Buscar resultados para &quot;{requestBody?.search}&quot;
+            {staticLabelsPLP[router.locale].searchForLabel}{' '}
+            <span className='font-bold capitalize'>{requestBody?.search}</span>
           </h1>
           <p className='my-5 font-sans font-bold text-xl leading-none'>
             {searchResults?.totalSearchResults}
-            &nbsp;Procurar resultados
+            &nbsp;{staticLabelsPLP[router.locale].totalProductLabel}
           </p>
           <div className='relative mb-20'>
             <ul className='block list-none mx-auto py-30 pb-40 text-center shadow-none border-none bg-transparent'>
               <li
-                className={`inline-block mx-30 rounded-4 mr-[100px] ${
+                className={`inline-block mx-30 rounded-4 lg:mr-[100px] ${
                   activeIndex === 0 ? 'text-white bg-black' : 'bg-transparent'
                 }`}
                 onClick={() => onClickPageType(0)}
               >
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
-                  Produto
+                  {staticLabelsPLP[router.locale].product}
                   <span>({searchResults?.productsCount})</span>
                 </span>
               </li>
@@ -142,12 +134,11 @@ export default function SearchPage({
       </div>
       {activeIndex === 1 ? (
         <>
-          {' '}
           <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
             <div className='flex justify-between flex-wrap md:flex-nowrap'>
               <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
               <PLPOrderBySelect
-                sortingArray={sortingArray}
+                sortingArray={selectOptions[router.locale]}
                 orderBySelect={e => orderBySelect(e)}
               />
             </div>
@@ -159,11 +150,21 @@ export default function SearchPage({
                 searchValue={requestBody?.search}
                 slug={params?.slug}
                 selectedFilter={apiRequestBody}
-                labelMappingSections={labelMappingArr}
+                locale={router.locale}
               />
-              <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-20px w-full md:w-2/3 lg:w-2/3'>
-                <SpecCard skuId={skuId} productValueArray={productValueArray} />
-              </div>
+              {searchResults?.specificationCount > 0 ? (
+                <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
+                  <SpecCard
+                    skuId={skuId}
+                    productValueArray={productValueArray}
+                    locale={locale}
+                  />
+                </div>
+              ) : (
+                <div className='lg:mx-10 md:mx-10 my-0 py-10px'>
+                  {staticLabelsPLP[router.locale].noProductFound}
+                </div>
+              )}
             </div>
           </section>
         </>
@@ -174,7 +175,7 @@ export default function SearchPage({
               <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
 
               <PLPOrderBySelect
-                sortingArray={sortingArray}
+                sortingArray={selectOptions[router.locale]}
                 orderBySelect={e => orderBySelect(e)}
               />
             </div>
@@ -189,19 +190,26 @@ export default function SearchPage({
                 searchValue={requestBody?.search}
                 currentPageValue={1}
                 slug={params?.slug}
-                labelMappingSections={labelMappingArr}
+                locale={router.locale}
               />
               {/* cards div */}
               <div className='flex md:ml-[30px] mb-[20px] pt-[12px] pb-[20px] md:w-3/4 flex-wrap'>
                 {/* Repeater div 1 */}
-                <PLPCards
-                  handleMouseOut={e => handleMouseOut(e)}
-                  handleMouseOver={e => handleMouseOver(e)}
-                  isHovering={isHovering}
-                  skuId={skuId}
-                  showAll={true}
-                  productValueArray={productValueArray}
-                />
+                {productValueArray && productValueArray.length > 0 ? (
+                  productValueArray?.map((item, index) => {
+                    return (
+                      <PLPCards
+                        handleMouseOut={e => handleMouseOut(e)}
+                        handleMouseOver={e => handleMouseOver(e)}
+                        skuId={skuId}
+                        item={item}
+                        key={index}
+                      />
+                    );
+                  })
+                ) : (
+                  <div>{staticLabelsPLP[router.locale].noProductFound}</div>
+                )}
               </div>
             </div>
           </section>
