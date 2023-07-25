@@ -1,7 +1,10 @@
 import { HiOutlineDownload } from 'react-icons/hi';
-import { PDP_LABELS } from '@components/detailsComponent/helper';
+import {
+  PDP_LABELS,
+  TECHNICAL_INFORMATION_FILES_NAMES
+} from '@components/detailsComponent/helper';
 
-const SpecItems = ({ downloadLink, linkType, locale = 'en' }) => {
+const SpecItems = ({ downloadLink, linkType, locale }) => {
   return linkType !== 'technical' ? (
     <div className='block  pl-[20px]'>
       {(downloadLink?.DWGPlanView ||
@@ -154,59 +157,60 @@ const SpecItems = ({ downloadLink, linkType, locale = 'en' }) => {
       </div>
     </div>
   ) : (
-    <div className='block pl-[20px]'>
-      <div>
-        <ul className='p-0 my-4px list-none overflow-auto mb-[10px]'>
-          {downloadLink?.InstallationWithoutSPPDF && (
-            <li className='pl-[0px]  block float-left px-[5px]'>
-              <a
-                target='_blank'
-                href={downloadLink?.InstallationWithoutSPPDF}
-                className=''
-                rel='noreferrer'
-              >
-                {PDP_LABELS[locale].InstallationWithoutSPPDF}
-              </a>
-            </li>
-          )}
-          {downloadLink?.SpecPDFFileName && (
-            <li className='pl-[0px]  block float-left px-[100px]'>
-              <a
-                target='_blank'
-                href={downloadLink?.SpecPDFFileName}
-                className=''
-                rel='noreferrer'
-              >
-                {PDP_LABELS[locale].SpecPDFFileName}
-              </a>
-            </li>
-          )}
-          {downloadLink?.HomeguideWithSPPDF && (
-            <li className='pl-[0px]  block float-left px-[100px]'>
-              <a
-                target='_blank'
-                href={downloadLink?.HomeguideWithSPPDF}
-                className=''
-                rel='noreferrer'
-              >
-                {PDP_LABELS[locale].HomeownersGuide}
-              </a>
-            </li>
-          )}
-          {downloadLink?.HomeguideWithoutSPPDF && (
-            <li className='pl-[0px]  block float-left px-[100px]'>
-              <a
-                target='_blank'
-                href={downloadLink?.HomeguideWithoutSPPDF}
-                className=''
-                rel='noreferrer'
-              >
-                {PDP_LABELS[locale].HomeguideWithoutSPPDF}
-              </a>
-            </li>
-          )}
-        </ul>
-      </div>
+    <div className='pl-[20px]'>
+      <ul className='flex flex-col p-0 my-4px list-none overflow-auto mb-[10px]'>
+        {downloadLink?.InstallationWithoutSPPDF && (
+          <li className='pl-[0px] flex float-left px-[5px]'>
+            <a
+              target='_blank'
+              href={downloadLink?.InstallationWithoutSPPDF}
+              className=''
+              rel='noreferrer'
+            >
+              {
+                TECHNICAL_INFORMATION_FILES_NAMES[locale]
+                  .InstallationWithoutSPPDF
+              }
+            </a>
+          </li>
+        )}
+        {downloadLink?.SpecPDFFileName && (
+          <li className='pl-[0px] flex float-left px-[100px]'>
+            <a
+              target='_blank'
+              href={downloadLink?.SpecPDFFileName}
+              className=''
+              rel='noreferrer'
+            >
+              {TECHNICAL_INFORMATION_FILES_NAMES[locale].SpecPDFFileName}
+            </a>
+          </li>
+        )}
+        {downloadLink?.HomeguideWithSPPDF && (
+          <li className='pl-[0px]  flex float-left px-[100px]'>
+            <a
+              target='_blank'
+              href={downloadLink?.HomeguideWithSPPDF}
+              className=''
+              rel='noreferrer'
+            >
+              {TECHNICAL_INFORMATION_FILES_NAMES[locale].HomeownersGuide}
+            </a>
+          </li>
+        )}
+        {downloadLink?.HomeguideWithoutSPPDF && (
+          <li className='pl-[0px]  flex float-left px-[100px]'>
+            <a
+              target='_blank'
+              href={downloadLink?.HomeguideWithoutSPPDF}
+              className=''
+              rel='noreferrer'
+            >
+              {TECHNICAL_INFORMATION_FILES_NAMES[locale].HomeguideWithoutSPPDF}
+            </a>
+          </li>
+        )}
+      </ul>
     </div>
   );
 };

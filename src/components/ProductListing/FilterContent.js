@@ -19,12 +19,16 @@ export default function FilterContent({
 }) {
   const categoryType =
     pageType === 'spec'
-      ? 'SpecATGDefaultCategory'
+      ? 'SpecRegionProductCategoryLocal'
       : 'RegionProductCategoryLocal';
   const categoryArr = filterOptions?.response['@search.facets']?.[categoryType];
   const searchFacetsNode = filterOptions?.response?.['@search.facets'];
   const filterkeys = Object.keys(searchFacetsNode).filter(
-    el => !['RegionProductCategoryLocal', 'SpecATGDefaultCategory'].includes(el)
+    el =>
+      ![
+        'RegionProductCategoryLocal',
+        'SpecRegionProductCategoryLocal'
+      ].includes(el)
   );
 
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState();
@@ -142,12 +146,12 @@ export default function FilterContent({
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
-                <a
+                <Link
                   href={`/browse/${slug}/${subSlug}`}
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
                   {staticLabelsPLP[locale].clearAll}
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -258,12 +262,12 @@ export default function FilterContent({
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
-                <a
+                <Link
                   href={`/browse/${slug}/${subSlug}`}
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
                   {staticLabelsPLP[locale].clearAll}
-                </a>
+                </Link>
               </div>
             </div>
 

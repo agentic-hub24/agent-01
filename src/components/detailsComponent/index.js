@@ -600,13 +600,14 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               ))}
             </div>
             <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
-              <a
-                href='/store-listing'
-                target='_blank'
-                className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
-              >
-                {PDP_LABELS[locale].storelocatorButtonLabel}
-              </a>
+              <Link href='/store-listing' passHref>
+                <a
+                  target='_blank'
+                  className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
+                >
+                  {PDP_LABELS[locale].storelocatorButtonLabel}
+                </a>
+              </Link>
             </div>
             <div className='flex mt-5'>
               <div
@@ -1059,19 +1060,21 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 {PDP_LABELS[locale].contactUs}
               </p>
               <p>
-                <a
+                <Link
                   href={`${PDP_LABELS[locale].contactUsNumberLink}`}
-                  className='font-bold text-[#000]'
+                  passHref
                 >
-                  {PDP_LABELS[locale].contactUsNumber}
-                </a>
+                  <a target='_blank' className='font-bold text-[#000]'>
+                    {PDP_LABELS[locale].contactUsNumber}
+                  </a>
+                </Link>
               </p>
               <p>{PDP_LABELS[locale].contactUsTime} </p>
               <p>{PDP_LABELS[locale].contactUsDay}</p>
               <p>
-                <a href='/contact-us-page' target='_blank'>
-                  {PDP_LABELS[locale].emailUS}
-                </a>
+                <Link href='/contact-us-page' passHref>
+                  <a target='_blank'>{PDP_LABELS[locale].emailUS}</a>
+                </Link>
               </p>
               <ul className='mt-[10px] list-disc mb-[30px]'>
                 <li>

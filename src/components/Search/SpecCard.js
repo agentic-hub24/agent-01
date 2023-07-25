@@ -37,7 +37,10 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                     )}
                   </div>
                 </Link>
-                {(item?.SpecPDFFileName || item?.InstallationWithoutSPPDF) && (
+                {(item?.SpecPDFFileName ||
+                  item?.InstallationWithoutSPPDF ||
+                  item?.HomeguideWithSPPDF ||
+                  item?.HomeguideWithoutSPPDF) && (
                   <SearchAccordion header='Technical Information Downloads'>
                     <SpecItems
                       downloadLink={item}

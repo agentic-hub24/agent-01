@@ -17,7 +17,8 @@ export default function SearchPage({
   productListingData,
   requestBody,
   params,
-  pageType
+  pageType,
+  locale
 }) {
   const {
     response: { value, searchResults, paginationData }
@@ -62,9 +63,9 @@ export default function SearchPage({
   const onClickPageType = async index => {
     if (params?.slug) {
       router.push(
-        `/results?type=${index === 1 ? `spec` : `producto`}&search=${
-          requestBody?.search
-        }${index === 1 ? `` : `&currentPage=1`}`
+        `/results/Category/${params?.slug}?type=${
+          index === 1 ? `spec` : `producto`
+        }&search=${requestBody?.search}${index === 1 ? `` : `&currentPage=1`}`
       );
     } else {
       setActiveIndex(index);
@@ -96,9 +97,8 @@ export default function SearchPage({
       <div className='text-center bg-gray-200'>
         <div className='pt-[100px] pb-[0px] text-black'>
           <h1 className='font-sans font-light text-5xl leading-1'>
-            {`${staticLabelsPLP[router.locale].searchForLabel} ${
-              requestBody?.search
-            }`}
+            {staticLabelsPLP[router.locale].searchForLabel}{' '}
+            <span className='font-bold capitalize'>{requestBody?.search}</span>
           </h1>
           <p className='my-5 font-sans font-bold text-xl leading-none'>
             {searchResults?.totalSearchResults}
@@ -134,7 +134,6 @@ export default function SearchPage({
       </div>
       {activeIndex === 1 ? (
         <>
-          {' '}
           <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
             <div className='flex justify-between flex-wrap md:flex-nowrap'>
               <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
@@ -153,9 +152,19 @@ export default function SearchPage({
                 selectedFilter={apiRequestBody}
                 locale={router.locale}
               />
-              <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-20px w-full md:w-2/3 lg:w-2/3'>
-                <SpecCard skuId={skuId} productValueArray={productValueArray} />
-              </div>
+              {searchResults?.specificationCount > 0 ? (
+                <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
+                  <SpecCard
+                    skuId={skuId}
+                    productValueArray={productValueArray}
+                    locale={locale}
+                  />
+                </div>
+              ) : (
+                <div className='lg:mx-10 md:mx-10 my-0 py-10px'>
+                  {staticLabelsPLP[router.locale].noProductFound}
+                </div>
+              )}
             </div>
           </section>
         </>

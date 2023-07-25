@@ -1,56 +1,37 @@
-import { useEffect } from 'react';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
 import SearchPage from '@components/Search';
-import SearchNotFound from '@components/Search/SearchNotFound';
-import SearchSuggestion from '@components/Search/SearchSuggestion';
 import { removeQuotesFromString } from '@utils/footerUtils';
 
 export default function ResultPage({
   productListingData,
   requestBody,
+  params,
   pageType,
-  pageData
+  locale
 }) {
-  useEffect(() => {
-    if (
-      typeof window !== 'undefined' &&
-      productListingData?.response?.searchResults?.PDP
-    ) {
-      window.location = `/product-detail/${productListingData?.response?.searchResults?.PDP}`;
-      // return null;
-    }
-  }, [productListingData]);
-
-  {
-    if (
-      productListingData?.response['@odata.count'] > 0 ||
-      productListingData?.response?.searchResults?.suggestions
-    ) {
-      return !productListingData?.response?.searchResults?.suggestions ? (
-        <SearchPage
-          productListingData={productListingData}
-          requestBody={requestBody}
-          pageType={pageType}
-          pageData={pageData}
-        />
-      ) : (
-        <SearchSuggestion
-          requestBody={requestBody}
-          suggestion={productListingData?.response?.searchResults?.suggestions}
-        ></SearchSuggestion>
-      );
-    } else {
-      return <SearchNotFound requestBody={requestBody}></SearchNotFound>;
-    }
-  }
+  return (
+    <SearchPage
+      productListingData={productListingData}
+      requestBody={requestBody}
+      params={params}
+      pageType={pageType}
+      locale={locale}
+    />
+  );
 }
 
 export async function getServerSideProps(context) {
-  const { preview, query, locale } = context;
+  const {
+    preview,
+    query,
+    params: { slug },
+    locale
+  } = context;
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
+  const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
   const searchValue = removeQuotesFromString(query?.search);
   const currentPage = removeQuotesFromString(query?.currentPage);
   const pageType = query?.type ? query?.type : '';
@@ -85,14 +66,15 @@ export async function getServerSideProps(context) {
 
   const headerNavigationData = results[1];
   const footerNavigationData = results[2];
-
   //PLP API CALL --> Start
   const requestBody = {
     search: searchValue,
-    CurrentPage: currentPage ? currentPage : ''
+    CurrentPage: currentPage ? currentPage : '',
+    RegionProductCategoryLocal: slug.replace(/\+/g, ' '),
+    lang: languageAPI
   };
   const productListingData = await getProductListing(requestBody);
-  //   // PLP API --> end
+  // PLP API --> end
 
   return {
     props: {
@@ -101,7 +83,9 @@ export async function getServerSideProps(context) {
       world,
       productListingData,
       requestBody,
-      pageType
+      pageType,
+      params: { slug },
+      locale
     }
   };
 }

@@ -112,6 +112,7 @@ export const staticLabelsPLP = {
     searchForLabel: 'Search results for',
     totalProductLabel: 'Search results',
     product: 'Product',
+    didYouMean: 'Did you mean?',
     noProductFound:
       'Sorry! No product found in this combination. Please reset the filter and try again.'
   },
@@ -125,6 +126,7 @@ export const staticLabelsPLP = {
     searchForLabel: 'Buscar resultados para',
     totalProductLabel: 'Procurar resultados',
     product: 'Produto',
+    didYouMean: '¿Querías decir?',
     noProductFound:
       '¡Lo siento! No se ha encontrado ningún producto en esta combinación. Restablece el filtro y vuelve a intentarlo.'
   }

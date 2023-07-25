@@ -45,5 +45,7 @@ export const storeLocatorOption = {
 };
 
 export function removeQuotesFromString(str) {
-  return str.replaceAll("'", '').replaceAll('"', '');
+  return typeof str === 'string'
+    ? str.replaceAll("'", '').replaceAll('"', '')
+    : str;
 }
