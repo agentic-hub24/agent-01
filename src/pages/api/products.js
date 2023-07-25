@@ -40,51 +40,34 @@ const products = async (req, res) => {
         res.status(405).send({ error: 'Only POST requests allowed' });
         return;
       }
+
+      if (!req.body.lang || req.body.lang == '' || req.body.lang == null) {
+        res.status(405).send({ error: 'lang field is required.' });
+      }
+      const lang = req.body.lang;
+      const facets = process.env.Facets_Common_Fields.split('__');
+      const extra_facets = (
+        lang === 'en'
+          ? process.env.Facets_English_Fields
+          : process.env.Facets_Spanish_Fields
+      ).split('__');
+
       const countPerEachPage = process.env.CountPerEachPage;
       let bodyData = {
         count: true,
         top: 1000,
         skip: 0,
         search: '*',
-        facets: [
-          'RegionProductCategoryLocal_esMX,count:100',
-          'RegionProductCategoryLocal,count:100',
-          'ProductNewProduct,count:100',
-          'TouchlessFaucet,count:100',
-          'TouchlessFaucet_esMX,count:100',
-          'BowlShape,count:100',
-          'BowlShape_esMX,count:100',
-          'HandleStyle,count:100',
-          'HandleStyle_esMX,count:100',
-          'BidetFunctionality,count:100',
-          'BidetFunctionality_esMX,count:100',
-          'SKUColorFinishCode,count:100',
-          'ProductProductType,count:100',
-          'ProductProductType_esMX,count:100',
-          'ProductOverallWidthMm,count:100',
-          'ProductOverallLengthMm,count:100',
-          'ProductMaterial,count:100',
-          'ProductMaterial_esMX,count:100',
-          'ProductShape,count:100',
-          'ProductShape_esMX,count:100',
-          'ProductInstallationType,count:100',
-          'ProductInstallationType_esMX,count:100',
-          'ProductLitersPerMinute,count:100',
-          'SprayType,count:100',
-          'SprayType_esMX,count:100',
-          'ProductNumberofHandles,count:100',
-          'ProductConfiguration,count:100',
-          'ProductConfiguration_esMX,count:100',
-          'NightLight,count:100',
-          'NightLight_esMX,count:100',
-          'IntelligentToilet,count:100',
-          'IntelligentToilet_esMX,count:100',
-          'LitersPerFlush,count:100',
-          'NumberOfHoles,count:100'
-        ],
-        filter: ''
+        facets: [...facets, ...extra_facets],
+        filter: '',
+        select: process.env.Common_Fields,
+        searchMode: 'all'
       };
-      // req.body = JSON.parse(req.body);
+      bodyData['select'] +=
+        lang === 'en'
+          ? ',' + process.env.English_Fields
+          : ',' + process.env.Spanish_Fields;
+
       if (req.body.search) {
         bodyData['search'] = req.body.search;
         if (!isNaN(req.body.search) && req.body.search.length > 4) {
@@ -102,12 +85,10 @@ const products = async (req, res) => {
       }
 
       let filterData = '';
-      if (req.body.RegionProductCategoryLocal_esMX) {
-        filterData += `RegionProductCategoryLocal_esMX eq '${req.body.RegionProductCategoryLocal_esMX}' `;
-      }
-
       if (req.body.RegionProductCategoryLocal) {
-        filterData += `RegionProductCategoryLocal eq '${req.body.RegionProductCategoryLocal}' `;
+        filterData += `RegionProductCategoryLocal${
+          lang === 'en' ? '' : '_esMX'
+        } eq '${req.body.RegionProductCategoryLocal}' `;
       }
 
       if (req.body.SKUColorFinishCode) {
@@ -120,63 +101,46 @@ const products = async (req, res) => {
         filterData += `ProductNewProduct eq '${req.body.ProductNewProduct}'`;
       }
 
-      if (req.body.TouchlessFaucet_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `TouchlessFaucet_esMX eq '${req.body.TouchlessFaucet_esMX}'`;
-      }
-
       if (req.body.TouchlessFaucet) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `TouchlessFaucet eq '${req.body.TouchlessFaucet}'`;
+        filterData += `TouchlessFaucet${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.TouchlessFaucet
+        }'`;
       }
 
       if (req.body.BowlShape) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `BowlShape eq '${req.body.BowlShape}'`;
-      }
-
-      if (req.body.BowlShape_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `BowlShape_esMX eq '${req.body.BowlShape_esMX}'`;
+        filterData += `BowlShape${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.BowlShape
+        }'`;
       }
 
       if (req.body.HandleStyle) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `HandleStyle eq '${req.body.HandleStyle}'`;
-      }
-      if (req.body.HandleStyle_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `HandleStyle_esMX eq '${req.body.HandleStyle_esMX}'`;
+        filterData += `HandleStyle${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.HandleStyle
+        }'`;
       }
 
       if (req.body.BidetFunctionality) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `BidetFunctionality eq '${req.body.BidetFunctionality}'`;
-      }
-
-      if (req.body.BidetFunctionality_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `BidetFunctionality_esMX eq '${req.body.BidetFunctionality_esMX}'`;
+        filterData += `BidetFunctionality${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.BidetFunctionality
+        }'`;
       }
 
       if (req.body.ProductInstallationType) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductInstallationType eq '${req.body.ProductInstallationType}' `;
-      }
-
-      if (req.body.ProductInstallationType_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductInstallationType_esMX eq '${req.body.ProductInstallationType_esMX}' `;
+        filterData += `ProductInstallationType${
+          lang === 'en' ? '' : '_esMX'
+        } eq '${req.body.ProductInstallationType}'`;
       }
 
       if (req.body.ProductProductType) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductProductType eq '${req.body.ProductProductType}' `;
-      }
-
-      if (req.body.ProductProductType_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductProductType_esMX eq '${req.body.ProductProductType_esMX}' `;
+        filterData += `ProductProductType${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.ProductProductType
+        }'`;
       }
 
       if (req.body.ProductOverallWidthMmMin) {
@@ -191,22 +155,16 @@ const products = async (req, res) => {
 
       if (req.body.ProductMaterial) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductMaterial eq '${req.body.ProductMaterial}' `;
-      }
-
-      if (req.body.ProductMaterial_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductMaterial_esMX eq '${req.body.ProductMaterial_esMX}' `;
+        filterData += `ProductMaterial${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.ProductMaterial
+        }'`;
       }
 
       if (req.body.ProductShape) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductShape eq '${req.body.ProductShape}' `;
-      }
-
-      if (req.body.ProductShape_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductShape_esMX eq '${req.body.ProductShape_esMX}' `;
+        filterData += `ProductShape${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.ProductShape
+        }'`;
       }
 
       if (req.body.ProductLitersPerMinute) {
@@ -216,12 +174,9 @@ const products = async (req, res) => {
 
       if (req.body.SprayType) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `SprayType eq '${req.body.SprayType}'`;
-      }
-
-      if (req.body.SprayType_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `SprayType_esMX eq '${req.body.SprayType_esMX}'`;
+        filterData += `SprayType${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.SprayType
+        }'`;
       }
 
       if (req.body.ProductNumberofHandles) {
@@ -231,22 +186,9 @@ const products = async (req, res) => {
 
       if (req.body.ProductConfiguration) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductConfiguration eq '${req.body.ProductConfiguration}'`;
-      }
-
-      if (req.body.ProductConfiguration_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `ProductConfiguration_esMX eq '${req.body.ProductConfiguration_esMX}'`;
-      }
-
-      if (req.body.NightLight) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `NightLight eq '${req.body.NightLight}'`;
-      }
-
-      if (req.body.NightLight_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-        filterData += `NightLight_esMX eq '${req.body.NightLight_esMX}'`;
+        filterData += `ProductConfiguration${
+          lang === 'en' ? '' : '_esMX'
+        } eq '${req.body.ProductConfiguration}'`;
       }
 
       if (req.body.LitersPerFlush) {
@@ -254,21 +196,30 @@ const products = async (req, res) => {
         filterData += `LitersPerFlush eq '${req.body.LitersPerFlush}'`;
       }
 
+      if (req.body.NightLight) {
+        filterData += filterData != '' ? 'and ' : '';
+        filterData += `NightLight${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.NightLight
+        }'`;
+      }
+
       if (req.body.toilet_type) {
         filterData += filterData != '' ? 'and ' : '';
 
-        filterData += `ProductInstallationType eq '${req.body.toilet_type}' or IntelligentToilet eq '${req.body.toilet_type}' or ProductConfiguration eq '${req.body.toilet_type}' `;
-      }
-
-      if (req.body.toilet_type_esMX) {
-        filterData += filterData != '' ? 'and ' : '';
-
-        filterData += `ProductInstallationType_esMX eq '${req.body.toilet_type_esMX}' or IntelligentToilet_esMX eq '${req.body.toilet_type_esMX}' or ProductConfiguration_esMX eq '${req.body.toilet_type_esMX}' `;
+        filterData += `ProductInstallationType${
+          lang === 'en' ? '' : '_esMX'
+        } eq '${req.body.toilet_type}' or IntelligentToilet${
+          lang === 'en' ? '' : '_esMX'
+        } eq '${req.body.toilet_type}' or ProductConfiguration${
+          lang === 'en' ? '' : '_esMX'
+        } eq '${req.body.toilet_type}' `;
       }
 
       if (req.body.NumberOfHoles) {
         filterData += filterData != '' ? 'and ' : '';
-        filterData += `NumberOfHoles eq '${req.body.NumberOfHoles}'`;
+        filterData += `NumberOfHoles${lang === 'en' ? '' : '_esMX'} eq '${
+          req.body.NumberOfHoles
+        }'`;
       }
       bodyData['filter'] = filterData;
 
@@ -315,19 +266,27 @@ const products = async (req, res) => {
           response['paginationData']['totalNumberOfPages'] = countOfPages;
           response['paginationData']['countPerEachPage'] = countPerEachPage;
         }
+
+        // conversion of keys
+        if (lang !== 'en') {
+          response = await conversionKeys(response);
+        }
         if (req.body.search) {
           // here need to fetch specification data
           const { result, specificationCount } = await getSpecificationCount(
-            bodyData
+            bodyData,
+            lang
           );
-          response['@search.facets']['SpecATGDefaultCategory_esMX'] = result;
+          response['@search.facets']['SpecRegionProductCategoryLocal'] = result;
           response['searchResults']['productsCount'] = productsCount;
           response['searchResults']['specificationCount'] = specificationCount;
           response['searchResults']['totalSearchResults'] =
             productsCount + specificationCount;
         }
-
-        if (response['@search.facets']['IntelligentToilet'].length) {
+        if (
+          response['@search.facets'] &&
+          response['@search.facets']['IntelligentToilet']?.length
+        ) {
           response['@search.facets']['IntelligentToilet'] = response[
             '@search.facets'
           ]['IntelligentToilet'].filter(item => {
@@ -345,28 +304,12 @@ const products = async (req, res) => {
           ...response['@search.facets']['ProductInstallationType'],
           ...response['@search.facets']['IntelligentToilet']
         ];
-
-        if (response['@search.facets']['IntelligentToilet_esMX'].length) {
-          response['@search.facets']['IntelligentToilet_esMX'] = response[
-            '@search.facets'
-          ]['IntelligentToilet_esMX'].filter(item => {
-            if (
-              item.value === 'Sí' ||
-              item.value === 'Yes' ||
-              item.value === 'Yeah'
-            ) {
-              return item;
-            }
-          });
-        }
-        response['@search.facets']['toilet_type_esMX'] = [
-          ...response['@search.facets']['ProductConfiguration_esMX'],
-          ...response['@search.facets']['ProductInstallationType_esMX'],
-          ...response['@search.facets']['IntelligentToilet_esMX']
-        ];
       }
+
       return res.status(200).json({ response: response });
     } catch (error) {
+      console.log(error);
+
       return res.status(500).json({
         error: 'There was an error-' + error.name + ':' + error.message
       });
@@ -391,27 +334,164 @@ export async function apiCalling(bodyData, url) {
   return response;
 }
 
-async function getSpecificationCount(bodyData) {
+async function getSpecificationCount(bodyData, lang) {
   bodyData['top'] = 2000;
   let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
   let products = response.value;
   let specificationCount = 0;
-  const SpecATGDefaultCategory_esMX = {};
+  const SpecRegionProductCategoryLocal = {};
+  const langsuf = lang === 'en' ? '' : '_esMX';
   for (const iterator of products) {
     if (iterator.DWGPlanView || iterator.ThreeDDXF) {
       specificationCount++;
-      if (SpecATGDefaultCategory_esMX[iterator.RegionProductCategoryLocal]) {
-        SpecATGDefaultCategory_esMX[iterator.RegionProductCategoryLocal] =
-          SpecATGDefaultCategory_esMX[iterator.RegionProductCategoryLocal] + 1;
+      const loaclCat = iterator[`RegionProductCategoryLocal${langsuf}`];
+      if (SpecRegionProductCategoryLocal[loaclCat]) {
+        SpecRegionProductCategoryLocal[loaclCat] =
+          SpecRegionProductCategoryLocal[loaclCat] + 1;
       } else {
-        SpecATGDefaultCategory_esMX[iterator.RegionProductCategoryLocal] = 1;
+        SpecRegionProductCategoryLocal[loaclCat] = 1;
       }
     }
   }
-  let result = Object.keys(SpecATGDefaultCategory_esMX).map(key => {
-    return { count: SpecATGDefaultCategory_esMX[key], value: key };
+  let result = Object.keys(SpecRegionProductCategoryLocal).map(key => {
+    return { count: SpecRegionProductCategoryLocal[key], value: key };
   });
   return { result, specificationCount };
+}
+
+export async function conversionKeys(response) {
+  for (let i = 0; i < response.value.length; i++) {
+    const iterator = response.value[i];
+    const {
+      ProductDescriptionProductShort_esMX,
+      ProductLocalCategory_esMX,
+      SKUColorFinishName_esMX,
+      ProductMaterial_esMX,
+      ProductProductType_esMX,
+      ProductATGDefaultCategory_esMX,
+      ProductSection_esMX,
+      ProductInstallationType_esMX,
+      ProductShape_esMX,
+      SprayType_esMX,
+      NightLight_esMX,
+      NumberOfHoles_esMX,
+      ProductConfiguration_esMX,
+      IntelligentToilet_esMX,
+      BowlShape_esMX,
+      HandleStyle_esMX,
+      BidetFunctionality_esMX,
+      TouchlessFaucet_esMX,
+      RegionProductCategoryLocal_esMX,
+      RegionSubCategory_esMX
+    } = iterator;
+
+    const modifiedObj = {
+      ProductDescriptionProductShort: ProductDescriptionProductShort_esMX,
+      ProductLocalCategory: ProductLocalCategory_esMX,
+      SKUColorFinishName: SKUColorFinishName_esMX,
+      ProductMaterial: ProductMaterial_esMX,
+      ProductProductType: ProductProductType_esMX,
+      ProductATGDefaultCategory: ProductATGDefaultCategory_esMX,
+      ProductSection: ProductSection_esMX,
+      ProductInstallationType: ProductInstallationType_esMX,
+      ProductShape: ProductShape_esMX,
+      SprayType: SprayType_esMX,
+      NightLight: NightLight_esMX,
+      NumberOfHoles: NumberOfHoles_esMX,
+      ProductConfiguration: ProductConfiguration_esMX,
+      IntelligentToilet: IntelligentToilet_esMX,
+      BowlShape: BowlShape_esMX,
+      HandleStyle: HandleStyle_esMX,
+      BidetFunctionality: BidetFunctionality_esMX,
+      TouchlessFaucet: TouchlessFaucet_esMX,
+      RegionProductCategoryLocal: RegionProductCategoryLocal_esMX,
+      RegionSubCategory: RegionSubCategory_esMX
+    };
+    response.value[i] = { ...response.value[i], ...modifiedObj };
+
+    delete response.value[i]['ProductDescriptionProductShort_esMX'];
+    delete response.value[i]['ProductLocalCategory_esMX'];
+    delete response.value[i]['SKUColorFinishName_esMX'];
+    delete response.value[i]['ProductMaterial_esMX'];
+    delete response.value[i]['ProductProductType_esMX'];
+    delete response.value[i]['ProductATGDefaultCategory_esMX'];
+    delete response.value[i]['ProductSection_esMX'];
+    delete response.value[i]['ProductInstallationType_esMX'];
+    delete response.value[i]['ProductShape_esMX'];
+    delete response.value[i]['SprayType_esMX'];
+    delete response.value[i]['NightLight_esMX'];
+    delete response.value[i]['NumberOfHoles_esMX'];
+    delete response.value[i]['ProductConfiguration_esMX'];
+    delete response.value[i]['IntelligentToilet_esMX'];
+    delete response.value[i]['BowlShape_esMX'];
+    delete response.value[i]['HandleStyle_esMX'];
+    delete response.value[i]['BidetFunctionality_esMX'];
+    delete response.value[i]['TouchlessFaucet_esMX'];
+    delete response.value[i]['RegionProductCategoryLocal_esMX'];
+    delete response.value[i]['RegionSubCategory_esMX'];
+  }
+
+  response['@search.facets']['RegionProductCategoryLocal'] =
+    response['@search.facets']['RegionProductCategoryLocal_esMX'];
+  delete response['@search.facets']['RegionProductCategoryLocal_esMX'];
+
+  response['@search.facets']['RegionSubCategory'] =
+    response['@search.facets']['RegionSubCategory_esMX'];
+  delete response['@search.facets']['RegionSubCategory_esMX'];
+
+  response['@search.facets']['TouchlessFaucet'] =
+    response['@search.facets']['TouchlessFaucet_esMX'];
+  delete response['@search.facets']['TouchlessFaucet_esMX'];
+
+  response['@search.facets']['BowlShape'] =
+    response['@search.facets']['BowlShape_esMX'];
+  delete response['@search.facets']['BowlShape_esMX'];
+
+  response['@search.facets']['HandleStyle'] =
+    response['@search.facets']['HandleStyle_esMX'];
+  delete response['@search.facets']['HandleStyle_esMX'];
+
+  response['@search.facets']['BidetFunctionality'] =
+    response['@search.facets']['BidetFunctionality_esMX'];
+  delete response['@search.facets']['BidetFunctionality_esMX'];
+
+  response['@search.facets']['ProductInstallationType'] =
+    response['@search.facets']['ProductInstallationType_esMX'];
+  delete response['@search.facets']['ProductInstallationType_esMX'];
+
+  response['@search.facets']['ProductProductType'] =
+    response['@search.facets']['ProductProductType_esMX'];
+  delete response['@search.facets']['ProductProductType_esMX'];
+
+  response['@search.facets']['ProductMaterial'] =
+    response['@search.facets']['ProductMaterial_esMX'];
+  delete response['@search.facets']['ProductMaterial_esMX'];
+
+  response['@search.facets']['ProductShape'] =
+    response['@search.facets']['ProductShape_esMX'];
+  delete response['@search.facets']['ProductShape_esMX'];
+
+  response['@search.facets']['SprayType'] =
+    response['@search.facets']['SprayType_esMX'];
+  delete response['@search.facets']['SprayType_esMX'];
+
+  response['@search.facets']['ProductConfiguration'] =
+    response['@search.facets']['ProductConfiguration_esMX'];
+  delete response['@search.facets']['ProductConfiguration_esMX'];
+
+  response['@search.facets']['NightLight'] =
+    response['@search.facets']['NightLight_esMX'];
+  delete response['@search.facets']['NightLight_esMX'];
+
+  response['@search.facets']['NumberOfHoles'] =
+    response['@search.facets']['NumberOfHoles_esMX'];
+  delete response['@search.facets']['NumberOfHoles_esMX'];
+
+  response['@search.facets']['IntelligentToilet'] =
+    response['@search.facets']['IntelligentToilet_esMX'];
+  delete response['@search.facets']['IntelligentToilet_esMX'];
+
+  return response;
 }
 
 export default products;
