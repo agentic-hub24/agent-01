@@ -18,8 +18,7 @@ export const imageFormatter = skuResourceName => {
 };
 
 export const gifLineArtImageFormatter = image => {
-  // TODO: Latem link should be here
-  return `https://resources.kohler.com/plumbing/kohlerbrazil/lineart/${image}`;
+  return `https://resources.kohler.com/plumbing/kohlerla/lineart/${image}`;
 };
 
 export const checkForNewProducts = dateStr => {
@@ -123,22 +122,27 @@ export const TECHNICAL_INFORMATION_FILES = [
   'InstallationWithoutSPPDF',
   'SpecPDFFileName',
   'HomeownersGuide',
-  'PartsPDFFileName'
+  'PartsPDFFileName',
+  'InteractiveSVG'
 ];
 export const TECHNICAL_INFORMATION_FILES_NAMES = {
   es: {
     SpecPDFFileName: 'áspera/ Hoja de especificaciones',
     HomeownersGuide: 'guía de dueños de casa',
-    InstallationWithoutSPPDF: 'Guia de instalação sem peçus de serviço',
+    InstallationWithoutSPPDF:
+      'Guía de instalación y cuidado sin piezas de repuesto',
     PartsPDFFileName: 'Peças pdf',
+    InteractiveSVG: 'Diagrama de piezas interactivo',
     HomeguideWithoutSPPDF:
       'Guía de propietarios de viviendas sin pieza de servicio'
   },
   en: {
     SpecPDFFileName: 'Rough in/ Spec Sheet',
     HomeownersGuide: 'Home owners guide',
-    InstallationWithoutSPPDF: 'Installation guide',
+    InstallationWithoutSPPDF:
+      'Installation and Care Guide without Service Parts',
     PartsPDFFileName: 'Parts',
+    InteractiveSVG: 'Interactive parts diagram',
     HomeguideWithoutSPPDF: 'Home owners guide without service part'
   }
 };

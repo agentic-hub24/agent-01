@@ -327,7 +327,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       if (ProductProductType !== undefined) {
         try {
           const requestBody = {
-            ProductProductType: ProductProductType
+            ProductProductType: ProductProductType,
+            lang: locale
           };
           const productListingData = await getProductListing(requestBody);
           const filteredData =
@@ -1131,13 +1132,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 {lineArt && (
                   <div className='mt-[30px]'>
                     <img
-                      src={lineArt?.ResourceFullWebURL}
+                      src={gifLineArtImageFormatter(lineArt?.ResourceName)}
                       alt='Gif line art'
-                      onError={e =>
-                        (e.target.src = gifLineArtImageFormatter(
-                          lineArt?.ResourceName
-                        ))
-                      }
                     />
                   </div>
                 )}
@@ -1191,7 +1187,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
           </div>
         </div>
         <hr />
-        <div className='flex flex-col'>
+        <div className='flex flex-col mb-4'>
           {ProductProductLinkType && ProductProductLinkType.length > 0 && (
             <>
               {hasLinkedprodcts && (
@@ -1202,23 +1198,28 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               <div className='flex flex-wrap lg:flex-nowrap flex-row'>
                 <SimilarProductsCards
                   productProductLinkType={ProductProductLinkType?.slice(0, 4)}
+                  locale={locale}
                 />
               </div>
             </>
           )}
         </div>
+        <hr />
         {similarProducts && similarProducts.length > 0 && (
-          <div className='flex flex-col'>
+          <div className='flex flex-col mb-4'>
             <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
               {PDP_LABELS[locale].similarProducts}
             </div>
+            <hr />
             <div className='flex flex-wrap lg:flex-nowrap flex-row'>
               <SimilarProducts
-                productProductLinkType={similarProducts?.slice(0, 6)}
+                productProductLinkType={similarProducts?.slice(0, 5)}
+                locale={locale}
               />
             </div>
           </div>
         )}
+        <hr />
       </section>
       <Cta fields={CTAObject[locale]} />
       <BackToTop topHeight={0} localeProp={locale} />

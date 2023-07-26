@@ -236,7 +236,7 @@ export default function HeaderSection({ navData = {}, world }) {
           <div className='height-max overflow-scroll absolute w-full z-50'>
             {searchVisible && openMobileMenu && (
               <div className='p-4 border-b flex w-full justify-center bg-[#fff]'>
-                <HeaderSearch />
+                <HeaderSearch setOpenMobileMenu={e => setOpenMobileMenu(e)} />
               </div>
             )}
             <div className='w-full bg-[#fff]'>
