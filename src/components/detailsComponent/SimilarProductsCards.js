@@ -2,7 +2,10 @@
 import Link from 'next/link';
 import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
 
-export default function SimilarProductsCards({ productProductLinkType }) {
+export default function SimilarProductsCards({
+  productProductLinkType,
+  locale
+}) {
   return (
     <>
       {productProductLinkType?.map((item, index) => {
@@ -16,15 +19,17 @@ export default function SimilarProductsCards({ productProductLinkType }) {
                 <div className='mb-[10px] flex justify-center border-4 border-neutral-50'>
                   <img
                     src={carouselImageFormatter(
-                      item?.links?.ProductResource[0]?.ResourceName
+                      item?.links?.ProductResource[0]?.ResourceName,
+                      item?.ProductNewProduct
                     )}
                     alt={item?.SkuResourceImgName}
                     className='h-[147px] w-[196px]'
                     onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                   />
                 </div>
+
                 <a
-                  href={`/product-detail/${item.ProductProductNo}`}
+                  href={`/${locale}/product-detail/${item.ProductProductNo}`}
                   className='hover:no-underline'
                 >
                   <div className='mb-[20px] px-[10px] text-center font-helvetica leading-tight text-ellipsis text-[14px] text-[#232323] hover:cursor-pointer'>

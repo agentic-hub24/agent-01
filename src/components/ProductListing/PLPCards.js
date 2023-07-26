@@ -52,7 +52,7 @@ export default function PLPCards({
           <div>
             <div className='mb-[20px] px-[10px] text-center font-helvetica leading-tight text-ellipsis text-[14px] text-[#232323] hover:cursor-pointer'>
               <span>{item.ProductBrandName}</span>
-              <span>{item.ProductDescriptionProductShort_PT}</span>
+              <span>{item.ProductDescriptionProductShort}</span>
               {item.ProductOverallLengthMm && (
                 <span> {item.ProductOverallLengthMm}mm </span>
               )}

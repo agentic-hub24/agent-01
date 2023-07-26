@@ -3,7 +3,7 @@ import { HiSearch } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 import { searchLabel, removeQuotesFromString } from '@utils/footerUtils';
 
-export default function HeaderSearch() {
+export default function HeaderSearch({ setOpenMobileMenu }) {
   const router = useRouter();
   const { locale = '' } = router;
   const [searchValue, setSearchvalue] = useState('');
@@ -14,11 +14,13 @@ export default function HeaderSearch() {
   const handleKeyUp = event => {
     if (event.key === 'Enter') {
       router.push(`/results?search=${searchValue}&currentPage=1`);
+      setOpenMobileMenu(false);
     }
   };
   const searchOnClick = () => {
     if (searchValue) {
       router.push(`/results?search=${searchValue}&currentPage=1`);
+      setOpenMobileMenu(false);
     }
   };
   const handleChange = e => {
@@ -34,12 +36,18 @@ export default function HeaderSearch() {
           placeholder={searchLabel[locale]}
           onChange={handleChange}
           onKeyUp={handleKeyUp}
-          onClick={searchOnClick}
         />
-        <button className='absolute right-0 top-0 bottom-0 px-3 py-2 text-[20px] text-[#bebebe]'>
+        <button
+          className='absolute right-0 top-0 bottom-0 px-3 py-2 text-[20px] text-[#bebebe]'
+          onClick={searchOnClick}
+        >
           <HiSearch />
         </button>
       </div>
     </div>
   );
 }
+
+HeaderSearch.defaultProps = {
+  setOpenMobileMenu: () => {}
+};

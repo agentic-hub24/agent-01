@@ -112,7 +112,7 @@ export default function SearchPage({
                 }`}
                 onClick={() => onClickPageType(0)}
               >
-                <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
+                <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].product}
                   <span>({searchResults?.productsCount})</span>
                 </span>
@@ -123,8 +123,8 @@ export default function SearchPage({
                 }`}
                 onClick={() => onClickPageType(1)}
               >
-                <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
-                  Spec
+                <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
+                  {staticLabelsPLP[router.locale].spec}
                   <span>({searchResults?.specificationCount})</span>
                 </span>
               </li>

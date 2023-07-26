@@ -111,7 +111,10 @@ export const staticLabelsPLP = {
     colorLabel: 'Selected Color',
     searchForLabel: 'Search results for',
     totalProductLabel: 'Search results',
-    product: 'Product',
+    product: 'Products',
+    spec: 'Spec',
+    tech: 'Technical Information Downloads',
+    template: 'Template & Symbol Downloads',
     didYouMean: 'Did you mean?',
     noProductFound:
       'Sorry! No product found in this combination. Please reset the filter and try again.'
@@ -124,8 +127,11 @@ export const staticLabelsPLP = {
     buttonMDLabel: 'Categorías y Filtros',
     colorLabel: 'Seleccione Color',
     searchForLabel: 'Buscar resultados para',
-    totalProductLabel: 'Procurar resultados',
-    product: 'Produto',
+    totalProductLabel: 'Resultados',
+    product: 'Productos',
+    spec: 'Especificación',
+    tech: 'Descargar Información Técnica',
+    template: 'Descargar Plantillas y Símbolos',
     didYouMean: '¿Querías decir?',
     noProductFound:
       '¡Lo siento! No se ha encontrado ningún producto en esta combinación. Restablece el filtro y vuelve a intentarlo.'

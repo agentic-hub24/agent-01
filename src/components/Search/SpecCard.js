@@ -1,5 +1,8 @@
 import Link from 'next/link';
-import { imageFormatter } from '@components/ProductListing/helper';
+import {
+  imageFormatter,
+  staticLabelsPLP
+} from '@components/ProductListing/helper';
 import SearchAccordion from './SearchAccordion';
 import SpecItems from './SpecItems';
 
@@ -41,7 +44,7 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                   item?.InstallationWithoutSPPDF ||
                   item?.HomeguideWithSPPDF ||
                   item?.HomeguideWithoutSPPDF) && (
-                  <SearchAccordion header='Technical Information Downloads'>
+                  <SearchAccordion header={staticLabelsPLP[locale].tech}>
                     <SpecItems
                       downloadLink={item}
                       linkType='technical'
@@ -51,7 +54,7 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                 )}
                 {(item?.DWGPlanView || item?.ThreeDDXF) && (
                   <>
-                    <SearchAccordion header='Template & Symbol Downloads'>
+                    <SearchAccordion header={staticLabelsPLP[locale].template}>
                       <SpecItems
                         downloadLink={item}
                         linkType='template'
