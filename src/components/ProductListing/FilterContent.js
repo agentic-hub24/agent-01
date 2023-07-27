@@ -174,6 +174,7 @@ export default function FilterContent({
                 searchFacetsNode?.[option]?.length > 0 && (
                   <FilterAccordion
                     header={filterMapping?.[0]?.[locale]?.[option]?.label}
+                    key={i}
                   >
                     <FilterItems
                       filterOption={searchFacetsNode?.[option]}
@@ -290,6 +291,7 @@ export default function FilterContent({
                 <FilterAccordion
                   header={filterMapping?.[0]?.[locale]?.[option]?.label}
                   subSlug={subSlug}
+                  key={i}
                 >
                   <FilterItems
                     filterOption={searchFacetsNode?.[option]}

@@ -44,11 +44,13 @@ export default function HeaderSection({ navData = {}, world }) {
     e.preventDefault();
     if (
       secondaryNavLabel.toUpperCase() ===
-      secondaryNav?.fields?.label.toUpperCase()
+        secondaryNav?.fields?.label.toUpperCase() &&
+      navOpen
     ) {
       setNavOpen(false);
       setSecondaryNavLabel('');
     } else {
+      setNavOpen(true);
       setSecondaryNavItem(secondaryNav?.fields?.secondaryNavigation);
       setSecondaryNavLabel(secondaryNav?.fields?.label);
     }
@@ -84,6 +86,7 @@ export default function HeaderSection({ navData = {}, world }) {
   const handleHamburger = () => {
     setOpenMobileMenu(true);
     setSearchVisible(false);
+    setSecondaryNavLabelMobile('');
     if (openMobileMenu) {
       setOpenMobileMenu(false);
       setSearchVisible(false);
