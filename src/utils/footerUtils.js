@@ -43,3 +43,9 @@ export const storeLocatorOption = {
     selectCity: '--Ciudad Selecta--'
   }
 };
+
+export function removeQuotesFromString(str) {
+  return typeof str === 'string'
+    ? str.replaceAll("'", '').replaceAll('"', '')
+    : str;
+}

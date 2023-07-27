@@ -1,4 +1,10 @@
+import { removeQuotesFromString } from '@utils/footerUtils';
+
 export async function getProductListing(requestBody) {
+  var newObj = {};
+  for (var i in requestBody) {
+    newObj[i] = removeQuotesFromString(requestBody[i]);
+  }
   try {
     const apiBaseURL = process.env.API_BASEURL;
     const res = await fetch(`${apiBaseURL}/api/products`, {
@@ -6,19 +12,19 @@ export async function getProductListing(requestBody) {
       headers: {
         mode: 'no-cors',
         Authorization: process.env.API_AUTH,
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(newObj)
     });
     const data = await res.json();
-    console.log('fron end getting res ');
     return data;
   } catch (err) {
     console.log(err);
   }
 }
 
-export async function getProductCategory(slug) {
+export async function getProductCategory(requestBody) {
   try {
     const apiBaseURL = process.env.API_BASEURL;
     const res = await fetch(`${apiBaseURL}/api/categories`, {
@@ -26,9 +32,10 @@ export async function getProductCategory(slug) {
       headers: {
         mode: 'no-cors',
         Authorization: process.env.API_AUTH,
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ ProductSection_PT: slug })
+      body: JSON.stringify(requestBody)
     });
     const data = await res.json();
     return data;

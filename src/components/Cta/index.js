@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 
 const CTAURL = {
-  en: 'http://ips-invite.iperceptions.com/webValidator.aspx?sdfc=355b766d-129713-c733c77b-141a-42d7-be9f-2e52b426622b&lID=1&source=102226',
-  es: 'http://ips-invite.iperceptions.com/webValidator.aspx?sdfc=355b766d-129714-c733c77b-141a-42d7-be9f-2e52b426622b&lID=1&source=102226'
+  en: process.env.NEXT_PUBLIC_EMPLIFY_EN,
+  es: process.env.NEXT_PUBLIC_EMPLIFY_ES
 };
 
 const Cta = ({ fields }) => {

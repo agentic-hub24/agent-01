@@ -1,8 +1,12 @@
 import React, { useState, memo } from 'react';
+import { useRouter } from 'next/router';
 import Cta from '@components/Cta';
 import { RichText } from '@components/RichText';
+import BackToTop from '@components/backToTop';
 
 const PressRelease = ({ pageData }) => {
+  const router = useRouter();
+  const { locale = '' } = router;
   const { pageHeading, pageSections } = pageData;
   // Preparing tabs button exluding bottom help us link
   const ctaButtons = pageSections.filter(
@@ -123,6 +127,7 @@ const PressRelease = ({ pageData }) => {
         </div>
       </section>
       <Cta fields={helpUsLink?.fields} />
+      <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
 };

@@ -78,7 +78,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [cutOutDXF, setCutOutDXF] = useState([]);
   const [bimRevit, setBimRevit] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
-  const [zoomActive, setZoomActive] = useState(false);
+  const [zoomActive, setZoomActive] = useState(true);
   const [showZoom, showImageZoom] = useState(false);
   const [technicalInfoFiles, setTechnicalInfoFiles] = useState([]);
   const [colorFinishCodeArray, setColorFinisCodeArray] = useState([]);
@@ -156,7 +156,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         ProductLocalCategory,
         ProductSection,
         ProductProductType,
-        ProductMETADESCRIPTION
+        ProductMETADESCRIPTION,
+        ProductNewProduct
       }
     } = {}
   } = productDetailsData;
@@ -182,8 +183,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
           PRODUCT_ADDITIONAL_IMAGE.includes(el.ResourceType)
         ) || [];
 
-      const youtube_link = ProductResource?.filter(
-        el => el?.ResourceType === PRODUCT_RESOURCE_TYPE_VIDEO
+      const youtube_link = ProductResource?.filter(el =>
+        PRODUCT_RESOURCE_TYPE_VIDEO.includes(el?.ResourceType)
       );
 
       setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
@@ -198,8 +199,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
           PRODUCT_ADDITIONAL_IMAGE.includes(el.ResourceType)
         ) || [];
 
-      const youtube_link = ProductResource?.filter(
-        el => el?.ResourceType === PRODUCT_RESOURCE_TYPE_VIDEO
+      const youtube_link = ProductResource?.filter(el =>
+        PRODUCT_RESOURCE_TYPE_VIDEO.includes(el?.ResourceType)
       );
 
       setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
@@ -250,8 +251,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         ) || [];
     }
 
-    const youtube_link = ProductResource?.filter(
-      item => item.ResourceType === PRODUCT_RESOURCE_TYPE_VIDEO
+    const youtube_link = ProductResource?.filter(item =>
+      PRODUCT_RESOURCE_TYPE_VIDEO.includes(item?.ResourceType)
     );
     setYoutubeLink(youtube_link);
 
@@ -326,7 +327,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       if (ProductProductType !== undefined) {
         try {
           const requestBody = {
-            ProductProductType_PT: ProductProductType
+            ProductProductType: ProductProductType,
+            lang: locale
           };
           const productListingData = await getProductListing(requestBody);
           const filteredData =
@@ -366,7 +368,9 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     let glass = document.getElementsByClassName('img-magnifier-glass');
     !zoomActive
       ? magnify(myImageId, 3)
-      : glass[0].parentNode.removeChild(glass[0]);
+      : glass && glass.length > 0 && zoomActive
+      ? glass[0].parentNode.removeChild(glass[0])
+      : false;
   };
 
   return (
@@ -414,13 +418,13 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   thumbsPosition > -(carousel.length - 3) && (
                     <>
                       <button
-                        className='lg:hidden block text-[#e5e5e5]'
+                        className='lg:hidden block text-[#e5e5e5] hover:text-[#232323]'
                         onClick={e => handlePrevClick(e)}
                       >
                         <HiOutlineChevronRight size={35} />
                       </button>
                       <button
-                        className='lg:block hidden text-[#e5e5e5]'
+                        className='lg:block hidden text-[#e5e5e5] hover:text-[#232323]'
                         onClick={e => handlePrevClick(e)}
                       >
                         <HiOutlineChevronDown size={45} />
@@ -429,8 +433,9 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   )}
               </div>
               <div className='lg:w-5/6 sm:w-[95%] w-full p-1 relative'>
-                {carousel[imageIndex]?.ResourceType ===
-                PRODUCT_RESOURCE_TYPE_VIDEO ? (
+                {PRODUCT_RESOURCE_TYPE_VIDEO.includes(
+                  carousel[imageIndex]?.ResourceType
+                ) ? (
                   <iframe
                     height='470'
                     width='100%'
@@ -459,11 +464,11 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <img
                       src={carouselImageFormatter(
                         carousel[imageIndex]?.ResourceName,
-                        isNewProduct
+                        ProductNewProduct
                       )}
                       alt={carousel[imageIndex]?.ResourceName}
                       id='myImage'
-                      className='w-full h-[250px] md:h-[350px] lg:h-[470px]'
+                      className='w-full'
                       onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                     />
                   </div>
@@ -483,8 +488,9 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     {carousel && carousel.length > 0 ? (
                       carousel?.map((element, id) => (
                         <>
-                          {element?.ResourceType !==
-                            PRODUCT_RESOURCE_TYPE_VIDEO && (
+                          {!PRODUCT_RESOURCE_TYPE_VIDEO.includes(
+                            element?.ResourceType
+                          ) && (
                             <div key={id}>
                               <img
                                 src={carouselImageFormatter(
@@ -595,13 +601,14 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               ))}
             </div>
             <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
-              <a
-                href='/store-listing'
-                target='_blank'
-                className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
-              >
-                {PDP_LABELS[locale].storelocatorButtonLabel}
-              </a>
+              <Link href='/store-listing' passHref>
+                <a
+                  target='_blank'
+                  className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
+                >
+                  {PDP_LABELS[locale].storelocatorButtonLabel}
+                </a>
+              </Link>
             </div>
             <div className='flex mt-5'>
               <div
@@ -993,43 +1000,49 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   </div>
                   <div className='flex flex-wrap lg:flex-nowrap md:flex-row flex-col pb-4'>
                     {youtubeMetaData?.map((item, id) => (
-                      <div key={id} className='pr-4 md:w-1/3 w-full pb-4'>
-                        <div className='relative'>
-                          <img
-                            src={
-                              item?.metaData?.items &&
-                              item?.metaData?.items[0]?.snippet?.thumbnails
-                                ?.maxres?.url
-                            }
-                            onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
-                            className='w-full'
-                            alt='youtube thumbnail image'
-                          />
+                      <>
+                        {item?.metaData?.items.length > 0 && (
+                          <div key={id} className='pr-4 md:w-1/3 w-full pb-4'>
+                            <div className='relative'>
+                              <img
+                                src={
+                                  item?.metaData?.items &&
+                                  item?.metaData?.items[0]?.snippet?.thumbnails
+                                    ?.standard?.url
+                                }
+                                onError={e =>
+                                  (e.target.src = DEFAULT_IMAGE_LINK)
+                                }
+                                className='w-full'
+                                alt='youtube thumbnail image'
+                              />
 
-                          <div
-                            className='absolute top-[40%] right-[40%] h-[50px] w-[50px] bg-black opacity-40 border-2 rounded-full border-neutral-500 cursor-pointer'
-                            onClick={() => setYoutubeLinkOpen(item)}
-                          >
-                            <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-[#fff]'>
-                              <HiPlay size={30} />
+                              <div
+                                className='absolute top-[40%] right-[40%] h-[50px] w-[50px] bg-black opacity-40 border-2 rounded-full border-neutral-500 cursor-pointer'
+                                onClick={() => setYoutubeLinkOpen(item)}
+                              >
+                                <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-[#fff]'>
+                                  <HiPlay size={30} />
+                                </div>
+                              </div>
                             </div>
+                            <div className='font-helveticaLight text-[14px] font-bold text-[#232323] mb-1 leading-tight'>
+                              {item?.metaData?.items &&
+                                item?.metaData?.items[0]?.snippet?.title}
+                            </div>
+                            <div className='font-helveticaLight text-[12px] text-[#232323] mb-1 leading-tight truncate h-9'>
+                              {item?.metaData?.items &&
+                                item?.metaData?.items[0]?.snippet?.description}
+                            </div>
+                            {Object.keys(youtubeLinkOpen).length > 0 && (
+                              <VideoModal
+                                item={youtubeLinkOpen}
+                                setYoutubeLinkOpen={e => setYoutubeLinkOpen(e)}
+                              />
+                            )}
                           </div>
-                        </div>
-                        <div className='font-helveticaLight text-[14px] font-bold text-[#232323] mb-1 leading-tight'>
-                          {item?.metaData?.items &&
-                            item?.metaData?.items[0]?.snippet?.title}
-                        </div>
-                        <div className='font-helveticaLight text-[12px] text-[#232323] mb-1 leading-tight'>
-                          {item?.metaData?.items &&
-                            item?.metaData?.items[0]?.snippet?.description}
-                        </div>
-                        {Object.keys(youtubeLinkOpen).length > 0 && (
-                          <VideoModal
-                            item={youtubeLinkOpen}
-                            setYoutubeLinkOpen={e => setYoutubeLinkOpen(e)}
-                          />
                         )}
-                      </div>
+                      </>
                     ))}
                   </div>
                 </>
@@ -1048,19 +1061,21 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 {PDP_LABELS[locale].contactUs}
               </p>
               <p>
-                <a
+                <Link
                   href={`${PDP_LABELS[locale].contactUsNumberLink}`}
-                  className='font-bold text-[#000]'
+                  passHref
                 >
-                  {PDP_LABELS[locale].contactUsNumber}
-                </a>
+                  <a target='_blank' className='font-bold text-[#000]'>
+                    {PDP_LABELS[locale].contactUsNumber}
+                  </a>
+                </Link>
               </p>
               <p>{PDP_LABELS[locale].contactUsTime} </p>
               <p>{PDP_LABELS[locale].contactUsDay}</p>
               <p>
-                <a href='/contact-us-page' target='_blank'>
-                  {PDP_LABELS[locale].emailUS}
-                </a>
+                <Link href='/contact-us-page' passHref>
+                  <a target='_blank'>{PDP_LABELS[locale].emailUS}</a>
+                </Link>
               </p>
               <ul className='mt-[10px] list-disc mb-[30px]'>
                 <li>
@@ -1117,13 +1132,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 {lineArt && (
                   <div className='mt-[30px]'>
                     <img
-                      src={lineArt?.ResourceFullWebURL}
+                      src={gifLineArtImageFormatter(lineArt?.ResourceName)}
                       alt='Gif line art'
-                      onError={e =>
-                        (e.target.src = gifLineArtImageFormatter(
-                          lineArt?.ResourceName
-                        ))
-                      }
                     />
                   </div>
                 )}
@@ -1177,7 +1187,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
           </div>
         </div>
         <hr />
-        <div className='flex flex-col'>
+        <div className='flex flex-col mb-4'>
           {ProductProductLinkType && ProductProductLinkType.length > 0 && (
             <>
               {hasLinkedprodcts && (
@@ -1188,23 +1198,28 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               <div className='flex flex-wrap lg:flex-nowrap flex-row'>
                 <SimilarProductsCards
                   productProductLinkType={ProductProductLinkType?.slice(0, 4)}
+                  locale={locale}
                 />
               </div>
             </>
           )}
         </div>
+        <hr />
         {similarProducts && similarProducts.length > 0 && (
-          <div className='flex flex-col'>
+          <div className='flex flex-col mb-4'>
             <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
               {PDP_LABELS[locale].similarProducts}
             </div>
+            <hr />
             <div className='flex flex-wrap lg:flex-nowrap flex-row'>
               <SimilarProducts
-                productProductLinkType={similarProducts?.slice(0, 6)}
+                productProductLinkType={similarProducts?.slice(0, 5)}
+                locale={locale}
               />
             </div>
           </div>
         )}
+        <hr />
       </section>
       <Cta fields={CTAObject[locale]} />
       <BackToTop topHeight={0} localeProp={locale} />

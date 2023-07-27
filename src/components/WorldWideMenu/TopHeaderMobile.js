@@ -79,11 +79,9 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
                             <MobileNavItem
                               key={index}
                               navItem={navItem}
-                              justifyProp='space-between'
                               svgElement={<HiOutlineChevronRight size={20} />}
                               classNames='hover:text-white text-white cursor-pointer text-[14px] md:text-[22px]'
-                              stylePro='5px 20px'
-                              linkClass='flex lg:p-[4px] w-full text-white bg-neutral-600 border-b border-black font-helveticaLight text-[12px] text-white opacity-70 font-semibold'
+                              linkClass='flex justify-between lg:p-[4px] w-full text-white bg-neutral-600 border-b border-black font-helveticaLight text-[12px] text-white opacity-70 font-semibold px-[20px] py-[5px]'
                             />
                           );
                         })}

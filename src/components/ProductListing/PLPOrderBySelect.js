@@ -9,11 +9,11 @@ export default function PLPOrderBySelect({ orderBySelect, sortingArray }) {
         onChange={e => orderBySelect(e)}
       >
         <option value='' style={{ display: 'none' }}>
-          {sortingArray[0]?.fields?.label}
+          {sortingArray[0]?.label}
         </option>
-        {sortingArray[0]?.fields?.DropdownItems?.map((item, index) => (
-          <option key={index} value={item?.fields?.value.replace(/\"/g, '')}>
-            {item?.fields?.name}
+        {sortingArray?.map((item, index) => (
+          <option key={index} value={item?.value.replace(/\"/g, '')}>
+            {item?.label}
           </option>
         ))}
       </select>
