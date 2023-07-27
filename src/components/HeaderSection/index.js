@@ -42,16 +42,18 @@ export default function HeaderSection({ navData = {}, world }) {
 
   const handleSecondaryNav = (e, secondaryNav) => {
     e.preventDefault();
-    // if (
-    //   secondaryNavLabel.toUpperCase() ===
-    //   secondaryNav?.fields?.label.toUpperCase()
-    // ) {
-    //   setNavOpen(false);
-    //   setSecondaryNavLabel('');
-    // } else {
-    setSecondaryNavItem(secondaryNav?.fields?.secondaryNavigation);
-    setSecondaryNavLabel(secondaryNav?.fields?.label);
-    // }
+    if (
+      secondaryNavLabel.toUpperCase() ===
+        secondaryNav?.fields?.label.toUpperCase() &&
+      navOpen
+    ) {
+      setNavOpen(false);
+      setSecondaryNavLabel('');
+    } else {
+      setNavOpen(true);
+      setSecondaryNavItem(secondaryNav?.fields?.secondaryNavigation);
+      setSecondaryNavLabel(secondaryNav?.fields?.label);
+    }
   };
 
   const secondaryNavItemFuncMobile = (e, secondaryNav) => {
