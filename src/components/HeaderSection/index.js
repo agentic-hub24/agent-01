@@ -42,16 +42,16 @@ export default function HeaderSection({ navData = {}, world }) {
 
   const handleSecondaryNav = (e, secondaryNav) => {
     e.preventDefault();
-    if (
-      secondaryNavLabel.toUpperCase() ===
-      secondaryNav?.fields?.label.toUpperCase()
-    ) {
-      setNavOpen(false);
-      setSecondaryNavLabel('');
-    } else {
-      setSecondaryNavItem(secondaryNav?.fields?.secondaryNavigation);
-      setSecondaryNavLabel(secondaryNav?.fields?.label);
-    }
+    // if (
+    //   secondaryNavLabel.toUpperCase() ===
+    //   secondaryNav?.fields?.label.toUpperCase()
+    // ) {
+    //   setNavOpen(false);
+    //   setSecondaryNavLabel('');
+    // } else {
+    setSecondaryNavItem(secondaryNav?.fields?.secondaryNavigation);
+    setSecondaryNavLabel(secondaryNav?.fields?.label);
+    // }
   };
 
   const secondaryNavItemFuncMobile = (e, secondaryNav) => {
@@ -84,6 +84,7 @@ export default function HeaderSection({ navData = {}, world }) {
   const handleHamburger = () => {
     setOpenMobileMenu(true);
     setSearchVisible(false);
+    setSecondaryNavLabelMobile('');
     if (openMobileMenu) {
       setOpenMobileMenu(false);
       setSearchVisible(false);
