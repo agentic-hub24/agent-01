@@ -10,6 +10,7 @@ import {
   CTAObject,
   staticLabelsPLP
 } from '@components/ProductListing/helper';
+import BackToTop from '@components/backToTop';
 import Pagination from './Pagination';
 import SpecCard from './SpecCard';
 
@@ -21,7 +22,7 @@ export default function SearchPage({
   locale
 }) {
   const {
-    response: { value, searchResults, paginationData }
+    response: { value, searchResults }
   } = productListingData;
   const router = useRouter();
   const [productValueArray, setProductValueArray] = useState([]);
@@ -61,14 +62,16 @@ export default function SearchPage({
     setListingData(data);
   };
   const onClickPageType = async index => {
+    setActiveIndex(index);
     if (params?.slug) {
       router.push(
         `/results/Category/${params?.slug}?type=${
           index === 1 ? `spec` : `producto`
-        }&search=${requestBody?.search}${index === 1 ? `` : `&currentPage=1`}`
+        }&search=${requestBody?.search}${index === 1 ? `` : `&currentPage=1`}`,
+        undefined,
+        { shallow: true }
       );
     } else {
-      setActiveIndex(index);
       let postBody = {};
       if (index === 1) {
         setApiRequestBody({ ...apiRequestBody, CurrentPage: '' });
@@ -85,10 +88,17 @@ export default function SearchPage({
   };
 
   const handlePageChange = async page => {
+    setApiRequestBody({ ...apiRequestBody, CurrentPage: 1 });
+    let postBody = { ...apiRequestBody, CurrentPage: page };
+    const data = await getProductListing(postBody);
+    setListingData(data);
+    setProductValueArray(data?.response?.value);
     router.push(
       `/results?${pageType && `type=${pageType}&`}search=${
         requestBody?.search
-      }${pageType === `spec` ? `` : `&currentPage=${page}`}`
+      }${pageType === `spec` ? `` : `&currentPage=${page}`}`,
+      undefined,
+      { shallow: true }
     );
   };
 
@@ -101,7 +111,7 @@ export default function SearchPage({
             <span className='font-bold capitalize'>{requestBody?.search}</span>
           </h1>
           <p className='my-5 font-sans font-bold text-xl leading-none'>
-            {searchResults?.totalSearchResults}
+            {ListingData?.response?.searchResults?.totalSearchResults}
             &nbsp;{staticLabelsPLP[router.locale].totalProductLabel}
           </p>
           <div className='relative mb-20'>
@@ -113,8 +123,10 @@ export default function SearchPage({
                 onClick={() => onClickPageType(0)}
               >
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
-                  {staticLabelsPLP[router.locale].product}
-                  <span>({searchResults?.productsCount})</span>
+                  {staticLabelsPLP[router.locale].product}{' '}
+                  <span>
+                    ({ListingData?.response?.searchResults?.productsCount})
+                  </span>
                 </span>
               </li>
               <li
@@ -124,8 +136,10 @@ export default function SearchPage({
                 onClick={() => onClickPageType(1)}
               >
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
-                  {staticLabelsPLP[router.locale].spec}
-                  <span>({searchResults?.specificationCount})</span>
+                  {staticLabelsPLP[router.locale].spec}{' '}
+                  <span>
+                    ({ListingData?.response?.searchResults?.specificationCount})
+                  </span>
                 </span>
               </li>
             </ul>
@@ -144,13 +158,14 @@ export default function SearchPage({
             </div>
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
               <FilterContent
-                filterOptions={ListingData}
+                filterOptions={ListingData?.response?.['@search.facets']}
                 showAll={true}
                 pageType={'spec'}
                 searchValue={requestBody?.search}
                 slug={params?.slug}
                 selectedFilter={apiRequestBody}
                 locale={router.locale}
+                totalProductCount={ListingData?.response?.['@odata.count']}
               />
               {searchResults?.specificationCount > 0 ? (
                 <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
@@ -182,7 +197,7 @@ export default function SearchPage({
 
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
               <FilterContent
-                filterOptions={ListingData}
+                filterOptions={ListingData?.response?.['@search.facets']}
                 filterSelect={filterSelect}
                 selectedFilter={apiRequestBody}
                 selectedFilterCount={selectedFilterCount}
@@ -191,6 +206,7 @@ export default function SearchPage({
                 currentPageValue={1}
                 slug={params?.slug}
                 locale={router.locale}
+                totalProductCount={ListingData?.response?.['@odata.count']}
               />
               {/* cards div */}
               <div className='flex md:ml-[30px] mb-[20px] pt-[12px] pb-[20px] md:w-3/4 flex-wrap'>
@@ -214,14 +230,16 @@ export default function SearchPage({
             </div>
           </section>
           <Pagination
-            currentPage={paginationData?.CurrentPage}
-            totalPages={paginationData?.totalNumberOfPages}
+            currentPage={ListingData?.response?.paginationData?.CurrentPage}
+            totalPages={
+              ListingData?.response?.paginationData?.totalNumberOfPages
+            }
             onPageChange={handlePageChange}
-            // itemsPerPage={paginationData?.countPerEachPage}
           />
         </>
       )}
-      <Cta fields={CTAObject} />
+      <Cta fields={CTAObject[router.locale]} />
+      <BackToTop topHeight={0} localeProp={router.locale} />
     </>
   );
 }
