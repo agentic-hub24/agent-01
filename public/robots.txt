@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://br.kohler.com/sitemap.xml
+Sitemap: https://la.kohler.com/sitemap.xml
