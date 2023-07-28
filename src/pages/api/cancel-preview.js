@@ -1,6 +1,7 @@
 export default function handler(req, res) {
   const { redirect } = req.query;
+  console.log('redirect hee ', redirect);
   res.clearPreviewData();
-  const url = redirect ? encodeURI(redirect) : '/';
-  res.redirect(url);
+  res.redirect('/es');
+  // res.redirect(encodeURI(redirect) || '/en');
 }
