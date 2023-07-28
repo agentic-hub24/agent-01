@@ -25,6 +25,7 @@ import {
 } from '@services/productListingAPI/client';
 import Cta from '@components/Cta';
 import BackToTop from '@components/backToTop';
+import Loader from '@components/loader';
 import { Fb, Twitter } from '@components/svgs';
 import ImageZoomModal from './ImageZoomModal';
 import LinkWithLabel from './LinkWithLabel';
@@ -91,6 +92,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [youTubeLink, setYoutubeLink] = useState([]);
   const [youtubeMetaData, setYoutubeMetaData] = useState([]);
   const [youtubeLinkOpen, setYoutubeLinkOpen] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const handlePrevClick = () => {
     // Your code to display the selected image goes here
@@ -226,6 +228,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const color_finish_code_array = ProductItem.filter(
       el =>
         el.SKUColorFinishCode !== undefined &&
@@ -302,6 +305,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       ele => ele.ProductATGISACTIVE === true
     );
     setHasLinkedproduct(has_linked_products);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -375,6 +379,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
 
   return (
     <>
+      {isLoading && <Loader loading={isLoading} />}
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] mb-[50px] p-2'>
         <div className='flex w-full md:flex-row flex-col'>
           {/* Product Carousel start */}
@@ -1131,10 +1136,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
-                    <img
-                      src={gifLineArtImageFormatter(lineArt?.ResourceName)}
-                      alt='Gif line art'
-                    />
+                    <img src={lineArt?.ResourceFullWebURL} alt='Gif line art' />
                   </div>
                 )}
 

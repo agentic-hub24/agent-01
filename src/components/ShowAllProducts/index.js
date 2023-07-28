@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi';
 import { useRouter } from 'next/router';
+import Cta from '@components/Cta';
 import PLPCards from '@components/ProductListing/PLPCards';
 import {
   SHOWALL_LABELS,
-  staticLabelsPLP
+  staticLabelsPLP,
+  CTAObject
 } from '@components/ProductListing/helper';
+import BackToTop from '@components/backToTop';
+import Loader from '@components/loader';
 
 export default function ShowAllProducts({
   params,
@@ -80,7 +84,7 @@ export default function ShowAllProducts({
 
   return (
     <>
-      {isLoading && <div className='mx-auto mb-4 text-center'>Loading...</div>}
+      {isLoading && <Loader loading={isLoading} />}
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto px-[10px]'>
         <div className='pt-[50px] md:pb-[22px] mb-[8px] mx-[10px]'>
           <h2 className='font-helveticaLight text-3xl leading-normal font-normal uppercase'>
@@ -170,6 +174,8 @@ export default function ShowAllProducts({
           </div>
         </div>
       </section>
+      <Cta fields={CTAObject[locale]} />
+      <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
 }

@@ -1,7 +1,6 @@
 import ArticleCard from '@components/cards/ArticleCard';
 
 const HomeSection = ({ homePageData }) => {
-  console.log('::: homePageData', homePageData);
   const isLiterature = homePageData?.internalTitle.includes('Literature');
   const isCadSymbol = homePageData?.internalTitle.includes('CAD Symbols');
   const isIntelligent = homePageData?.internalTitle.includes(
