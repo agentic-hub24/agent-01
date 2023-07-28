@@ -81,7 +81,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
         })}
       </Carousel>
       {/* Carousel banner mobile */}
-      {showBanner && (
+      {showBanner && carouselItem[count]?.fields?.url && (
         <div className='bg-[#e3e3e3] flex flex-col items-center text-[#000] lg:hidden font-HelveticaRoman leading-tight p-[20px]'>
           <h1 className='text-[34px] text-center'>
             {
