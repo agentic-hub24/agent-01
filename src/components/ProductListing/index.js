@@ -63,9 +63,11 @@ export default function ProductListing({
   };
 
   const orderBySelect = async e => {
+    setIsLoading(true);
     const postBody = { ...apiRequestBody, orderby: e.target.value };
     const data = await getProductListing(postBody);
     setProductValueArray(data?.response?.value);
+    setIsLoading(false);
   };
 
   const filterSelect = async (filterRequest, filterCount) => {
