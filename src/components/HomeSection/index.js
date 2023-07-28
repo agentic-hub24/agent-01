@@ -1,6 +1,7 @@
 import ArticleCard from '@components/cards/ArticleCard';
 
 const HomeSection = ({ homePageData }) => {
+  console.log('::: homePageData', homePageData);
   const isLiterature = homePageData?.internalTitle.includes('Literature');
   const isCadSymbol = homePageData?.internalTitle.includes('CAD Symbols');
   const isIntelligent = homePageData?.internalTitle.includes(
@@ -12,7 +13,9 @@ const HomeSection = ({ homePageData }) => {
   );
   const isWaterFilterationEN =
     homePageData?.internalTitle.includes('Water Filtration');
-
+  const isFreeStandingBath = homePageData?.internalTitle.includes(
+    'Homepage card Landing Page 2'
+  );
   return (
     <section
       className={`${
@@ -20,6 +23,7 @@ const HomeSection = ({ homePageData }) => {
         !isBidetSeat &&
         !isWaterFilterationEN &&
         !isWaterFilterationES &&
+        !isFreeStandingBath &&
         'bg-[#e3e3e3]'
       }`}
     >
@@ -46,6 +50,7 @@ const HomeSection = ({ homePageData }) => {
               isBidetSeat={isBidetSeat}
               isWaterFilterationES={isWaterFilterationES}
               isWaterFilterationEN={isWaterFilterationEN}
+              isFreeStandingBath={isFreeStandingBath}
             />
           ))}
         </div>

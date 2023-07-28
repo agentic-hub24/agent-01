@@ -15,7 +15,8 @@ const ArticleCard = ({
   isBidetSeat = false,
   isCadSymbol = false,
   isWaterFilterationES = false,
-  isWaterFilterationEN = false
+  isWaterFilterationEN = false,
+  isFreeStandingBath = false
 }) => {
   const wrapperDivClass = cx(
     'w-[290px]',
@@ -28,6 +29,7 @@ const ArticleCard = ({
           !isWaterFilterationES &&
           !isWaterFilterationEN &&
           !isBidetSeat &&
+          !isFreeStandingBath &&
           `lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] 
            shadow-[2px_2px_5px_0_#aaa]`
         }`,
@@ -47,7 +49,8 @@ const ArticleCard = ({
           isBidetSeat ||
           isIntelligent ||
           isWaterFilterationES ||
-          isWaterFilterationEN
+          isWaterFilterationEN ||
+          isFreeStandingBath
             ? 'm-0 text-[16px] text-left font-bold font-helveticaGroup'
             : 'font-medium font-helveticaLight text-center'
         }`}
@@ -59,9 +62,10 @@ const ArticleCard = ({
           isBidetSeat ||
           isIntelligent ||
           isWaterFilterationES ||
-          isWaterFilterationEN
+          isWaterFilterationEN ||
+          isFreeStandingBath
             ? 'text-left pl-5'
-            : 'pl-9'
+            : 'text-center pl-9'
         }`}
       >
         {fields?.paragraphText}
