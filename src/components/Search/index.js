@@ -11,6 +11,7 @@ import {
   staticLabelsPLP
 } from '@components/ProductListing/helper';
 import BackToTop from '@components/backToTop';
+import Loader from '@components/loader';
 import Pagination from './Pagination';
 import SpecCard from './SpecCard';
 
@@ -32,12 +33,15 @@ export default function SearchPage({
   const [selectedFilterCount, setSelectedFilterCount] = useState();
   const [activeIndex, setActiveIndex] = useState();
   const [ListingData, setListingData] = useState(productListingData);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     setListingData(productListingData);
     setProductValueArray(value);
     setApiRequestBody(requestBody);
     pageType === 'spec' ? setActiveIndex(1) : setActiveIndex(0);
+    setIsLoading(false);
   }, [value, requestBody]);
 
   const handleMouseOver = id => {
@@ -48,22 +52,27 @@ export default function SearchPage({
     setSkuId('');
   };
   const orderBySelect = async e => {
+    setIsLoading(true);
     const postBody = { ...apiRequestBody, orderby: e.target.value };
     const data = await getProductListing(postBody);
     setProductValueArray(data?.response?.value);
+    setIsLoading(false);
   };
 
   const filterSelect = async (filterRequest, filterCount) => {
+    setIsLoading(true);
     setSelectedFilterCount({ ...selectedFilterCount, ...filterCount });
     setApiRequestBody({ ...apiRequestBody, ...filterRequest });
     const postBody = { ...apiRequestBody, ...filterRequest };
     const data = await getProductListing(postBody);
     setProductValueArray(data?.response?.value);
     setListingData(data);
+    setIsLoading(false);
   };
   const onClickPageType = async index => {
     setActiveIndex(index);
     if (params?.slug) {
+      setIsLoading(true);
       router.push(
         `/results/Category/${params?.slug}?type=${
           index === 1 ? `spec` : `producto`
@@ -71,7 +80,16 @@ export default function SearchPage({
         undefined,
         { shallow: true }
       );
+      setIsLoading(false);
     } else {
+      setIsLoading(true);
+      router.push(
+        `/results?type=${index === 1 ? `spec` : `producto`}&search=${
+          requestBody?.search
+        }${index === 1 ? `` : `&currentPage=1`}`,
+        undefined,
+        { shallow: true }
+      );
       let postBody = {};
       if (index === 1) {
         setApiRequestBody({ ...apiRequestBody, CurrentPage: '' });
@@ -84,10 +102,12 @@ export default function SearchPage({
 
       setListingData(data);
       setProductValueArray(data?.response?.value);
+      setIsLoading(false);
     }
   };
 
   const handlePageChange = async page => {
+    setIsLoading(true);
     setApiRequestBody({ ...apiRequestBody, CurrentPage: 1 });
     let postBody = { ...apiRequestBody, CurrentPage: page };
     const data = await getProductListing(postBody);
@@ -100,10 +120,12 @@ export default function SearchPage({
       undefined,
       { shallow: true }
     );
+    setIsLoading(false);
   };
 
   return (
     <>
+      {isLoading && <Loader loading={isLoading} />}
       <div className='text-center bg-gray-200'>
         <div className='pt-[100px] pb-[0px] text-black'>
           <h1 className='font-sans font-light text-5xl leading-1'>
@@ -114,7 +136,7 @@ export default function SearchPage({
             {ListingData?.response?.searchResults?.totalSearchResults}
             &nbsp;{staticLabelsPLP[router.locale].totalProductLabel}
           </p>
-          <div className='relative mb-20'>
+          <div className='relative mb-20 hidden lg:block'>
             <ul className='block list-none mx-auto py-30 pb-40 text-center shadow-none border-none bg-transparent'>
               <li
                 className={`inline-block mx-30 rounded-4 lg:mr-[100px] ${
@@ -143,6 +165,33 @@ export default function SearchPage({
                 </span>
               </li>
             </ul>
+          </div>
+          {/* select for lower screen */}
+          <div className='relative mb-20 block lg:hidden'>
+            <select
+              className='w-[95%] p-2 mb-3'
+              onChange={e => onClickPageType(+e.target.value)} // "+" string to number conversion
+            >
+              <option value={0} style={{ display: 'none' }}>
+                {staticLabelsPLP[router.locale].selectCategoryLabel}
+              </option>
+              <option value={0}>
+                <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
+                  {staticLabelsPLP[router.locale].product}{' '}
+                  <span>
+                    ({ListingData?.response?.searchResults?.productsCount})
+                  </span>
+                </span>
+              </option>
+              <option value={1}>
+                <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
+                  {staticLabelsPLP[router.locale].spec}{' '}
+                  <span>
+                    ({ListingData?.response?.searchResults?.specificationCount})
+                  </span>
+                </span>
+              </option>
+            </select>
           </div>
         </div>
       </div>

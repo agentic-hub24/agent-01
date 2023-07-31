@@ -10,9 +10,13 @@ export default function ProductDetailMain({ productDetailsData, productNo }) {
   const router = useRouter();
   const [skuID, setSkuID] = useState('');
   useEffect(() => {
+    router?.query?.skuid && localStorage.setItem('skuid', router?.query?.skuid);
+  }, []);
+  useEffect(() => {
     const queryParams = {
-      skuid: 'K-' + productDetailsData?.data?.product?.ProductDefaultSKU
+      skuid: router?.query?.skuid || localStorage.getItem('skuid')
     }; // Replace with your desired dynamic query parameters
+
     setSkuID(queryParams.skuid);
     // Create the URL with the dynamic query parameters
     const url = {

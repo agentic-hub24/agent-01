@@ -45,8 +45,11 @@ export default function PLPCards({
         )}
         <Link
           href={{
-            pathname: `/product-detail/${item.ProductProductNo}`
+            pathname: `/product-detail/${item.ProductProductNo}?skuid=K-${item?.SkuNumber}`,
+            query: { skuid: 'K-' + item?.SkuNumber }
           }}
+          as={`/product-detail/${item.ProductProductNo}?skuid=K-${item?.SkuNumber}`}
+          className=''
           passHref
         >
           <div>

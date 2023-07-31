@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
@@ -6,6 +7,7 @@ import { getProductListing } from '@services/productListingAPI/client';
 import SearchPage from '@components/Search';
 import SearchNotFound from '@components/Search/SearchNotFound';
 import SearchSuggestion from '@components/Search/SearchSuggestion';
+import Loader from '@components/loader';
 import { removeQuotesFromString } from '@utils/footerUtils';
 
 export default function ResultPage({
@@ -15,39 +17,45 @@ export default function ResultPage({
   pageData,
   locale
 }) {
+  const router = useRouter();
+
   useEffect(() => {
     if (
       typeof window !== 'undefined' &&
       productListingData?.response?.searchResults?.PDP
     ) {
-      window.location = `/product-detail/${productListingData?.response?.searchResults?.PDP}`;
+      router.push(
+        `/product-detail/${productListingData?.response?.searchResults?.PDP}?skuid=${productListingData?.response?.searchResults?.suggestions}`
+      );
       // return null;
     }
   }, [productListingData]);
 
-  {
-    if (
-      productListingData?.response['@odata.count'] > 0 ||
-      productListingData?.response?.searchResults?.suggestions
-    ) {
-      return !productListingData?.response?.searchResults?.suggestions ? (
-        <SearchPage
-          productListingData={productListingData}
-          requestBody={requestBody}
-          pageType={pageType}
-          pageData={pageData}
-          locale={locale}
-        />
-      ) : (
-        <SearchSuggestion
-          requestBody={requestBody}
-          suggestion={productListingData?.response?.searchResults?.suggestions}
-          locale={locale}
-        />
-      );
-    } else {
-      return <SearchNotFound requestBody={requestBody} locale={locale} />;
-    }
+  if (router.isFallback) {
+    return <Loader loading={router.isFallback} />;
+  }
+
+  if (
+    productListingData?.response['@odata.count'] > 0 ||
+    productListingData?.response?.searchResults?.suggestions
+  ) {
+    return !productListingData?.response?.searchResults?.suggestions ? (
+      <SearchPage
+        productListingData={productListingData}
+        requestBody={requestBody}
+        pageType={pageType}
+        pageData={pageData}
+        locale={locale}
+      />
+    ) : (
+      <SearchSuggestion
+        requestBody={requestBody}
+        suggestion={productListingData?.response?.searchResults?.suggestions}
+        locale={locale}
+      />
+    );
+  } else {
+    return <SearchNotFound requestBody={requestBody} locale={locale} />;
   }
 }
 

@@ -116,6 +116,7 @@ export const staticLabelsPLP = {
     tech: 'Technical Information Downloads',
     template: 'Template & Symbol Downloads',
     didYouMean: 'Did you mean?',
+    selectCategoryLabel: 'Select a Category',
     noProductFound:
       'Sorry! No product found in this combination. Please reset the filter and try again.'
   },
@@ -133,6 +134,7 @@ export const staticLabelsPLP = {
     tech: 'Descargar Información Técnica',
     template: 'Descargar Plantillas y Símbolos',
     didYouMean: '¿Querías decir?',
+    selectCategoryLabel: 'Seleccione una categoría',
     noProductFound:
       '¡Lo siento! No se ha encontrado ningún producto en esta combinación. Restablece el filtro y vuelve a intentarlo.'
   }
