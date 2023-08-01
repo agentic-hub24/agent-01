@@ -11,6 +11,11 @@ export const searchLabel = {
   en: 'Search'
 };
 
+export const backtoTopLabels = {
+  en: 'Back to top',
+  es: 'ir al incio'
+};
+
 export const storeDetailsLabel = {
   en: {
     mobile: 'Mobile:',
@@ -38,3 +43,9 @@ export const storeLocatorOption = {
     selectCity: '--Ciudad Selecta--'
   }
 };
+
+export function removeQuotesFromString(str) {
+  return typeof str === 'string'
+    ? str.replaceAll("'", '').replaceAll('"', '')
+    : str;
+}

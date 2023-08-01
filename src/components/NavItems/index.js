@@ -4,8 +4,6 @@ import Link from 'next/link';
 const NavItems = ({
   navItem,
   classNames,
-  stylePro,
-  justifyProp,
   linkClass,
   secondaryNavItemFunc,
   handleCloseHandle
@@ -14,7 +12,7 @@ const NavItems = ({
   const [cookieClass, setCookieClass] = useState('');
 
   useEffect(() => {
-    if (navItem?.fields?.label === 'Cookies Settings') {
+    if (navItem?.fields?.label.trim() === 'Cookies Settings') {
       setCookieClass('ot-sdk-show-settings');
     }
   }, []);
@@ -30,17 +28,16 @@ const NavItems = ({
           key={navItem?.fields?.sys?.id}
           target={navItem?.fields?.openerType === 'New Tab' ? '_blank' : ''}
           id={
-            navItem?.fields?.label === 'Cookies Settings' ? 'ot-sdk-link' : ''
+            navItem?.fields?.label.trim() === 'Cookies Settings'
+              ? 'ot-sdk-link'
+              : ''
           }
           className={cookieClass}
           style={{ textDecoration: 'none', width: '100%' }}
           rel='noreferrer'
           onClick={() => handleCloseHandle()}
         >
-          <div
-            className={linkClass}
-            style={{ padding: stylePro, justifyContent: justifyProp }}
-          >
+          <div className={linkClass}>
             {/* {socialIcon ? <span className="mr-1">{socialIcon}</span> : null} */}
             {navItem?.fields?.label ? (
               <>
@@ -60,7 +57,5 @@ NavItems.defaultProps = {
   handleCloseHandle: () => {},
   navItem: {},
   classNames: '',
-  stylePro: '',
-  justifyProp: '',
   linkClass: ''
 };

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { FaCheck, FaRegSquare } from 'react-icons/fa6';
 import Slider from 'react-slider';
 import Link from 'next/link';
 import { filterImageFormatter } from './helper';
@@ -46,7 +47,11 @@ const FilterItems = ({
   return (
     <div className='flow-root pb-[20px]'>
       {filter?.[filterName] ? (
-        <ul className='m-0 mb-[10px]  outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
+        <ul
+          className={`m-0 mb-[10px]  outline-none ${
+            filterType === 'checkbox' ? 'bg-white' : 'bg-gray-300'
+          } text-gray-800 inline-block border-0 rounded-md relative text-left w-full`}
+        >
           <li
             className=''
             onClick={() => {
@@ -54,9 +59,20 @@ const FilterItems = ({
             }}
           >
             <button
-              // onClick={onClickHandler(filterName, '')}
-              className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'
+              className={`m-0 mb-[10px] outline-none ${
+                filterType === 'checkbox' ? 'bg-white' : 'bg-gray-300'
+              } text-gray-800 inline-block border-0 rounded-md relative text-left w-full`}
             >
+              {filterType === 'checkbox' && (
+                <div className='float-left mr-[10px] mt-[10px] text-base leading-normal font-normal shadow-none font-helvaticaFont'>
+                  <span className='inline float-left pt-1 mr-3 h-[29px] w-[29px] rounded-sm bg-[#f0f0f0] '>
+                    <FaCheck size={20} className='m-auto' />
+                  </span>
+                  <span className='inline float-left'>
+                    {filter?.[filterName]}
+                  </span>
+                </div>
+              )}
               {filterType === 'image' && (
                 <span className='block float-left max-w-[13px] h-13 mr-[10px] mt-[15px] ml-[10px] '>
                   <img
@@ -71,7 +87,7 @@ const FilterItems = ({
                   {filter?.[filterName]}
                 </span>
               )}
-              {/* <span class='label'></span> */}
+
               <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
                 ({selectedFilterCount?.[filterName]})
               </span>
@@ -83,6 +99,33 @@ const FilterItems = ({
         </ul>
       ) : (
         <>
+          {filterType === 'checkbox' &&
+            filterOption.map((data, index) => {
+              return (
+                <ul key={index} style={{ listStyle: 'none' }}>
+                  <li className='cursor-pointer'>
+                    {/* <input
+                      type='checkbox'
+                      onChange={() =>
+                        onClickHandler(filterName, data.value, data.count)
+                      }
+                    /> */}
+                    <div
+                      onClick={() =>
+                        onClickHandler(filterName, data.value, data.count)
+                      }
+                      className='flex'
+                    >
+                      <span className='flex'>
+                        <FaRegSquare size={23} />
+                      </span>
+                      <span className='flex pl-3'>{data.value}</span>
+                      <span className='flex ml-[5px]'>({data.count})</span>
+                    </div>
+                  </li>
+                </ul>
+              );
+            })}
           {filterType === 'image' &&
             filterOption.map((data, index) => {
               return (
@@ -132,10 +175,7 @@ const FilterItems = ({
                         onClickHandler(filterName, '');
                       }}
                     >
-                      <button
-                        // onClick={onClickHandler(filterName, '')}
-                        className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'
-                      >
+                      <button className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
                         {' '}
                         <span className='block float-left max-w-[13px] h-13 mr-[10px] mt-[10px] ml-[10px] '>
                           {values[0]}
@@ -214,13 +254,6 @@ const FilterItems = ({
                     <div className='custom-thumb-after'></div>
                   </div>
                 )}
-                // renderTrack={(props, state) => (
-                //   <div
-                //     className='slider-track'
-                //     {...props}
-                //     style={{ backgroundColor: leftColor }}
-                //   />
-                // )}
               />
             </div>
           )}

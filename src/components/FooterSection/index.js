@@ -62,9 +62,8 @@ const FooterSection = ({ navData = [], copyRightText = '' }) => {
                       navItem={navItem}
                       data-te-collapse-item
                       id='collapseExample'
-                      stylePro='15px 30px'
                       classNames="text-footermenutext hover:text-white cursor-pointer my-2 font-['Helvetica'] text-[14px]"
-                      linkClass='flex lg:p-[4px] w-full text-footermenutext'
+                      linkClass='flex lg:p-[4px] w-full text-footermenutext px-[30px] py-[15px]'
                     />
                     <div className='border-b-[1px] border-[#666]' />
                   </React.Fragment>

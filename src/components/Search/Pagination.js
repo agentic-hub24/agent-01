@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  console.log(currentPage, totalPages);
   const pageRange = 3; // Number of visible pages
   if (totalPages === 1) {
     return null; // Return null to hide pagination when there is only one page

@@ -9,7 +9,7 @@ const FilterAccordion = ({ children, header, subSlug }) => {
     setOpen(false);
   }, [subSlug]);
   return (
-    <div className='mb-6 border-b border-gray-300'>
+    <div className='mb-6 border-b border-gray-300' id={header}>
       <details ref={ref}>
         <summary className='list-none'>
           <span

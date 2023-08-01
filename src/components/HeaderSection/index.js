@@ -44,11 +44,13 @@ export default function HeaderSection({ navData = {}, world }) {
     e.preventDefault();
     if (
       secondaryNavLabel.toUpperCase() ===
-      secondaryNav?.fields?.label.toUpperCase()
+        secondaryNav?.fields?.label.toUpperCase() &&
+      navOpen
     ) {
       setNavOpen(false);
       setSecondaryNavLabel('');
     } else {
+      setNavOpen(true);
       setSecondaryNavItem(secondaryNav?.fields?.secondaryNavigation);
       setSecondaryNavLabel(secondaryNav?.fields?.label);
     }
@@ -84,6 +86,7 @@ export default function HeaderSection({ navData = {}, world }) {
   const handleHamburger = () => {
     setOpenMobileMenu(true);
     setSearchVisible(false);
+    setSecondaryNavLabelMobile('');
     if (openMobileMenu) {
       setOpenMobileMenu(false);
       setSearchVisible(false);
@@ -236,7 +239,7 @@ export default function HeaderSection({ navData = {}, world }) {
           <div className='height-max overflow-scroll absolute w-full z-50'>
             {searchVisible && openMobileMenu && (
               <div className='p-4 border-b flex w-full justify-center bg-[#fff]'>
-                <HeaderSearch />
+                <HeaderSearch setOpenMobileMenu={e => setOpenMobileMenu(e)} />
               </div>
             )}
             <div className='w-full bg-[#fff]'>
@@ -249,12 +252,11 @@ export default function HeaderSection({ navData = {}, world }) {
                       secondaryNavItemFuncMobile={(e, data) =>
                         secondaryNavItemFuncMobile(e, data)
                       }
-                      justifyProp='space-between'
                       svgElement={handleIcon(
                         navItem?.fields?.label,
                         navItem?.fields?.url
                       )}
-                      linkClass='text-[#000] flex'
+                      linkClass='text-[#000] flex justify-between'
                       classNames='uppercase font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b'
                     />
                     {secondaryNavItemMobile &&

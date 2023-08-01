@@ -1,20 +1,21 @@
 import Link from 'next/link';
 import cx from 'classnames';
 import MediaItem from '@components/MediaItem/MediaItem';
-import { DownloadIcon } from '../svgs';
 
 /***
  * @param {cardRows} array
  * @param {isLiterature} boolean
- * @param {showDownload} boolean
  * @returns
  */
 
 const ArticleCard = ({
   cardRows = [],
   isLiterature = false,
-  showDownload = false,
-  url
+  isIntelligent = false,
+  isBidetSeat = false,
+  isCadSymbol = false,
+  isWaterFilterationES = false,
+  isWaterFilterationEN = false
 }) => {
   const wrapperDivClass = cx(
     'w-[290px]',
@@ -22,34 +23,65 @@ const ArticleCard = ({
     'bg-white',
     isLiterature
       ? 'mx-2.5 my-5 cursor-pointer shadow-[2px_2px_5px_0_#aaa]'
-      : 'mx-2.5 my-5 cursor-pointer lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] shadow-[2px_2px_5px_0_#aaa]'
+      : `mx-2.5 my-5 cursor-pointer ${
+          !isIntelligent &&
+          !isWaterFilterationES &&
+          !isWaterFilterationEN &&
+          !isBidetSeat &&
+          `lg:[&:nth-child(2)]:mt-12 lg:[&:nth-child(4)]:mt-[-10px] lg:[&:nth-child(6)]:mt-[-5px] 
+           shadow-[2px_2px_5px_0_#aaa]`
+        }`,
+    (isBidetSeat || isWaterFilterationES) && 'w-[480px]'
   );
 
   /***
    * Purpose of creating this function is to render cards with or without link
    */
   const renderCards = fields => (
-    <article>
+    <article className='pb-4'>
       <figure>
         <MediaItem assets={fields?.mediaItem} />
       </figure>
-      <h4 className='text-2xl p-5 text-[#333333] m-auto font-medium font-helveticaLight cursor-pointer'>
+      <h4
+        className={`text-2xl p-5 text-[#333333] m-auto  cursor-pointer ${
+          isBidetSeat ||
+          isIntelligent ||
+          isWaterFilterationES ||
+          isWaterFilterationEN
+            ? 'm-0 text-[16px] text-left font-bold font-helveticaGroup'
+            : 'font-medium font-helveticaLight text-center'
+        }`}
+      >
         {fields?.heading}
       </h4>
-      <h5 className='pt-0 pr-9 pb-6 pl-9 text-[#666] font-helveticaLight'>
+      <h5
+        className={`pt-0 pr-9 pb-3 text-[#666] font-helveticaLight ${
+          isBidetSeat ||
+          isIntelligent ||
+          isWaterFilterationES ||
+          isWaterFilterationEN
+            ? 'text-left pl-5'
+            : 'pl-9'
+        }`}
+      >
         {fields?.paragraphText}
       </h5>
-      {showDownload && (
-        <a
-          href={fields?.cta[0]?.fields?.url}
-          target='_blank'
-          className='justify-center flex w-full text-[16px] hover:underline font-helveticaGroup'
-          rel='noreferrer'
-        >
-          <DownloadIcon />
-          {fields?.cta[0]?.fields?.label}
-        </a>
-      )}
+      {fields?.cta &&
+        fields?.cta?.map(({ fields, sys }, index) => (
+          <a
+            key={sys?.id}
+            href={fields?.url}
+            target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
+            className={`flex w-full text-[16px] ${
+              isCadSymbol
+                ? 'helveticaLight justify-center'
+                : 'font-helveticaGroup justify-left hover:no-underline pl-5'
+            }`}
+            rel='noreferrer'
+          >
+            {fields?.label}
+          </a>
+        ))}
     </article>
   );
   return (

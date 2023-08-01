@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
@@ -7,15 +6,15 @@ import { getProductListing } from '@services/productListingAPI/client';
 import SearchPage from '@components/Search';
 import SearchNotFound from '@components/Search/SearchNotFound';
 import SearchSuggestion from '@components/Search/SearchSuggestion';
+import { removeQuotesFromString } from '@utils/footerUtils';
 
 export default function ResultPage({
   productListingData,
   requestBody,
   pageType,
-  pageData
+  pageData,
+  locale
 }) {
-  const router = useRouter();
-
   useEffect(() => {
     if (
       typeof window !== 'undefined' &&
@@ -37,63 +36,65 @@ export default function ResultPage({
           requestBody={requestBody}
           pageType={pageType}
           pageData={pageData}
+          locale={locale}
         />
       ) : (
         <SearchSuggestion
           requestBody={requestBody}
           suggestion={productListingData?.response?.searchResults?.suggestions}
-        ></SearchSuggestion>
+          locale={locale}
+        />
       );
     } else {
-      return <SearchNotFound requestBody={requestBody}></SearchNotFound>;
+      return <SearchNotFound requestBody={requestBody} locale={locale} />;
     }
   }
 }
 
 export async function getServerSideProps(context) {
-  const { preview, query } = context;
-  const searchValue = query?.search;
-  const currentPage = query?.currentPage;
+  const { preview, query, locale } = context;
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
+  const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
+  const searchValue = removeQuotesFromString(query?.search);
+  const currentPage = removeQuotesFromString(query?.currentPage);
   const pageType = query?.type ? query?.type : '';
   const client = preview ? contentfulPreviewClient : contentfulClient;
   const query1 = await client.getEntries({
-    content_type: '',
-    'fields.slug[match]': ``,
-    'metadata.tags.sys.id[in]': '',
+    content_type: 'latamLandingPage',
+    'fields.slug': '',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: ''
+    locale: lc
   });
   const query2 = client.getEntries({
     content_type: 'header',
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: ''
+    locale: lc
   });
   const query3 = client.getEntries({
     content_type: 'footer',
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     include: 7,
-    locale: ''
+    locale: lc
   });
 
   const world = await client.getEntries({
     content_type: 'worldwideMenu',
     include: 7,
-    locale: ''
+    locale: lc
   });
 
   const results = await Promise.all([query1, query2, query3]);
 
-  const res = results[0];
   const headerNavigationData = results[1];
   const footerNavigationData = results[2];
-
-  const pageData = res?.items[0]?.fields;
 
   //PLP API CALL --> Start
   const requestBody = {
     search: searchValue,
-    CurrentPage: currentPage ? currentPage : ''
+    CurrentPage: currentPage ? currentPage : '',
+    lang: languageAPI
   };
   const productListingData = await getProductListing(requestBody);
   //   // PLP API --> end
@@ -102,15 +103,11 @@ export async function getServerSideProps(context) {
     props: {
       headerNavigationData,
       footerNavigationData,
-      pageData,
       world,
       productListingData,
       requestBody,
-      pageType
+      pageType,
+      locale
     }
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every specified seconds
-    //revalidate: process.env.CONTENT_REVALIDATION_TIME ?? 10
   };
 }
