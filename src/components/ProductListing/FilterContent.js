@@ -68,7 +68,12 @@ export default function FilterContent({
                         selectedFilter?.search
                       }${pageType === `spec` ? `` : `&currentPage=1`}`
                     : `/browse/${slug}`,
-                  query: { subSlug }
+                  query: {
+                    search: selectedFilter?.search,
+                    CurrentPage: pageType === `spec` ? `` : 1,
+                    lang: locale,
+                    subSlug: subSlug
+                  }
                 }}
                 as={
                   pageType
@@ -94,7 +99,12 @@ export default function FilterContent({
                             selectedFilter?.search
                           }${pageType === `spec` ? `` : `&currentPage=1`}`
                         : `/browse/${slug}`,
-                      query: { subSlug }
+                      query: {
+                        search: selectedFilter?.search,
+                        CurrentPage: pageType === `spec` ? `` : 1,
+                        lang: locale,
+                        subSlug: subSlug
+                      }
                     }}
                     as={
                       pageType
@@ -152,8 +162,13 @@ export default function FilterContent({
                       ? `/results?type=${pageType}&search=${
                           selectedFilter?.search
                         }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}`,
-                    query: { subSlug }
+                      : `/browse/${slug}/${subSlug}`,
+                    query: {
+                      search: selectedFilter?.search,
+                      CurrentPage: pageType === `spec` ? `` : 1,
+                      lang: locale,
+                      subSlug: subSlug
+                    }
                   }}
                   as={
                     pageType
@@ -232,7 +247,12 @@ export default function FilterContent({
                           selectedFilter?.search
                         }${pageType === `spec` ? `` : `&currentPage=1`}`
                       : `/browse/${slug}`,
-                    query: { subSlug }
+                    query: {
+                      search: selectedFilter?.search,
+                      CurrentPage: pageType === `spec` ? `` : 1,
+                      lang: locale,
+                      subSlug: subSlug
+                    }
                   }}
                   as={
                     pageType
@@ -296,8 +316,13 @@ export default function FilterContent({
                       ? `/results?type=${pageType}&search=${
                           selectedFilter?.search
                         }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}`,
-                    query: { subSlug }
+                      : `/browse/${slug}/${subSlug}`,
+                    query: {
+                      search: selectedFilter?.search,
+                      CurrentPage: pageType === `spec` ? `` : 1,
+                      lang: locale,
+                      subSlug: subSlug
+                    }
                   }}
                   as={
                     pageType
