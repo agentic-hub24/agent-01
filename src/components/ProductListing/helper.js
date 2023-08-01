@@ -25,7 +25,7 @@ export const colorImageFormatter = colorid => {
 
 export const selectOptions = {
   en: [
-    { label: 'Order by', value: '' },
+    { label: 'Sort by', value: '' },
     { label: 'Relevance', value: '' },
     { label: 'Name A-Z', value: 'ProductBrandName asc' },
     { label: 'Name Z-A', value: 'ProductBrandName desc' }
