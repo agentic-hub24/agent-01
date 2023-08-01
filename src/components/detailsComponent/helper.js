@@ -122,8 +122,7 @@ export const TECHNICAL_INFORMATION_FILES = [
   'InstallationWithoutSPPDF',
   'SpecPDFFileName',
   'HomeownersGuide',
-  'PartsPDFFileName',
-  'InteractiveSVG'
+  'PartsPDFFileName'
 ];
 export const TECHNICAL_INFORMATION_FILES_NAMES = {
   es: {

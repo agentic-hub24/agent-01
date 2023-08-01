@@ -2,13 +2,13 @@ import contentfulClient from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
 
 //pages/sitemap.xml.js
-function generateSiteMap(hostName, pages) {
+function generateSiteMap(hostName, pages, locale) {
   return `<?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      ${pages
        .map(p => {
-         let pageUrl = hostName;
-         if (p.fields.slug !== '/') {
+         let pageUrl = `${hostName}/${locale}/`;
+         if (p.fields.slug !== locale) {
            pageUrl += `${p.fields.slug}`;
          }
          const updatedAt = new Date(p.sys.updatedAt)
@@ -19,7 +19,7 @@ function generateSiteMap(hostName, pages) {
        <url>
         <loc>${pageUrl}</loc>
         <lastmod>${updatedAt}</lastmod>
-        <priority>${p.fields.slug !== '/' ? '0.95' : '1'}</priority>
+        <priority>${p.fields.slug !== locale ? '0.95' : '1'}</priority>
        </url>
      `;
        })
@@ -32,16 +32,23 @@ function SiteMap() {
   // getServerSideProps will do the heavy lifting
 }
 
-export async function getServerSideProps({ req, res }) {
+export async function getServerSideProps(context) {
+  const { locale, req, res } = context;
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
+  const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
   const pages = await contentfulClient.getEntries({
-    content_type: '',
-    'metadata.tags.sys.id[in]': ''
+    content_type: 'latamLandingPage',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
+    locale: lc
   });
   // We generate the XML sitemap with the locales and pages data
 
   //Generating dynamic pages with product sku
   const requestBody = {
-    ProductATGDefaultCategory_PT: ''
+    search: '',
+    orderby: '',
+    RegionProductCategoryLocal: '',
+    lang: languageAPI
   };
   const productListingData = await getProductListing(requestBody);
   const products = productListingData?.response?.value;
@@ -49,15 +56,16 @@ export async function getServerSideProps({ req, res }) {
   const dynamicPaths = products?.map(singleProduct => {
     //generating dynamic pages similar to contentful data so that we can create xml
     return {
-      fields: { slug: `/product-detail/${singleProduct.ProductProductNo}` }, // change product to specific slug
+      fields: { slug: `product-detail/${singleProduct.ProductProductNo}` }, // change product to specific slug
       sys: { updatedAt: new Date() }
     };
   });
 
-  const sitemap = generateSiteMap(req.headers.host, [
-    ...pages.items,
-    ...dynamicPaths
-  ]);
+  const sitemap = generateSiteMap(
+    req.headers.host,
+    [...pages.items, ...dynamicPaths],
+    languageAPI
+  );
 
   res.setHeader('Content-Type', 'text/xml'); // we send the XML to the browser
 

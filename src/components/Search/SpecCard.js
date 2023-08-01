@@ -23,9 +23,12 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                 </div>
                 <Link
                   href={{
-                    pathname: '/product-detail/[productNo]'
+                    pathname: `/product-detail/${item.ProductProductNo}?skuid=K-${item?.SkuNumber}`,
+                    query: { skuid: 'K-' + item?.SkuNumber }
                   }}
-                  as={`/product-detail/${item.ProductProductNo}`}
+                  as={`/product-detail/${item.ProductProductNo}?skuid=K-${item?.SkuNumber}`}
+                  className=''
+                  passHref
                 >
                   <div className='w-auto ml-[-210px] float-right w-calc-100-subtract-210 hover:cursor-pointer'>
                     {' '}

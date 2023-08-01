@@ -3,6 +3,7 @@ import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import Landing from '@components/landing';
+import Loader from '@components/loader';
 
 export async function getServerSideProps({ params, preview, locale }) {
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
@@ -65,7 +66,7 @@ const LandingPage = ({ pageData }) => {
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
-    return <div className='mx-auto mb-4 text-center'>Loading...</div>;
+    return <Loader loading={router.isFallback} />;
   }
   return <Landing pageData={pageData} />;
 };
