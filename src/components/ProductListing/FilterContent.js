@@ -225,12 +225,26 @@ export default function FilterContent({
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
-                <a
-                  href={`/browse/${slug}`}
+                <Link
+                  href={{
+                    pathname: pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}`,
+                    query: { subSlug }
+                  }}
+                  as={
+                    pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}`
+                  }
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
                   {staticLabelsPLP[locale].showAll}
-                </a>
+                </Link>
               </div>
             </div>
             <div className='mb-[5px] pr-[30px] border-b-2'>

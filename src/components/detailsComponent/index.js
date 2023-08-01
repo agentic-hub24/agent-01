@@ -164,7 +164,13 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     } = {}
   } = productDetailsData;
 
-  const skuId = skuID.replace('K-', '') || ProductDefaultSKU; //take product default SKU NO
+  let skuId = '';
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      skuId = localStorage.getItem('skuid')?.replace('K-', '');
+    }
+  }, []);
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
@@ -224,6 +230,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     };
 
     // Update the URL
+    localStorage.setItem('skuid', queryParams.skuid);
     router.push(url, undefined, { shallow: true });
   };
 
@@ -1125,14 +1132,14 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   {ProductOverallWidthMm && (
                     <span className='mr-[5px]'>{ProductOverallWidthMm}</span>
                   )}
-                  mm,{' '}
-                  <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
+                  mm{' '}
+                  {/* <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
                     D
                   </span>
                   {ProductOverallDepthMm && (
                     <span className='mr-[5px]'>{ProductOverallDepthMm}</span>
                   )}
-                  mm
+                  mm */}
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
@@ -1197,31 +1204,31 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   {PDP_LABELS[locale].paresWellWith}
                 </div>
               )}
-              <div className='flex flex-wrap lg:flex-nowrap flex-row'>
+              <div className='flex flex-wrap lg:flex-nowrap flex-row mb-6'>
                 <SimilarProductsCards
                   productProductLinkType={ProductProductLinkType?.slice(0, 4)}
                   locale={locale}
                 />
+                <hr />
               </div>
             </>
           )}
         </div>
-        <hr />
+
         {similarProducts && similarProducts.length > 0 && (
           <div className='flex flex-col mb-4'>
             <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
               {PDP_LABELS[locale].similarProducts}
             </div>
-            <hr />
-            <div className='flex flex-wrap lg:flex-nowrap flex-row'>
+            <div className='flex flex-wrap lg:flex-nowrap flex-row mb-6'>
               <SimilarProducts
                 productProductLinkType={similarProducts?.slice(0, 5)}
                 locale={locale}
               />
             </div>
+            <hr />
           </div>
         )}
-        <hr />
       </section>
       <Cta fields={CTAObject[locale]} />
       <BackToTop topHeight={0} localeProp={locale} />

@@ -72,19 +72,19 @@ const ArticleCard = ({
       </h5>
       {fields?.cta &&
         fields?.cta?.map(({ fields, sys }, index) => (
-          <a
-            key={sys?.id}
-            href={fields?.url}
-            target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
-            className={`flex w-full text-[16px] ${
-              isCadSymbol
-                ? 'helveticaLight justify-center'
-                : 'font-helveticaGroup justify-left hover:no-underline pl-5'
-            }`}
-            rel='noreferrer'
-          >
-            {fields?.label}
-          </a>
+          <Link key={sys?.id} href={fields?.url}>
+            <a
+              target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
+              className={`flex w-full text-[16px] ${
+                isCadSymbol
+                  ? 'helveticaLight justify-center'
+                  : 'font-helveticaGroup justify-left hover:no-underline pl-5'
+              }`}
+              rel='noreferrer'
+            >
+              {fields?.label}
+            </a>
+          </Link>
         ))}
     </article>
   );

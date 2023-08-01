@@ -254,6 +254,7 @@ const products = async (req, res) => {
             ProductProductNo.includes(searchData)
           ) {
             response['searchResults']['PDP'] = ProductProductNo;
+            response['searchResults']['suggestions'] = 'K-' + req.body.search;
           }
         }
 
