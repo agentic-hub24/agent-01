@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
+import BackToTop from '@components/backToTop';
 import { PDP_LABELS } from '@components/detailsComponent/helper';
 import Landing from '@components/landing';
 import Loader from '@components/loader';
@@ -124,6 +125,7 @@ export default function PressReleaseLandingPage({ pageData }) {
       <div>
         <Landing pageData={pageData} />
       </div>
+      <BackToTop topHeight={0} localeProp={router.locale} />
     </div>
   );
 }
