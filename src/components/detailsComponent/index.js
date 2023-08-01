@@ -165,11 +165,12 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   } = productDetailsData;
 
   let skuId = '';
-  if (typeof window !== 'undefined') {
-    skuId =
-      router?.query?.skuid?.replace('K-', '') ||
-      localStorage.getItem('skuid')?.replace('K-', ''); //take product default SKU NO
-  }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      skuId = localStorage.getItem('skuid')?.replace('K-', '');
+    }
+  }, []);
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
@@ -1131,14 +1132,14 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   {ProductOverallWidthMm && (
                     <span className='mr-[5px]'>{ProductOverallWidthMm}</span>
                   )}
-                  mm,{' '}
-                  <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
+                  mm{' '}
+                  {/* <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
                     D
                   </span>
                   {ProductOverallDepthMm && (
                     <span className='mr-[5px]'>{ProductOverallDepthMm}</span>
                   )}
-                  mm
+                  mm */}
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
