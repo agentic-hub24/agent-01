@@ -3,8 +3,18 @@ import MediaItem from '@components/MediaItem/MediaItem';
 import { RichText } from '@components/RichText';
 
 export default function TextHeadingImageContentSection({ fields }) {
+  const isPressReleseaseArticle = fields?.internalTitle.includes(
+    'Press Room Article Page'
+  );
+
   return (
-    <div className='mx-auto max-w-screen-lg flex flex-col justify-center my-[30px] mx-[22px] px-[10px]'>
+    <div
+      className={`flex flex-col justify-center my-[30px] mx-[22px] px-[10px] ${
+        isPressReleseaseArticle
+          ? 'bg-[#e5e5e5] h-[121px] w-[224px] p-3'
+          : 'w-full mx-auto max-w-screen-lg'
+      }`}
+    >
       <div className='text-[30px] my-2 font-HelveticaRoman leading-tight font-normal text-[#232323]'>
         {fields?.heading &&
           fields?.heading?.content?.map((sect, index) => (

@@ -1,12 +1,21 @@
 import { RichText } from '@components/RichText';
 
-const TextContent = ({ heading, content }) => {
+const TextContent = ({ fields }) => {
+  const isPressReleseaseArticle = fields?.internalTitle.includes(
+    'Press Room Article Page'
+  );
   return (
-    <div className='max-w-screen-lg mx-auto px-8 my-12 pb-3'>
+    <div
+      className={` pb-3  ${
+        isPressReleseaseArticle
+          ? 'md:w-2/3 px-8 my-12 w-full'
+          : 'max-w-screen-lg mx-auto px-8 my-12  w-full'
+      }`}
+    >
       <h2 className='mt-[20px] mb-[30px] text-[2rem] md:text-[2.7rem] font-normal text-black'>
-        {heading}
+        {fields?.heading}
       </h2>
-      {content?.map((sect, index) => (
+      {fields?.richText?.content?.map((sect, index) => (
         <RichText
           key={index}
           text={sect}
