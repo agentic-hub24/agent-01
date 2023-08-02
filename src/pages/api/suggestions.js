@@ -57,8 +57,9 @@ async function findSuggestion(response, req) {
     for (const iterator of response.value) {
      
         let suggestion = "";
+        let search = req.body.search.charAt(0).toUpperCase() + req.body.search.slice(1);
         
-        if (iterator.ProductBrandName!==null && iterator.ProductBrandName?.includes(req.body.search)) {
+        if (iterator.ProductBrandName?.includes(search)) {
             suggestion = iterator.ProductBrandName;
             pageRedirection = "PLP";
         }
@@ -66,11 +67,11 @@ async function findSuggestion(response, req) {
             suggestion = iterator.SkuNumber;
             pageRedirection = "PDP"
         }
-        else if (iterator.RegionProductCategoryLocal?.includes(req.body.search)) {
+        else if (iterator.RegionProductCategoryLocal?.includes(search)) {
             suggestion = iterator.RegionProductCategoryLocal;
             pageRedirection = "PLP";
         }
-        else if (iterator.RegionProductCategoryLocal_esMX?.includes(req.body.search)) {
+        else if (iterator.RegionProductCategoryLocal_esMX?.includes(search)) {
             suggestion = iterator.RegionProductCategoryLocal_esMX;
             pageRedirection = "PLP";
         }
