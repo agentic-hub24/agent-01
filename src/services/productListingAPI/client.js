@@ -75,3 +75,23 @@ export async function getYoutubeMetaData(id) {
     console.log(err);
   }
 }
+
+export async function getSuggestions(requestBody) {
+  try {
+    const apiBaseURL = process.env.API_BASEURL;
+    const res = await fetch(`${apiBaseURL}/api/suggestions`, {
+      method: 'POST',
+      headers: {
+        mode: 'no-cors',
+        Authorization: process.env.API_AUTH,
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
