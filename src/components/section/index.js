@@ -51,9 +51,7 @@ const Section = ({ fields, sys, position, pageHeading }) => {
     sectionType === 'textContentSection' ||
     sectionType === 'richtext'
   ) {
-    return (
-      <TextContent heading={pageHeading} content={fields?.richText?.content} />
-    );
+    return <TextContent fields={fields} />;
   } else if (sectionType === 'embed') {
     return <EmbededScript fields={fields} pageHeading={pageHeading} />;
   } else if (sectionType === 'cta') {
