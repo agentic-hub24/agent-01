@@ -25,7 +25,7 @@ export default function ResultPage({
       productListingData?.response?.searchResults?.PDP
     ) {
       router.push(
-        `/product-detail/${productListingData?.response?.searchResults?.PDP}?skuid=K-${productListingData?.response?.searchResults?.suggestions}`
+        `/product-detail/${productListingData?.response?.searchResults?.PDP}?skuid=${productListingData?.response?.searchResults?.suggestions}`
       );
       // return null;
     }
