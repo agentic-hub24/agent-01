@@ -3,34 +3,61 @@ import MediaItem from '@components/MediaItem/MediaItem';
 import { RichText } from '@components/RichText';
 
 export default function TextHeadingImageContentSection({ fields }) {
+  const isPressReleseaseArticle = fields?.internalTitle.includes(
+    'Press Room Article Page'
+  );
+
   return (
-    <div className='mx-auto max-w-screen-lg flex flex-col justify-center my-[30px] mx-[22px] px-[10px]'>
+    <div
+      className={`flex flex-col justify-center my-[30px] mx-[22px] px-[10px] ${
+        isPressReleseaseArticle
+          ? 'bg-[#e5e5e5] h-[121px] w-[224px] p-3'
+          : 'w-full mx-auto max-w-screen-lg'
+      }`}
+    >
       <div className='text-[30px] my-2 font-HelveticaRoman leading-tight font-normal text-[#232323]'>
-        {fields?.heading?.content?.map((sect, index) => (
-          <RichText key={index} text={sect} />
-        ))}
+        {fields?.heading &&
+          fields?.heading?.content?.map((sect, index) => (
+            <RichText key={index} text={sect} />
+          ))}
       </div>
 
-      {fields?.textContent?.content?.map((sect, index) => (
-        <RichText
-          key={index}
-          text={sect}
-          paragraphCustomClasses={`text-[14px] text-black font-HelveticaRoman`}
-        />
-      ))}
+      {fields?.textContent &&
+        fields?.textContent?.content?.map((sect, index) => (
+          <RichText
+            key={index}
+            text={sect}
+            paragraphCustomClasses={`text-[14px] text-black font-HelveticaRoman`}
+          />
+        ))}
 
-      <div className='pt-5'>
+      {fields?.richText &&
+        fields?.richText?.content?.map((sect, index) => (
+          <RichText
+            key={index}
+            text={sect}
+            paragraphCustomClasses={`text-[14px] text-black font-HelveticaRoman leading-normal`}
+          />
+        ))}
+
+      <div>
         {fields?.cta &&
           fields?.cta.map(({ fields, sys }, id) => (
             <div className='pt-2' key={sys?.id}>
-              <a
-                href={fields?.url}
-                target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
+              <Link
+                href={fields?.url || ''}
+                passHref
                 className={`flex w-full text-[16px] font-HelveticaRoman justify-left hover:no-underline`}
-                rel='noreferrer'
               >
-                {fields?.label}
-              </a>
+                <a
+                  target={
+                    fields?.openerType !== 'Current Window' ? '_blank' : ''
+                  }
+                  rel='noreferrer'
+                >
+                  {fields?.label}
+                </a>
+              </Link>
             </div>
           ))}
       </div>

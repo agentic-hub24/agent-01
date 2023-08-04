@@ -25,7 +25,7 @@ export const colorImageFormatter = colorid => {
 
 export const selectOptions = {
   en: [
-    { label: 'Order by', value: '' },
+    { label: 'Sort by', value: '' },
     { label: 'Relevance', value: '' },
     { label: 'Name A-Z', value: 'ProductBrandName asc' },
     { label: 'Name Z-A', value: 'ProductBrandName desc' }
@@ -46,7 +46,7 @@ export const filterMapping = [
       ProductInstallationType: { label: 'installation type', type: 'list' },
       ProductNumberofHandles: { label: 'number of identifiers', type: 'list' },
       ProductProductType: { label: 'product type', type: 'list' },
-      ProductOverallWidthMm: { label: 'width', type: 'range' },
+      ProductOverallWidthMm: { label: 'size - front to back', type: 'range' },
       RegionProductCategoryLocal: { label: 'category', type: 'list' },
       NumberOfHoles: { label: 'number of holes', type: 'list' },
       ProductMaterial: { label: 'material', type: 'list' },
@@ -56,7 +56,7 @@ export const filterMapping = [
       NightLight: { label: 'night light', type: 'list' },
       ProductLitersPerMinute: { label: 'liters per minute', type: 'range' },
       SprayType: { label: 'spray type', type: 'list' },
-      ProductOverallLengthMm: { label: 'total length', type: 'range' },
+      ProductOverallLengthMm: { label: 'size - side to side', type: 'range' },
       toilet_type: { label: 'toilet type', type: 'list' },
       HandleStyle: { label: 'Handle style', type: 'list' },
       TouchlessFaucet: { label: 'touchless faucet', type: 'list' },
@@ -65,7 +65,7 @@ export const filterMapping = [
       BidetFunctionality: { label: 'bidet functionality', type: 'list' }
     },
     es: {
-      ProductNewProduct: { label: 'Nuevo', type: 'checkbox' },
+      ProductNewProduct: { label: 'Nuevos Productos', type: 'checkbox' },
       SKUColorFinishCode: { label: 'color/acabado', type: 'image' },
       ProductInstallationType: { label: 'tipo de instalación', type: 'list' },
       ProductNumberofHandles: {
@@ -73,17 +73,17 @@ export const filterMapping = [
         type: 'list'
       },
       ProductProductType: { label: 'tipo de producto', type: 'list' },
-      ProductOverallWidthMm: { label: 'ancho', type: 'range' },
+      ProductOverallWidthMm: { label: 'Ancho Total (mm)', type: 'range' },
       RegionProductCategoryLocal: { label: 'categoría', type: 'list' },
       NumberOfHoles: { label: 'número de agujeros', type: 'list' },
       ProductMaterial: { label: 'material', type: 'list' },
       ProductConfiguration: { label: 'ajustes', type: 'list' },
-      ProductShape: { label: 'forma del producto', type: 'list' },
+      ProductShape: { label: 'forma', type: 'list' },
       LitersPerFlush: { label: 'litros por descarga', type: 'list' },
       NightLight: { label: 'Luz de noche', type: 'list' },
       ProductLitersPerMinute: { label: 'litros por minuto', type: 'range' },
       SprayType: { label: 'tipo de pulverización', type: 'list' },
-      ProductOverallLengthMm: { label: 'largo total', type: 'range' },
+      ProductOverallLengthMm: { label: 'longitud Total (mm)', type: 'range' },
       toilet_type: { label: 'tipo de inodoro', type: 'list' },
       HandleStyle: { label: 'Estilo de manija', type: 'list' },
       TouchlessFaucet: { label: 'grifo sin contacto', type: 'list' },
@@ -116,6 +116,7 @@ export const staticLabelsPLP = {
     tech: 'Technical Information Downloads',
     template: 'Template & Symbol Downloads',
     didYouMean: 'Did you mean?',
+    selectCategoryLabel: 'Select a Category',
     noProductFound:
       'Sorry! No product found in this combination. Please reset the filter and try again.'
   },
@@ -133,6 +134,7 @@ export const staticLabelsPLP = {
     tech: 'Descargar Información Técnica',
     template: 'Descargar Plantillas y Símbolos',
     didYouMean: '¿Querías decir?',
+    selectCategoryLabel: 'Seleccione una categoría',
     noProductFound:
       '¡Lo siento! No se ha encontrado ningún producto en esta combinación. Restablece el filtro y vuelve a intentarlo.'
   }

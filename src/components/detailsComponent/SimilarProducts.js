@@ -22,7 +22,7 @@ export default function SimilarProducts({ productProductLinkType, locale }) {
               </div>
 
               <a
-                href={`/${locale}/product-detail/${item.ProductProductNo}`}
+                href={`/${locale}/product-detail/${item.ProductProductNo}?skuid=K-${item.SkuNumber}`}
                 className='hover:no-underline'
               >
                 <div className='mb-[20px] px-[10px] text-center font-helvetica leading-tight text-ellipsis text-[14px] text-[#232323] hover:cursor-pointer'>

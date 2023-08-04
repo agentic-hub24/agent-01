@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
@@ -8,24 +8,45 @@ import DetailsComponent from '@components/detailsComponent';
 
 export default function ProductDetailMain({ productDetailsData, productNo }) {
   const router = useRouter();
-  const [skuID, setSkuID] = useState('');
-  useEffect(() => {
-    const queryParams = {
-      skuid: 'K-' + productDetailsData?.data?.product?.ProductDefaultSKU
-    }; // Replace with your desired dynamic query parameters
-    setSkuID(queryParams.skuid);
-    // Create the URL with the dynamic query parameters
-    const url = {
-      pathname: `/product-detail/${productNo}`,
-      query: queryParams
-    };
 
-    // Update the URL
-    router.push(url, undefined, { shallow: true });
-  }, [skuID]);
-  return (
-    <DetailsComponent productDetailsData={productDetailsData} skuID={skuID} />
-  );
+  useEffect(() => {
+    if (router?.query?.skuid) {
+      localStorage.setItem('skuid', router?.query?.skuid);
+      const queryParams = {
+        skuid: router?.query?.skuid
+      }; // Replace with your desired dynamic query parameters
+
+      // setSkuID(queryParams.skuid);
+      // Create the URL with the dynamic query parameters
+      const url = {
+        pathname: `/product-detail/${productNo}`,
+        query: queryParams
+      };
+
+      // Update the URL
+      router.push(url, undefined, { shallow: true });
+    } else {
+      localStorage.setItem(
+        'skuid',
+        `K-${productDetailsData?.data?.product?.ProductDefaultSKU}`
+      );
+      const queryParams = {
+        skuid: `K-${productDetailsData?.data?.product?.ProductDefaultSKU}`
+      }; // Replace with your desired dynamic query parameters
+
+      // setSkuID(queryParams.skuid);
+      // Create the URL with the dynamic query parameters
+      const url = {
+        pathname: `/product-detail/${productNo}`,
+        query: queryParams
+      };
+
+      // Update the URL
+      router.push(url, undefined, { shallow: true });
+    }
+  }, [productDetailsData]);
+
+  return <DetailsComponent productDetailsData={productDetailsData} />;
 }
 
 export async function getServerSideProps(context) {

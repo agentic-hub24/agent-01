@@ -15,14 +15,15 @@ export default function FilterContent({
   pageType,
   searchValue,
   currentPageValue,
-  locale
+  locale,
+  totalProductCount
 }) {
   const categoryType =
     pageType === 'spec'
       ? 'SpecRegionProductCategoryLocal'
       : 'RegionProductCategoryLocal';
-  const categoryArr = filterOptions?.response['@search.facets']?.[categoryType];
-  const searchFacetsNode = filterOptions?.response?.['@search.facets'];
+  const categoryArr = filterOptions?.[categoryType];
+  const searchFacetsNode = filterOptions;
   const filterkeys = Object.keys(searchFacetsNode).filter(
     el =>
       ![
@@ -67,7 +68,12 @@ export default function FilterContent({
                         selectedFilter?.search
                       }${pageType === `spec` ? `` : `&currentPage=1`}`
                     : `/browse/${slug}`,
-                  query: { subSlug }
+                  query: {
+                    search: selectedFilter?.search,
+                    CurrentPage: pageType === `spec` ? `` : 1,
+                    lang: locale,
+                    subSlug: subSlug
+                  }
                 }}
                 as={
                   pageType
@@ -93,7 +99,12 @@ export default function FilterContent({
                             selectedFilter?.search
                           }${pageType === `spec` ? `` : `&currentPage=1`}`
                         : `/browse/${slug}`,
-                      query: { subSlug }
+                      query: {
+                        search: selectedFilter?.search,
+                        CurrentPage: pageType === `spec` ? `` : 1,
+                        lang: locale,
+                        subSlug: subSlug
+                      }
                     }}
                     as={
                       pageType
@@ -111,7 +122,7 @@ export default function FilterContent({
                         {selectedFilter?.['RegionProductCategoryLocal']}
                       </span>
                       <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
-                        ({filterOptions?.response?.['@odata.count']})
+                        ({totalProductCount})
                       </span>
                       <span className='absolute mt-[10px] right-2 text-gray-400 font-normal text-base'>
                         x
@@ -125,7 +136,6 @@ export default function FilterContent({
             <ul className=' m-0 mb-[10px]  outline-none  relative text-left w-full'>
               {categoryArr?.map((item, index) => (
                 <li className='py-[16px] cursor-pointer' key={index}>
-                  {/* TODO: href link */}
                   <a
                     href={formatRedirectionUrl(item.value)}
                     className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
@@ -147,8 +157,26 @@ export default function FilterContent({
               </div>
               <div className='flex mt-[5px]'>
                 <Link
-                  href={`/browse/${slug}/${subSlug}`}
-                  className='font-helveticaLight leading-relaxed text-[14px] font-normal'
+                  href={{
+                    pathname: pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}/${subSlug}`,
+                    query: {
+                      search: selectedFilter?.search,
+                      CurrentPage: pageType === `spec` ? `` : 1,
+                      lang: locale,
+                      subSlug: subSlug
+                    }
+                  }}
+                  as={
+                    pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}/${subSlug}`
+                  }
                 >
                   {staticLabelsPLP[locale].clearAll}
                 </Link>
@@ -212,12 +240,31 @@ export default function FilterContent({
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
-                <a
-                  href={`/browse/${slug}`}
+                <Link
+                  href={{
+                    pathname: pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}`,
+                    query: {
+                      search: selectedFilter?.search,
+                      CurrentPage: pageType === `spec` ? `` : 1,
+                      lang: locale,
+                      subSlug: subSlug
+                    }
+                  }}
+                  as={
+                    pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}`
+                  }
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
                   {staticLabelsPLP[locale].showAll}
-                </a>
+                </Link>
               </div>
             </div>
             <div className='mb-[5px] pr-[30px] border-b-2'>
@@ -232,7 +279,7 @@ export default function FilterContent({
                         {selectedFilter?.['RegionProductCategoryLocal']}
                       </span>
                       <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
-                        ({filterOptions?.response?.['@odata.count']})
+                        ({totalProductCount})
                       </span>
                       <span className='absolute mt-[10px] right-4 text-gray-400 font-normal text-base'>
                         x
@@ -264,8 +311,26 @@ export default function FilterContent({
               </div>
               <div className='flex mt-[5px]'>
                 <Link
-                  href={`/browse/${slug}/${subSlug}`}
-                  className='font-helveticaLight leading-relaxed text-[14px] font-normal'
+                  href={{
+                    pathname: pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}/${subSlug}`,
+                    query: {
+                      search: selectedFilter?.search,
+                      CurrentPage: pageType === `spec` ? `` : 1,
+                      lang: locale,
+                      subSlug: subSlug
+                    }
+                  }}
+                  as={
+                    pageType
+                      ? `/results?type=${pageType}&search=${
+                          selectedFilter?.search
+                        }${pageType === `spec` ? `` : `&currentPage=1`}`
+                      : `/browse/${slug}/${subSlug}`
+                  }
                 >
                   {staticLabelsPLP[locale].clearAll}
                 </Link>

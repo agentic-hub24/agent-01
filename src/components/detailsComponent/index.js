@@ -25,6 +25,7 @@ import {
 } from '@services/productListingAPI/client';
 import Cta from '@components/Cta';
 import BackToTop from '@components/backToTop';
+import Loader from '@components/loader';
 import { Fb, Twitter } from '@components/svgs';
 import ImageZoomModal from './ImageZoomModal';
 import LinkWithLabel from './LinkWithLabel';
@@ -91,6 +92,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [youTubeLink, setYoutubeLink] = useState([]);
   const [youtubeMetaData, setYoutubeMetaData] = useState([]);
   const [youtubeLinkOpen, setYoutubeLinkOpen] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const handlePrevClick = () => {
     // Your code to display the selected image goes here
@@ -162,7 +164,13 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     } = {}
   } = productDetailsData;
 
-  const skuId = skuID.replace('K-', '') || ProductDefaultSKU; //take product default SKU NO
+  let skuId = '';
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      skuId = localStorage.getItem('skuid')?.replace('K-', '');
+    }
+  }, []);
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
@@ -222,10 +230,12 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     };
 
     // Update the URL
+    localStorage.setItem('skuid', queryParams.skuid);
     router.push(url, undefined, { shallow: true });
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const color_finish_code_array = ProductItem.filter(
       el =>
         el.SKUColorFinishCode !== undefined &&
@@ -302,6 +312,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       ele => ele.ProductATGISACTIVE === true
     );
     setHasLinkedproduct(has_linked_products);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -375,6 +386,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
 
   return (
     <>
+      {isLoading && <Loader loading={isLoading} />}
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] mb-[50px] p-2'>
         <div className='flex w-full md:flex-row flex-col'>
           {/* Product Carousel start */}
@@ -1120,21 +1132,18 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   {ProductOverallWidthMm && (
                     <span className='mr-[5px]'>{ProductOverallWidthMm}</span>
                   )}
-                  mm,{' '}
-                  <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
+                  mm{' '}
+                  {/* <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
                     D
                   </span>
                   {ProductOverallDepthMm && (
                     <span className='mr-[5px]'>{ProductOverallDepthMm}</span>
                   )}
-                  mm
+                  mm */}
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
-                    <img
-                      src={gifLineArtImageFormatter(lineArt?.ResourceName)}
-                      alt='Gif line art'
-                    />
+                    <img src={lineArt?.ResourceFullWebURL} alt='Gif line art' />
                   </div>
                 )}
 
@@ -1195,31 +1204,31 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   {PDP_LABELS[locale].paresWellWith}
                 </div>
               )}
-              <div className='flex flex-wrap lg:flex-nowrap flex-row'>
+              <div className='flex flex-wrap lg:flex-nowrap flex-row mb-6'>
                 <SimilarProductsCards
                   productProductLinkType={ProductProductLinkType?.slice(0, 4)}
                   locale={locale}
                 />
+                <hr />
               </div>
             </>
           )}
         </div>
-        <hr />
+
         {similarProducts && similarProducts.length > 0 && (
           <div className='flex flex-col mb-4'>
             <div className='mt-[20px] mb-[10px] font-helveticaLight text-[20px] uppercase leading-tight font-light'>
               {PDP_LABELS[locale].similarProducts}
             </div>
-            <hr />
-            <div className='flex flex-wrap lg:flex-nowrap flex-row'>
+            <div className='flex flex-wrap lg:flex-nowrap flex-row mb-6'>
               <SimilarProducts
                 productProductLinkType={similarProducts?.slice(0, 5)}
                 locale={locale}
               />
             </div>
+            <hr />
           </div>
         )}
-        <hr />
       </section>
       <Cta fields={CTAObject[locale]} />
       <BackToTop topHeight={0} localeProp={locale} />

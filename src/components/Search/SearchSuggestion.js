@@ -1,8 +1,9 @@
+import Link from 'next/link';
 import { staticLabelsPLP } from '@components/ProductListing/helper';
 
 const SearchSuggestion = ({ requestBody, suggestion, locale = 'en' }) => {
   const formatRedirectionUrl = suggestion => {
-    return `/results?search=${suggestion}&currentPage=1`;
+    return `${locale}/results?search=${suggestion}&currentPage=1`;
   };
   return (
     <>
@@ -14,9 +15,9 @@ const SearchSuggestion = ({ requestBody, suggestion, locale = 'en' }) => {
           </h1>
           <h1 className='font-sans font-light text-5xl leading-1'>
             {staticLabelsPLP[locale].didYouMean}
-            <a href={formatRedirectionUrl(suggestion)}>
-              &quot;{suggestion}&quot;
-            </a>
+            <Link href={formatRedirectionUrl(suggestion)}>
+              <a>&quot;{suggestion}&quot;</a>
+            </Link>
           </h1>
           <p className='my-5 font-sans font-bold text-xl leading-none'>
             0 &nbsp;{staticLabelsPLP[locale].totalProductLabel}
