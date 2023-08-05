@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
+import { RichText } from '@components/RichText';
 import BackToTop from '@components/backToTop';
 import { PDP_LABELS } from '@components/detailsComponent/helper';
 import Landing from '@components/landing';
@@ -42,7 +43,18 @@ export default function PressReleaseLandingPage({ pageData }) {
   return (
     <div className='flex flex-col w-full max-w-screen-lg mx-auto'>
       <div className='flex flex-col px-[10px] py-[20px] text-5xl text-[#232323]'>
-        {pageData?.pageHeading}
+        {pageData?.headingWithSubtext?.fields?.heading}
+      </div>
+      <div className='mx-2 mt-[4px] mb-[12px] font-HelveticaRoman italic text-[#666] text-[15px]'>
+        {pageData?.headingWithSubtext?.fields?.subText?.content?.map(
+          (sect, id) => (
+            <RichText
+              key={id}
+              text={sect}
+              paragraphCustomClasses={`text-[14px] text-black font-HelveticaRoman leading-normal`}
+            />
+          )
+        )}
       </div>
       <div className='flex mt-5 mb-5 px-[10px]'>
         <div
