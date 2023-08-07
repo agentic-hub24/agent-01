@@ -13,6 +13,17 @@ import MobileNavItem from '@components/NavItems/MobileNavItem';
 import TopHeaderMobile from '@components/WorldWideMenu/TopHeaderMobile';
 import HeaderSearch from './HeaderSearch';
 
+// static data for url
+const formatUrl = {
+  bathrooms: '/browse/Bathroom',
+  showers: '/browse/Showering',
+  commercial: '/browse/Commercial',
+  baños: '/browse/Baños',
+  duchas: '/browse/Duchas',
+  institucional: '/browse/Institucional',
+  cocina: '/browse/Cocina',
+  kitchen: '/browse/Kitchen'
+};
 export default function HeaderSection({ navData = {}, world }) {
   const router = useRouter();
   const { locale = '' } = router;
@@ -174,9 +185,18 @@ export default function HeaderSection({ navData = {}, world }) {
                 <div className='mt-7 flex'>
                   {secondaryNavItem?.map((secondaryNav, id) => {
                     return (
-                      <ul className='flex flex-col pr-8' key={id}>
-                        <li className='text-[14px] leading-tight font-normal font-HelveticaBold pb-1'>
-                          {secondaryNav?.fields?.headingLabel}
+                      <ul className='flex flex-col pr-8 navMenu' key={id}>
+                        <li onClick={() => setNavOpen(false)}>
+                          <Link
+                            href={
+                              formatUrl[
+                                secondaryNav?.fields?.headingLabel.toLowerCase()
+                              ] || '#'
+                            }
+                            className='text-[14px] leading-tight font-normal font-HelveticaBold pb-1 !text-[#666]'
+                          >
+                            {secondaryNav?.fields?.headingLabel}
+                          </Link>
                         </li>
                         {secondaryNav?.fields?.navItems?.map((navItem, id) => (
                           <NavItems
