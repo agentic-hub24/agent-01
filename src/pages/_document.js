@@ -25,15 +25,10 @@ class MyDocument extends Document {
             async
             src={process.env.NEXT_PUBLIC_NEW_RELIC}
           ></script>
-          {/* PS meta data> */}
-          {/* <meta name='ps-key' content='1730-61731e79166c1200213fbaf9' />
-          <meta name='ps-country' content='BR' />
-          <meta name='ps-language' content='pt' />
-          <script src='//cdn.pricespider.com/1/lib/ps-widget.js' async></script> */}
-          {/* end of PS meta data */}
           {/* Adobe Analytics script start */}
           <script src={process.env.ADOBEDTM_SCRIPT} async></script>
           {/* Adobe Analytics script end */}
+          <link rel='apple-touch-icon' href='/fevicon.ico' />
         </Head>
         <body>
           <Main />

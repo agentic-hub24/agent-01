@@ -456,3 +456,14 @@ element.style {
     transform: rotate(360deg);
   }
 }
+
+.navMenu li a {
+  color: #666;
+  font-family: 'HelveticaBold';
+  line-height: 1rem;
+}
+
+.navMenu li a:hover {
+  color: #232323;
+  text-decoration: none;
+}
