@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NavItems from '@components/NavItems';
 import MobileNavItem from '@components/NavItems/MobileNavItem';
-import WorldWideMenu from '@components/WorldWideMenu';
 import TopHeaderMobile from '@components/WorldWideMenu/TopHeaderMobile';
 import HeaderSearch from './HeaderSearch';
 
@@ -119,7 +118,6 @@ export default function HeaderSection({ navData = {}, world }) {
   return (
     <>
       {/* Header desktop --> start */}
-      <WorldWideMenu world={world} setNavOpen={() => setNavOpen(false)} />
       <div
         className={`bg-[#fff] text-[#232323] border-y z-40 sticky top-0 ${
           !top && `bg-white shadow-xl`

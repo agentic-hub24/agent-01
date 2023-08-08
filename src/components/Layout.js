@@ -3,6 +3,7 @@ import FooterSection from '@components/FooterSection';
 import HeaderSection from '@components/HeaderSection';
 import PreviewBanner from '@components/PreviewBanner';
 import CustomHead from '@components/customHead';
+import WorldWideMenu from './WorldWideMenu';
 
 export default function Layout({
   children,
@@ -27,6 +28,7 @@ export default function Layout({
     <>
       <CustomHead seoMetaData={seoMetadata} />
       {router?.isPreview && <PreviewBanner />}
+      <WorldWideMenu world={world} />
       <HeaderSection navData={headerNav} logo={logo} world={world} />
       <main>{children}</main>
       <FooterSection navData={footerPrimaryNav} copyRightText={copyRightText} />
