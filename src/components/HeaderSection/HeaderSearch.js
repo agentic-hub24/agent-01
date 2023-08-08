@@ -37,12 +37,14 @@ export default function HeaderSearch({ setOpenMobileMenu }) {
     if (event.key === 'Enter') {
       router.push(`/results?search=${searchValue}&currentPage=1`);
       setOpenMobileMenu(false);
+      setSuggestionList({});
     }
   };
   const searchOnClick = () => {
     if (searchValue) {
       router.push(`/results?search=${searchValue}&currentPage=1`);
       setOpenMobileMenu(false);
+      setSuggestionList({});
     }
   };
   const handleChange = e => {
@@ -65,7 +67,7 @@ export default function HeaderSearch({ setOpenMobileMenu }) {
   };
 
   return (
-    <div className='flex items-center ml-4 w-full'>
+    <div className='flex items-center ml-4 w-full' style={{ zIndex: 1000 }}>
       <div className='relative w-full'>
         <input
           type='text'

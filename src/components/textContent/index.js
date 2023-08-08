@@ -1,6 +1,6 @@
 import { RichText } from '@components/RichText';
 
-const TextContent = ({ fields }) => {
+const TextContent = ({ fields, pageHeading }) => {
   const isPressReleseaseArticle = fields?.internalTitle.includes(
     'Press Room Article Page'
   );
@@ -13,7 +13,7 @@ const TextContent = ({ fields }) => {
       }`}
     >
       <h2 className='mt-[20px] mb-[30px] text-[2rem] md:text-[2.7rem] font-normal text-black'>
-        {fields?.heading}
+        {fields?.heading || pageHeading}
       </h2>
       {fields?.richText?.content?.map((sect, index) => (
         <RichText

@@ -152,7 +152,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         ProductOverallLengthMm,
         ProductOverallHeightMm,
         ProductOverallWidthMm,
-        ProductOverallDepthMm,
         ProductMaterial,
         ProductInstallationType,
         ProductLocalCategory,
@@ -164,13 +163,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     } = {}
   } = productDetailsData;
 
-  let skuId = '';
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      skuId = localStorage.getItem('skuid')?.replace('K-', '');
-    }
-  }, []);
+  const skuId = router?.query?.skuid?.replace('K-', '');
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
@@ -313,7 +306,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     );
     setHasLinkedproduct(has_linked_products);
     setIsLoading(false);
-  }, []);
+  }, [skuId]);
 
   useEffect(() => {
     setImageName(carousel[0]?.ResourceName);
@@ -1133,13 +1126,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <span className='mr-[5px]'>{ProductOverallWidthMm}</span>
                   )}
                   mm{' '}
-                  {/* <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
-                    D
-                  </span>
-                  {ProductOverallDepthMm && (
-                    <span className='mr-[5px]'>{ProductOverallDepthMm}</span>
-                  )}
-                  mm */}
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
@@ -1290,7 +1276,6 @@ DetailsComponent.defaultProps = {
         ProductOverallLengthMm: '',
         ProductOverallHeightMm: '',
         ProductOverallWidthMm: '',
-        ProductOverallDepthMm: '',
         ProductMaterial: '',
         ProductInstallationType: [],
         ProductPriceSpiderIncluded: false,
