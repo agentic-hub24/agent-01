@@ -3,12 +3,12 @@ const Suggestion = ({ searchTerm, list, searchOnSuggestion }) => {
     return null;
   }
   return (
-    <div className='w-full absolute top-10 h-[300px] overflow-auto'>
+    <div className='w-full absolute top-10 max-h-[300px] overflow-auto bg-[#f5f5f5]'>
       <ul>
         {list?.suggestionsData?.map(item => (
           <li
             key={item}
-            className='p-4 bg-[#e5e5e5] hover:bg-[#6c89ad] hover:text-[#fff] text-[12px] cursor-pointer'
+            className='p-4 bg-[#f5f5f5] hover:bg-[#6c89ad] hover:text-[#fff] text-[12px] cursor-pointer'
             onClick={() => searchOnSuggestion(item, list?.pageRedirection)}
           >
             <span

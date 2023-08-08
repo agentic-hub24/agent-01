@@ -86,7 +86,7 @@ export const filterMapping = [
       ProductOverallLengthMm: { label: 'longitud Total (mm)', type: 'range' },
       toilet_type: { label: 'tipo de inodoro', type: 'list' },
       HandleStyle: { label: 'Estilo de manija', type: 'list' },
-      TouchlessFaucet: { label: 'grifo sin contacto', type: 'list' },
+      TouchlessFaucet: { label: 'sin contacto', type: 'list' },
       IntelligentToilet: { label: 'baño inteligente', type: 'list' },
       BowlShape: { label: 'forma de cuenco', type: 'list' },
       BidetFunctionality: { label: 'funcionalidad de bidé', type: 'list' }

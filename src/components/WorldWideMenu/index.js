@@ -23,7 +23,9 @@ export default function WorldWideMenu({ world }) {
                   borderLeft: '1px solid #333'
                 }}
                 aria-label={logo?.fields?.ariaLabel}
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                  setOpen(!open);
+                }}
               >
                 {logo?.fields?.label}
               </h4>

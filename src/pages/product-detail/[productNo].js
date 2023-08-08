@@ -11,7 +11,6 @@ export default function ProductDetailMain({ productDetailsData, productNo }) {
 
   useEffect(() => {
     if (router?.query?.skuid) {
-      localStorage.setItem('skuid', router?.query?.skuid);
       const queryParams = {
         skuid: router?.query?.skuid
       }; // Replace with your desired dynamic query parameters
@@ -24,12 +23,8 @@ export default function ProductDetailMain({ productDetailsData, productNo }) {
       };
 
       // Update the URL
-      router.push(url, undefined, { shallow: true });
+      router.push(url);
     } else {
-      localStorage.setItem(
-        'skuid',
-        `K-${productDetailsData?.data?.product?.ProductDefaultSKU}`
-      );
       const queryParams = {
         skuid: `K-${productDetailsData?.data?.product?.ProductDefaultSKU}`
       }; // Replace with your desired dynamic query parameters
@@ -42,9 +37,9 @@ export default function ProductDetailMain({ productDetailsData, productNo }) {
       };
 
       // Update the URL
-      router.push(url, undefined, { shallow: true });
+      router.push(url);
     }
-  }, [productDetailsData]);
+  }, []);
 
   return <DetailsComponent productDetailsData={productDetailsData} />;
 }

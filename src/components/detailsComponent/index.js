@@ -54,7 +54,6 @@ import {
   TECHNICAL_INFORMATION_FILES_NAMES,
   DEFAULT_IMAGE_LINK,
   CTAObject,
-  checkForNewProducts,
   carouselImageFormatter,
   PRODUCT_RESOURCE_TYPE_VIDEO,
   thumbsImageFormatter
@@ -87,7 +86,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [thumbsPosition, setThumbsPosition] = useState(0);
   const [imageName, setImageName] = useState('');
-  const [isNewProduct, setIsNewProduct] = useState(false);
   const [hasLinkedprodcts, setHasLinkedproduct] = useState(false);
   const [youTubeLink, setYoutubeLink] = useState([]);
   const [youtubeMetaData, setYoutubeMetaData] = useState([]);
@@ -152,7 +150,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         ProductOverallLengthMm,
         ProductOverallHeightMm,
         ProductOverallWidthMm,
-        ProductOverallDepthMm,
         ProductMaterial,
         ProductInstallationType,
         ProductLocalCategory,
@@ -164,13 +161,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     } = {}
   } = productDetailsData;
 
-  let skuId = '';
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      skuId = localStorage.getItem('skuid')?.replace('K-', '');
-    }
-  }, []);
+  const skuId = router?.query?.skuid?.replace('K-', '');
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
@@ -213,12 +204,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
 
       setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
     }
-    const is_new_product = checkForNewProducts(
-      item?.links?.ItemRegion?.find(obj =>
-        Object.keys(obj).includes('RegionReleaseforShipment')
-      )?.RegionReleaseforShipment
-    );
-    setIsNewProduct(is_new_product);
 
     const queryParams = {
       skuid: 'K-' + item.SKUSKUNo
@@ -243,12 +228,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     );
     setColorFinisCodeArray(color_finish_code_array);
     const defaultItems = ProductItem?.find(el => el.SKUSKUNo === skuId) || {};
-    const is_new_product = checkForNewProducts(
-      defaultItems?.links?.ItemRegion?.find(obj =>
-        Object.keys(obj).includes('RegionReleaseforShipment')
-      )?.RegionReleaseforShipment
-    );
-    setIsNewProduct(is_new_product);
     const carousel_image_array =
       defaultItems?.links?.ItemResource?.filter(
         el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
@@ -313,7 +292,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     );
     setHasLinkedproduct(has_linked_products);
     setIsLoading(false);
-  }, []);
+  }, [skuId]);
 
   useEffect(() => {
     setImageName(carousel[0]?.ResourceName);
@@ -410,7 +389,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           <Image
                             src={thumbsImageFormatter(
                               imgs?.ResourceName,
-                              isNewProduct,
+                              ProductNewProduct,
                               imgs?.ResourceType
                             )}
                             height={60}
@@ -507,7 +486,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <img
                                 src={carouselImageFormatter(
                                   element?.ResourceName,
-                                  isNewProduct
+                                  ProductNewProduct
                                 )}
                                 id={element.ResourceName}
                                 alt={element.ResourceName}
@@ -544,7 +523,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   skuName={imageIndex}
                   carouselItem={carousel}
                   defaultImageLink={DEFAULT_IMAGE_LINK}
-                  isNewProduct={isNewProduct}
+                  isNewProduct={ProductNewProduct}
                 />
               )}
             </div>
@@ -555,7 +534,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
             <div className='text-[22px] font-helveticaLight font-semibold'>
               {ProductBrandName}
             </div>
-            <div className='mt-[10px] text-[18px] font-helveticaLight font-light mb-[20px]'>
+            <div className='mt-[10px] text-[16px] font-helveticaLight font-normal mb-[20px]'>
               {ProductDescriptionProductShort || ProductMETADESCRIPTION}
             </div>
             {skuNumber && (
@@ -699,7 +678,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         </div>
         <div className='flex w-full lg:m-2 m-0 flex-col'>
           <div className='flex flex-col md:w-2/3 w-full '>
-            <div className='breadcrumbs-color hidden md:inline-flex my-[48px] font-HelveticaRoman text-[12px] leading-tight font-light text-[#000]'>
+            {/* <div className='breadcrumbs-color hidden md:inline-flex my-[48px] font-HelveticaRoman text-[12px] leading-tight font-light text-[#000]'>
               {PDP_LABELS[locale].home}{' '}
               {ProductSection && ProductSection.length > 0 && (
                 <>
@@ -716,7 +695,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <span>{ProductLocalCategory[0]}</span>
                   </>
                 )}
-            </div>
+            </div> */}
             <div className='font-helveticaLight text-[15px] text-[#232323] mb-[30px] mt-[30px] lg:mt-0 text-left'>
               {ProductNarrativeDescription}
             </div>
@@ -1133,13 +1112,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <span className='mr-[5px]'>{ProductOverallWidthMm}</span>
                   )}
                   mm{' '}
-                  {/* <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
-                    D
-                  </span>
-                  {ProductOverallDepthMm && (
-                    <span className='mr-[5px]'>{ProductOverallDepthMm}</span>
-                  )}
-                  mm */}
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
@@ -1290,7 +1262,6 @@ DetailsComponent.defaultProps = {
         ProductOverallLengthMm: '',
         ProductOverallHeightMm: '',
         ProductOverallWidthMm: '',
-        ProductOverallDepthMm: '',
         ProductMaterial: '',
         ProductInstallationType: [],
         ProductPriceSpiderIncluded: false,
