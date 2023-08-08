@@ -692,7 +692,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         </div>
         <div className='flex w-full lg:m-2 m-0 flex-col'>
           <div className='flex flex-col md:w-2/3 w-full '>
-            <div className='breadcrumbs-color hidden md:inline-flex my-[48px] font-HelveticaRoman text-[12px] leading-tight font-light text-[#000]'>
+            {/* <div className='breadcrumbs-color hidden md:inline-flex my-[48px] font-HelveticaRoman text-[12px] leading-tight font-light text-[#000]'>
               {PDP_LABELS[locale].home}{' '}
               {ProductSection && ProductSection.length > 0 && (
                 <>
@@ -709,7 +709,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <span>{ProductLocalCategory[0]}</span>
                   </>
                 )}
-            </div>
+            </div> */}
             <div className='font-helveticaLight text-[15px] text-[#232323] mb-[30px] mt-[30px] lg:mt-0 text-left'>
               {ProductNarrativeDescription}
             </div>
