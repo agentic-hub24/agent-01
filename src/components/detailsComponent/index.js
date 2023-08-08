@@ -54,7 +54,6 @@ import {
   TECHNICAL_INFORMATION_FILES_NAMES,
   DEFAULT_IMAGE_LINK,
   CTAObject,
-  checkForNewProducts,
   carouselImageFormatter,
   PRODUCT_RESOURCE_TYPE_VIDEO,
   thumbsImageFormatter
@@ -87,7 +86,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [thumbsPosition, setThumbsPosition] = useState(0);
   const [imageName, setImageName] = useState('');
-  const [isNewProduct, setIsNewProduct] = useState(false);
   const [hasLinkedprodcts, setHasLinkedproduct] = useState(false);
   const [youTubeLink, setYoutubeLink] = useState([]);
   const [youtubeMetaData, setYoutubeMetaData] = useState([]);
@@ -206,12 +204,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
 
       setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
     }
-    const is_new_product = checkForNewProducts(
-      item?.links?.ItemRegion?.find(obj =>
-        Object.keys(obj).includes('RegionReleaseforShipment')
-      )?.RegionReleaseforShipment
-    );
-    setIsNewProduct(is_new_product);
 
     const queryParams = {
       skuid: 'K-' + item.SKUSKUNo
@@ -236,12 +228,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     );
     setColorFinisCodeArray(color_finish_code_array);
     const defaultItems = ProductItem?.find(el => el.SKUSKUNo === skuId) || {};
-    const is_new_product = checkForNewProducts(
-      defaultItems?.links?.ItemRegion?.find(obj =>
-        Object.keys(obj).includes('RegionReleaseforShipment')
-      )?.RegionReleaseforShipment
-    );
-    setIsNewProduct(is_new_product);
     const carousel_image_array =
       defaultItems?.links?.ItemResource?.filter(
         el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
@@ -403,7 +389,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           <Image
                             src={thumbsImageFormatter(
                               imgs?.ResourceName,
-                              isNewProduct,
+                              ProductNewProduct,
                               imgs?.ResourceType
                             )}
                             height={60}
@@ -500,7 +486,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <img
                                 src={carouselImageFormatter(
                                   element?.ResourceName,
-                                  isNewProduct
+                                  ProductNewProduct
                                 )}
                                 id={element.ResourceName}
                                 alt={element.ResourceName}
@@ -537,7 +523,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   skuName={imageIndex}
                   carouselItem={carousel}
                   defaultImageLink={DEFAULT_IMAGE_LINK}
-                  isNewProduct={isNewProduct}
+                  isNewProduct={ProductNewProduct}
                 />
               )}
             </div>
@@ -548,7 +534,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
             <div className='text-[22px] font-helveticaLight font-semibold'>
               {ProductBrandName}
             </div>
-            <div className='mt-[10px] text-[18px] font-helveticaLight font-extralight mb-[20px]'>
+            <div className='mt-[10px] text-[18px] font-helveticaLight font-normal mb-[20px]'>
               {ProductDescriptionProductShort || ProductMETADESCRIPTION}
             </div>
             {skuNumber && (
