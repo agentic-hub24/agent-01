@@ -152,7 +152,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         ProductOverallLengthMm,
         ProductOverallHeightMm,
         ProductOverallWidthMm,
-        ProductOverallDepthMm,
         ProductMaterial,
         ProductInstallationType,
         ProductLocalCategory,
@@ -164,13 +163,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     } = {}
   } = productDetailsData;
 
-  let skuId = '';
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      skuId = localStorage.getItem('skuid')?.replace('K-', '');
-    }
-  }, []);
+  const skuId = router?.query?.skuid?.replace('K-', '');
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
@@ -313,7 +306,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     );
     setHasLinkedproduct(has_linked_products);
     setIsLoading(false);
-  }, []);
+  }, [skuId]);
 
   useEffect(() => {
     setImageName(carousel[0]?.ResourceName);
@@ -699,7 +692,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         </div>
         <div className='flex w-full lg:m-2 m-0 flex-col'>
           <div className='flex flex-col md:w-2/3 w-full '>
-            <div className='breadcrumbs-color hidden md:inline-flex my-[48px] font-HelveticaRoman text-[12px] leading-tight font-light text-[#000]'>
+            {/* <div className='breadcrumbs-color hidden md:inline-flex my-[48px] font-HelveticaRoman text-[12px] leading-tight font-light text-[#000]'>
               {PDP_LABELS[locale].home}{' '}
               {ProductSection && ProductSection.length > 0 && (
                 <>
@@ -716,7 +709,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <span>{ProductLocalCategory[0]}</span>
                   </>
                 )}
-            </div>
+            </div> */}
             <div className='font-helveticaLight text-[15px] text-[#232323] mb-[30px] mt-[30px] lg:mt-0 text-left'>
               {ProductNarrativeDescription}
             </div>
@@ -1133,13 +1126,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <span className='mr-[5px]'>{ProductOverallWidthMm}</span>
                   )}
                   mm{' '}
-                  {/* <span className='font-helveticaGroup text-[14px] leading-tight font-semibold mr-[5px]'>
-                    D
-                  </span>
-                  {ProductOverallDepthMm && (
-                    <span className='mr-[5px]'>{ProductOverallDepthMm}</span>
-                  )}
-                  mm */}
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
@@ -1290,7 +1276,6 @@ DetailsComponent.defaultProps = {
         ProductOverallLengthMm: '',
         ProductOverallHeightMm: '',
         ProductOverallWidthMm: '',
-        ProductOverallDepthMm: '',
         ProductMaterial: '',
         ProductInstallationType: [],
         ProductPriceSpiderIncluded: false,

@@ -21,7 +21,7 @@ export default function ProductList({
 }
 
 export async function getServerSideProps(context) {
-  const { params, locale, preview } = context;
+  const { params, locale, preview, query } = context;
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
   const client = preview ? contentfulPreviewClient : contentfulClient;
@@ -43,11 +43,13 @@ export async function getServerSideProps(context) {
     locale: lc
   });
   //PLP API CALL --> Start
+
   const requestBody = {
     search: '',
     orderby: '',
     RegionProductCategoryLocal: params.sub_slug.replace(/\+/g, ' '),
-    lang: languageAPI
+    lang: languageAPI,
+    ...(query && query.filterBy && { [query.filterBy]: [query.value] })
   };
   const productListingData = await getProductListing(requestBody);
   // PLP API --> end

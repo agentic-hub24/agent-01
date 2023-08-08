@@ -29,6 +29,10 @@ const FilterItems = ({
     };
   }, [isRange]);
 
+  useEffect(() => {
+    onClickHandler(filterName, filterOption[0]?.value, filterOption[0]?.count);
+  }, []);
+
   const onClickHandler = (name, value, count) => {
     filterSelect({ [name]: value }, { [name]: count });
   };
