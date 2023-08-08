@@ -171,7 +171,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       skuId = localStorage.getItem('skuid')?.replace('K-', '');
     }
     router.push(router.asPath);
-  }, []);
+  }, [router]);
 
   const setColorImageFeature = (e, item) => {
     setColorName(item.SKUColorFinishName);
