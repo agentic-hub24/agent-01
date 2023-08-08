@@ -534,7 +534,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
             <div className='text-[22px] font-helveticaLight font-semibold'>
               {ProductBrandName}
             </div>
-            <div className='mt-[10px] text-[18px] font-helveticaLight font-normal mb-[20px]'>
+            <div className='mt-[10px] text-[16px] font-helveticaLight font-normal mb-[20px]'>
               {ProductDescriptionProductShort || ProductMETADESCRIPTION}
             </div>
             {skuNumber && (
