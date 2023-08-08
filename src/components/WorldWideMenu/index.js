@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import NavItems from '@components/NavItems';
 
-export default function WorldWideMenu({ world, setNavOpen }) {
+export default function WorldWideMenu({ world }) {
   const router = useRouter();
   const { locale = '' } = router;
   const [open, setOpen] = useState(false);
@@ -25,7 +25,6 @@ export default function WorldWideMenu({ world, setNavOpen }) {
                 aria-label={logo?.fields?.ariaLabel}
                 onClick={() => {
                   setOpen(!open);
-                  setNavOpen(false);
                 }}
               >
                 {logo?.fields?.label}
@@ -75,7 +74,6 @@ export default function WorldWideMenu({ world, setNavOpen }) {
                     borderLeft: '1px solid #333'
                   }}
                   aria-label={item?.fields?.ariaLabel}
-                  onClick={() => setNavOpen(false)}
                 >
                   {item?.fields?.label.toUpperCase()}
                 </h4>
