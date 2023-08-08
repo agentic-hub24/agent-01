@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaCheck, FaRegSquare } from 'react-icons/fa6';
 import Slider from 'react-slider';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { filterImageFormatter } from './helper';
 
 const FilterItems = ({
@@ -15,6 +15,7 @@ const FilterItems = ({
   selectedFilterCount
 }) => {
   const filter = selectedFilter;
+  const router = useRouter();
   const [isRange, setIsRange] = useState(false);
 
   useEffect(() => {
@@ -30,7 +31,13 @@ const FilterItems = ({
   }, [isRange]);
 
   useEffect(() => {
-    onClickHandler(filterName, filterOption[0]?.value, filterOption[0]?.count);
+    router &&
+      router?.query?.filterBy === filterName &&
+      onClickHandler(
+        filterName,
+        filterOption.find(el => el?.value === router?.query?.value)?.value,
+        filterOption.find(el => el?.value === router?.query?.value)?.count
+      );
   }, []);
 
   const onClickHandler = (name, value, count) => {
