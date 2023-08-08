@@ -89,7 +89,7 @@ export default function ProductListing({
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
         <div className='flex justify-between flex-wrap md:flex-nowrap'>
           <PLPHeader
-            productCount={productListingData?.response?.['@odata.count']}
+            productCount={totalProductCount}
             pageHeading={formatterHeader(sub_slug)}
           />
           {/* order by select -- start ==> TODO: Select option from CTFL */}
