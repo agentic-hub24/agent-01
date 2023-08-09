@@ -236,7 +236,8 @@ export const PDP_LABELS = {
     bimRevit: 'BIM Revit',
     twitterText: 'Estoy compartiendo en twitter!',
     collection: 'Colección',
-    technology: 'Tecnología'
+    technology: 'Tecnología',
+    availableAt: 'Disponible en:'
   },
   en: {
     colorName: 'Color:',
@@ -273,7 +274,8 @@ export const PDP_LABELS = {
     bimRevit: 'BIM Revit',
     twitterText: 'I am sharing on twitter!',
     collection: 'Collection',
-    technology: 'Technology'
+    technology: 'Technology',
+    availableAt: 'Available at:'
   }
 };
 

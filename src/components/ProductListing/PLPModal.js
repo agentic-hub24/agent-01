@@ -86,7 +86,7 @@ export default function PLPModal({
         <div className='flex min-h-full items-center justify-center p-4 text-center'>
           <div className='relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all max-w-screen-lg mx-auto'>
             {loader && <Loader loading={loader} />}
-            <div className='flex'>
+            <div className='flex sm:flex-row flex-col'>
               <div className='flex'>
                 <img
                   src={carouselImageFormatter(
@@ -94,12 +94,12 @@ export default function PLPModal({
                     modalValues?.ProductNewProduct
                   )}
                   alt={image.ResourceName}
-                  className='h-[415px] w-[570px]'
+                  className='sm:h-[415px] sm:w-[570px] h-[240px] w-full'
                   onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                 />
               </div>
 
-              <div className='flex flex-col md:w-1/3 w-full lg:px-[15px] py-[15px]'>
+              <div className='flex flex-col md:w-1/3 w-full lg:px-[15px] py-[15px] px-2'>
                 <div className='text-[22px] font-helveticaLight font-semibold'>
                   {modalValues.ProductBrandName}
                 </div>
@@ -155,7 +155,7 @@ export default function PLPModal({
                       )}
                       {showColorName &&
                         showColorName === el.SKUColorFinishName && (
-                          <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max z-10'>
+                          <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max z-10 hidden sm:block'>
                             {el.SKUColorFinishName}
                           </span>
                         )}
