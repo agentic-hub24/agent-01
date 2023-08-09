@@ -467,3 +467,8 @@ element.style {
   color: #232323;
   text-decoration: none;
 }
+
+#mobileView .carousel .slide iframe {
+  width: 100% !important;
+  margin: 0px !important;
+}

@@ -91,6 +91,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [youtubeMetaData, setYoutubeMetaData] = useState([]);
   const [youtubeLinkOpen, setYoutubeLinkOpen] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [availableAt, setAvailableAt] = useState({});
 
   const handlePrevClick = () => {
     // Your code to display the selected image goes here
@@ -262,6 +263,11 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     );
     setLineArtUrl(gif_line_art);
 
+    const region_retailer_url = defaultItems?.links?.ItemRegion.find(
+      el => el.RegionRetailer1URL != undefined
+    );
+    setAvailableAt(region_retailer_url);
+
     // pdf links plan
     const plan_view_3d = ProductResource?.filter(el =>
       PRODUCT_PLAN_3D.includes(el.ResourceType)
@@ -423,49 +429,51 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     </>
                   )}
               </div>
-              <div className='lg:w-5/6 sm:w-[95%] w-full p-1 relative'>
-                {PRODUCT_RESOURCE_TYPE_VIDEO.includes(
-                  carousel[imageIndex]?.ResourceType
-                ) ? (
-                  <iframe
-                    height='470'
-                    width='100%'
-                    src={`https://www.youtube.com/embed/${carousel[imageIndex]?.ResourceName}?rel=0`}
-                    title='YouTube video player'
-                    frameborder='0'
-                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                    allowfullscreen='allowfullscreen'
-                    mozallowfullscreen='mozallowfullscreen'
-                    msallowfullscreen='msallowfullscreen'
-                    oallowfullscreen='oallowfullscreen'
-                    webkitallowfullscreen='webkitallowfullscreen'
-                  ></iframe>
-                ) : (
-                  <div
-                    className='img-magnifier-container sm:flex hidden'
-                    onMouseEnter={e => {
-                      setZoomActive(true);
-                      handleMagnifier(e, 'myImage');
-                    }}
-                    onMouseLeave={e => {
-                      setZoomActive(false);
-                      handleMagnifier(e, 'myImage');
-                    }}
-                  >
-                    <img
-                      src={carouselImageFormatter(
-                        carousel[imageIndex]?.ResourceName,
-                        ProductNewProduct
-                      )}
-                      alt={carousel[imageIndex]?.ResourceName}
-                      id='myImage'
-                      className='w-full'
-                      onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
-                    />
-                  </div>
-                )}
+              <div className='lg:w-5/6 sm:w-[95%] w-full sm:p-1 relative'>
+                <div className='sm:flex hidden'>
+                  {PRODUCT_RESOURCE_TYPE_VIDEO.includes(
+                    carousel[imageIndex]?.ResourceType
+                  ) ? (
+                    <iframe
+                      height='470'
+                      width='100%'
+                      src={`https://www.youtube.com/embed/${carousel[imageIndex]?.ResourceName}?rel=0`}
+                      title='YouTube video player'
+                      frameborder='0'
+                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                      allowfullscreen='allowfullscreen'
+                      mozallowfullscreen='mozallowfullscreen'
+                      msallowfullscreen='msallowfullscreen'
+                      oallowfullscreen='oallowfullscreen'
+                      webkitallowfullscreen='webkitallowfullscreen'
+                    ></iframe>
+                  ) : (
+                    <div
+                      className='img-magnifier-container'
+                      onMouseEnter={e => {
+                        setZoomActive(true);
+                        handleMagnifier(e, 'myImage');
+                      }}
+                      onMouseLeave={e => {
+                        setZoomActive(false);
+                        handleMagnifier(e, 'myImage');
+                      }}
+                    >
+                      <img
+                        src={carouselImageFormatter(
+                          carousel[imageIndex]?.ResourceName,
+                          ProductNewProduct
+                        )}
+                        alt={carousel[imageIndex]?.ResourceName}
+                        id='myImage'
+                        className='w-full'
+                        onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                      />
+                    </div>
+                  )}
+                </div>
 
-                <div className='sm:hidden flex'>
+                <div className='sm:hidden flex' id='mobileView'>
                   <Carousel
                     dynamicHeight={true}
                     infiniteLoop={false}
@@ -475,13 +483,14 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     showThumbs={false}
                     showArrows={false}
                     selectedItem={imageIndex}
+                    onChange={arg => setImageIndex(arg)}
                   >
                     {carousel && carousel.length > 0 ? (
                       carousel?.map((element, id) => (
                         <>
                           {!PRODUCT_RESOURCE_TYPE_VIDEO.includes(
                             element?.ResourceType
-                          ) && (
+                          ) ? (
                             <div key={id}>
                               <img
                                 src={carouselImageFormatter(
@@ -495,6 +504,20 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                                 }
                               />
                             </div>
+                          ) : (
+                            <iframe
+                              height='250'
+                              width='100%'
+                              src={`https://www.youtube.com/embed/${carousel[imageIndex]?.ResourceName}?rel=0`}
+                              title='YouTube video player'
+                              frameborder='0'
+                              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                              allowfullscreen='allowfullscreen'
+                              mozallowfullscreen='mozallowfullscreen'
+                              msallowfullscreen='msallowfullscreen'
+                              oallowfullscreen='oallowfullscreen'
+                              webkitallowfullscreen='webkitallowfullscreen'
+                            ></iframe>
                           )}
                         </>
                       ))
@@ -584,7 +607,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     </div>
                   )}
                   {showColorName && showColorName === el.SKUColorFinishName && (
-                    <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max z-10'>
+                    <span className='absolute top-full p-[10px] bg-[#f9f9f9] border-1 border-neutral-500 rounded-md shadow font-helvetica leading-tight text-[13px] w-max z-10 hidden md:block'>
                       {el.SKUColorFinishName}
                     </span>
                   )}
@@ -672,6 +695,23 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     </a>
                   </li>
                 </ul>
+              </div>
+            )}
+            {availableAt && Object.keys(availableAt).length > 0 && (
+              <div className='flex flex-col mt-6 '>
+                <div className='text-[16px] font-helveticaLight'>
+                  {PDP_LABELS[locale].availableAt}
+                </div>
+                <div className='flex'>
+                  <Link href={availableAt.RegionRetailer1URL} passHref>
+                    <a target='_blank'>
+                      <img
+                        src='https://kohler.scene7.com/is/image/PAWEB/WTBLogo_Interceramic?$WTB_featured_retailer$'
+                        alt={PDP_LABELS[locale].availableAt}
+                      />
+                    </a>
+                  </Link>
+                </div>
               </div>
             )}
           </div>
