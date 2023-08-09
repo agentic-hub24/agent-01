@@ -703,7 +703,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   {PDP_LABELS[locale].availableAt}
                 </div>
                 <div className='flex'>
-                  <Link href={availableAt.RegionRetailer1URL} passHref>
+                  <Link href={availableAt.RegionRetailer1URL.trim()} passHref>
                     <a target='_blank'>
                       <img
                         src='https://kohler.scene7.com/is/image/PAWEB/WTBLogo_Interceramic?$WTB_featured_retailer$'
