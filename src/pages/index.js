@@ -44,8 +44,7 @@ export async function getStaticProps({ preview, locale }) {
       pageData: results[0]?.items?.[0]?.fields,
       footerNavigationData,
       headerNavigationData,
-      world,
-      seoData: results[0].items[0]?.fields?.seoMetadata
+      world
     },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
