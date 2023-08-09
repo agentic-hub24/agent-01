@@ -5,6 +5,7 @@ import contentfulClient, {
 } from '@services/contenful/client';
 import { getProductDetails } from '@services/productListingAPI/client';
 import DetailsComponent from '@components/detailsComponent';
+import { createPDPSeoData } from '@utils/footerUtils';
 
 export default function ProductDetailMain({ productDetailsData, productNo }) {
   const router = useRouter();
@@ -74,12 +75,15 @@ export async function getServerSideProps(context) {
   });
 
   const productDetailsData = await getProductDetails(languageAPI, productNo);
+  // seo meta data
+  const pageData = createPDPSeoData(productDetailsData?.data);
 
   return {
     props: {
       footerNavigationData,
       headerNavigationData,
       world,
+      pageData,
       productDetailsData,
       productNo
     }
