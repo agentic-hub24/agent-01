@@ -1,3 +1,4 @@
+import { PRODUCT_CAROUSEL_IMAGE } from '@components/detailsComponent/helper';
 import { SOCIAL_ICONS } from '@constants/FooterSocialIcons';
 
 const getSocialIcon = label => {
@@ -49,3 +50,45 @@ export function removeQuotesFromString(str) {
     ? str.replaceAll("'", '').replaceAll('"', '')
     : str;
 }
+
+export const defaultImage = (productItem, defaultSKU) => {
+  const defaultImage = productItem
+    .find(el => el.SKUSKUNo === defaultSKU)
+    ?.links?.ItemResource?.filter(
+      el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
+    )[0]?.ResourceName;
+
+  return `//kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is{PAWEB%2F${defaultImage}}`;
+};
+
+export const createPDPSeoData = ({
+  product: {
+    ProductProductNo,
+    ProductBrandName,
+    ProductDescriptionProductShort,
+    links: { ProductItem },
+    ProductDefaultSKU
+  }
+}) => {
+  const pageData = {
+    seoMetadata: {
+      fields: {
+        canonicalUrl: '',
+        pageDescription: `${ProductDescriptionProductShort}`,
+        ogTitle: `KOHLER | ${ProductProductNo} | ${ProductBrandName}| ${ProductDescriptionProductShort}`,
+        ogDescription: `${ProductDescriptionProductShort}`,
+        ogImage: {
+          fields: {
+            file: {
+              url: defaultImage(ProductItem, ProductDefaultSKU)
+            }
+          }
+        },
+        ogType: 'Website',
+        ogUrl: '',
+        keywords: `${ProductProductNo} | ${ProductBrandName} | KOHLER`
+      }
+    }
+  };
+  return pageData;
+};
