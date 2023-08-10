@@ -706,7 +706,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   <Link href={availableAt.RegionRetailer1URL.trim()} passHref>
                     <a target='_blank'>
                       <img
-                        src='https://kohler.scene7.com/is/image/PAWEB/WTBLogo_Interceramic?$WTB_featured_retailer$'
+                        src={`https://kohler.scene7.com/is/image/PAWEB/${availableAt.RegionRetailer1IMG}?$WTB_featured_retailer$`}
                         alt={PDP_LABELS[locale].availableAt}
                       />
                     </a>
