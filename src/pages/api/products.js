@@ -204,6 +204,9 @@ const products = async (req, res) => {
       }
 
       if (req.body.toilet_type) {
+        req.body.toilet_type = (req.body.toilet_type=== "Intelligent") ? "Yes" : req.body.toilet_type;
+        req.body.toilet_type = (req.body.toilet_type=== "Inteligente") ? "Sí" : req.body.toilet_type;
+        
         filterData += filterData != '' ? 'and ' : '';
 
         filterData += `ProductInstallationType${
@@ -284,27 +287,26 @@ const products = async (req, res) => {
           response['searchResults']['totalSearchResults'] =
             productsCount + specificationCount;
         }
-        if (
-          response['@search.facets'] &&
-          response['@search.facets']['IntelligentToilet']?.length
-        ) {
+
+        response['@search.facets']['toilet_type'] =[];
+        const bathroomSubCategories = (lang==="en") ? process.env.bathroomSubCategories.split(",") : process.env.bathroomSubCategories_esMX.split(",");
+        if(!req.body.search && response['@search.facets']['ProductConfiguration'].length && response['@search.facets']['ProductInstallationType'].length && response['@search.facets']['IntelligentToilet'].length && (bathroomSubCategories.includes("Toilets") || bathroomSubCategories.includes("Sanitarios"))){
           response['@search.facets']['IntelligentToilet'] = response[
             '@search.facets'
           ]['IntelligentToilet'].filter(item => {
             if (
               item.value === 'Sí' ||
-              item.value === 'Yes' ||
-              item.value === 'Yeah'
+              item.value === 'Yes'
             ) {
+              item.value = (item.value === "Yes") ? "Intelligent" : "Inteligente";
               return item;
             }
           });
+          response['@search.facets']['toilet_type'].push(...response['@search.facets']['ProductConfiguration'], ...response['@search.facets']['ProductInstallationType'], ...response['@search.facets']['IntelligentToilet']);
+          response['@search.facets']['ProductConfiguration'] = [];
+          response['@search.facets']['ProductInstallationType'] = [];
+          response['@search.facets']['IntelligentToilet'] = [];
         }
-        response['@search.facets']['toilet_type'] = [
-          ...response['@search.facets']['ProductConfiguration'],
-          ...response['@search.facets']['ProductInstallationType'],
-          ...response['@search.facets']['IntelligentToilet']
-        ];
       }
 
       return res.status(200).json({ response: response });
