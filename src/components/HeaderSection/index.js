@@ -288,7 +288,25 @@ export default function HeaderSection({ navData = {}, world }) {
                           <div className=''>
                             {secondaryNavItemMobile?.map((secondaryNav, id) => {
                               return (
-                                <ul className='flex flex-col pr-8' key={id}>
+                                <ul
+                                  className='flex flex-col pr-8 navMenu'
+                                  key={id}
+                                >
+                                  <li
+                                    onClick={() => setOpenMobileMenu(false)}
+                                    className='font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b border-[#dbdbdb]'
+                                  >
+                                    <Link
+                                      href={
+                                        formatUrl[
+                                          secondaryNav?.fields?.headingLabel.toLowerCase()
+                                        ] || '#'
+                                      }
+                                      className='text-[14px] leading-tight font-normal font-HelveticaBold pb-1 !text-[#666]'
+                                    >
+                                      {secondaryNav?.fields?.headingLabel}
+                                    </Link>
+                                  </li>
                                   {secondaryNav?.fields?.navItems?.map(
                                     (navItem, id) => (
                                       <MobileNavItem
