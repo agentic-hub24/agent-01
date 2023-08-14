@@ -126,7 +126,7 @@ export const TECHNICAL_INFORMATION_FILES = [
 ];
 export const TECHNICAL_INFORMATION_FILES_NAMES = {
   es: {
-    SpecPDFFileName: 'áspera/ Hoja de especificaciones',
+    SpecPDFFileName: 'Plomería/Hoja de Especificación',
     HomeownersGuide: 'guía de dueños de casa',
     InstallationWithoutSPPDF:
       'Guía de instalación y cuidado sin piezas de repuesto',
