@@ -126,7 +126,7 @@ export const TECHNICAL_INFORMATION_FILES = [
 ];
 export const TECHNICAL_INFORMATION_FILES_NAMES = {
   es: {
-    SpecPDFFileName: 'áspera/ Hoja de especificaciones',
+    SpecPDFFileName: 'Plomería/Hoja de Especificación',
     HomeownersGuide: 'guía de dueños de casa',
     InstallationWithoutSPPDF:
       'Guía de instalación y cuidado sin piezas de repuesto',
@@ -237,7 +237,8 @@ export const PDP_LABELS = {
     twitterText: 'Estoy compartiendo en twitter!',
     collection: 'Colección',
     technology: 'Tecnología',
-    availableAt: 'Disponible en:'
+    availableAt: 'Disponible en:',
+    discontinued: 'Este producto está descontinuado.'
   },
   en: {
     colorName: 'Color:',
@@ -275,7 +276,8 @@ export const PDP_LABELS = {
     twitterText: 'I am sharing on twitter!',
     collection: 'Collection',
     technology: 'Technology',
-    availableAt: 'Available at:'
+    availableAt: 'Available at:',
+    discontinued: 'This product is discontinued.'
   }
 };
 
