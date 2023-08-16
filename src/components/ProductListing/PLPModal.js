@@ -77,6 +77,8 @@ export default function PLPModal({
       item?.links?.ItemResource?.find(el => el.ResourceType === 'IMGITEMISO') ||
       [];
     setImage(carousel_image);
+    const discontinued_banner = item?.SKUDiscontinuedDate !== undefined;
+    setDiscontinuedBanner(discontinued_banner);
   };
   return (
     <div
