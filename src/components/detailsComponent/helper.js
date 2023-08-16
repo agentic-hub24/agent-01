@@ -238,7 +238,7 @@ export const PDP_LABELS = {
     collection: 'Colección',
     technology: 'Tecnología',
     availableAt: 'Disponible en:',
-    discontinued: 'Este producto está descontinuado.'
+    discontinued: 'Este producto ha sido descontinuado.'
   },
   en: {
     colorName: 'Color:',
@@ -277,7 +277,7 @@ export const PDP_LABELS = {
     collection: 'Collection',
     technology: 'Technology',
     availableAt: 'Available at:',
-    discontinued: 'This product is discontinued.'
+    discontinued: 'This product has been discontinued.'
   }
 };
 

@@ -622,16 +622,18 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 </div>
               ))}
             </div>
-            <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
-              <Link href='/store-listing' passHref>
-                <a
-                  target='_blank'
-                  className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
-                >
-                  {PDP_LABELS[locale].storelocatorButtonLabel}
-                </a>
-              </Link>
-            </div>
+            {!discontinuedBanner && (
+              <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
+                <Link href='/store-listing' passHref>
+                  <a
+                    target='_blank'
+                    className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
+                  >
+                    {PDP_LABELS[locale].storelocatorButtonLabel}
+                  </a>
+                </Link>
+              </div>
+            )}
             <div className='flex mt-5'>
               <div
                 className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
