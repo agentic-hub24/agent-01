@@ -59,7 +59,7 @@ const products = async (req, res) => {
         skip: 0,
         search: '*',
         facets: [...facets, ...extra_facets],
-        filter: '',
+        filter: 'ProductIsDiscontinued ne true',
         select: process.env.Common_Fields,
         searchMode: 'all'
       };
@@ -225,7 +225,6 @@ const products = async (req, res) => {
         }'`;
       }
       bodyData['filter'] = filterData;
-
       let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
 
       response['paginationData'] = {};
