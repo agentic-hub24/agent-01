@@ -126,6 +126,7 @@ export default function ProductListing({
                     handleModalClose={e => handleModalClose(e)}
                     modalOpen={modalOpen}
                     key={index}
+                    locale={locale}
                   />
                 );
               })
