@@ -59,7 +59,7 @@ const products = async (req, res) => {
         skip: 0,
         search: '*',
         facets: [...facets, ...extra_facets],
-        filter: 'ProductIsDiscontinued eq false',
+        filter: 'ProductIsDiscontinued ne true',
         select: process.env.Common_Fields,
         searchMode: 'all'
       };
