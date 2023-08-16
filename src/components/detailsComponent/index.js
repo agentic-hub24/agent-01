@@ -376,7 +376,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     <>
       {isLoading && <Loader loading={isLoading} />}
       {discontinuedBanner && (
-        <div className='flex sticky top-[58px] z-50 h-[30px] items-center justify-center py-5 bg-[#FF0000] drop-shadow-lg text-[#fff] font-semibold'>
+        <div className='flex h-[30px] items-center justify-center py-5 bg-[#FF0000] drop-shadow-lg text-[#fff] font-semibold'>
           {PDP_LABELS[locale].discontinued}
         </div>
       )}
