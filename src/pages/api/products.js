@@ -1,3 +1,4 @@
+
 import { authMiddleware } from './middlewareAuth';
 
 /**
@@ -224,7 +225,8 @@ const products = async (req, res) => {
           req.body.NumberOfHoles
         }'`;
       }
-      bodyData['filter'] = ((filterData.length) ? `${filterData} and `: '') + `ProductIsDiscontinued ne true` ;
+      // bodyData['filter'] = ((filterData.length) ? `${filterData} and `: '') + `ProductIsDiscontinued ne true` ;
+      bodyData['filter'] = filterData ;
 
       let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
 
