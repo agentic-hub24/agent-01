@@ -74,7 +74,9 @@ variables:
        value: "false"      
     
 pool:
-  vmImage: ubuntu-latest
+  name: Container-Pool
+  demands: 
+    - Agent.Name -equals kohler-latam-shared-vm
 
 stages:
 - ${{ if ne( parameters['deployenv'], 'PROD') }}:
