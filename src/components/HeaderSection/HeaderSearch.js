@@ -56,12 +56,12 @@ export default function HeaderSearch({ setOpenMobileMenu }) {
       setOpenMobileMenu(false);
       setSearchvalue('');
       setSuggestionList({});
-      if (pageRedirection === 'PDP') {
-        window.location = `/${locale}/product-detail/${
-          selectedVal.split('-')[0]
-        }?skuid=K-${selectedVal}`;
-        return false;
-      }
+      // if (pageRedirection === 'PDP') {
+      //   window.location = `/${locale}/product-detail/${
+      //     selectedVal.split('-')
+      //   }?skuid=K-${selectedVal}`;
+      //   return false;
+      // }
       router.push(`/results?search=${selectedVal}&currentPage=1`);
     }
   };

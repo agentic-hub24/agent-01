@@ -92,6 +92,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [youtubeLinkOpen, setYoutubeLinkOpen] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [availableAt, setAvailableAt] = useState({});
+  const [discontinuedBanner, setDiscontinuedBanner] = useState(false);
 
   const handlePrevClick = () => {
     // Your code to display the selected image goes here
@@ -233,13 +234,11 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       defaultItems?.links?.ItemResource?.filter(
         el => el.ResourceType === PRODUCT_CAROUSEL_IMAGE
       ) || [];
-    let other_images = [];
-    if (skuId === ProductDefaultSKU) {
-      other_images =
-        ProductResource?.filter(el =>
-          PRODUCT_ADDITIONAL_IMAGE.includes(el.ResourceType)
-        ) || [];
-    }
+
+    let other_images =
+      ProductResource?.filter(el =>
+        PRODUCT_ADDITIONAL_IMAGE.includes(el.ResourceType)
+      ) || [];
 
     const youtube_link = ProductResource?.filter(item =>
       PRODUCT_RESOURCE_TYPE_VIDEO.includes(item?.ResourceType)
@@ -267,6 +266,10 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
       el => el.RegionRetailer1URL != undefined
     );
     setAvailableAt(region_retailer_url);
+
+    // discontinued product
+    const discontinued_banner = defaultItems?.SKUDiscontinuedDate !== undefined;
+    setDiscontinuedBanner(discontinued_banner);
 
     // pdf links plan
     const plan_view_3d = ProductResource?.filter(el =>
@@ -372,6 +375,11 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   return (
     <>
       {isLoading && <Loader loading={isLoading} />}
+      {discontinuedBanner && (
+        <div className='flex h-[30px] items-center justify-center py-5 bg-[#FF0000] drop-shadow-lg text-[#fff] font-semibold'>
+          {PDP_LABELS[locale].discontinued}
+        </div>
+      )}
       <section className='max-w-screen-lg mx-auto bg-white text-[#232323] mb-[50px] p-2'>
         <div className='flex w-full md:flex-row flex-col'>
           {/* Product Carousel start */}
@@ -614,16 +622,18 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 </div>
               ))}
             </div>
-            <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
-              <Link href='/store-listing' passHref>
-                <a
-                  target='_blank'
-                  className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
-                >
-                  {PDP_LABELS[locale].storelocatorButtonLabel}
-                </a>
-              </Link>
-            </div>
+            {!discontinuedBanner && (
+              <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
+                <Link href='/store-listing' passHref>
+                  <a
+                    target='_blank'
+                    className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
+                  >
+                    {PDP_LABELS[locale].storelocatorButtonLabel}
+                  </a>
+                </Link>
+              </div>
+            )}
             <div className='flex mt-5'>
               <div
                 className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'

@@ -1,3 +1,4 @@
+
 import { authMiddleware } from './middlewareAuth';
 
 /**
@@ -97,6 +98,7 @@ const products = async (req, res) => {
       }
 
       if (req.body.ProductNewProduct) {
+        req.body.ProductNewProduct = ( req.body.ProductNewProduct === "True"  || req.body.ProductNewProduct ==="Sí") ?  "True" : "";
         filterData += filterData != '' ? 'and ' : '';
         filterData += `ProductNewProduct eq '${req.body.ProductNewProduct}'`;
       }
@@ -224,7 +226,8 @@ const products = async (req, res) => {
           req.body.NumberOfHoles
         }'`;
       }
-      bodyData['filter'] = filterData;
+      // bodyData['filter'] = ((filterData.length) ? `${filterData} and `: '') + `ProductIsDiscontinued ne true` ;
+      bodyData['filter'] = filterData ;
 
       let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
 
@@ -307,6 +310,10 @@ const products = async (req, res) => {
           response['@search.facets']['ProductInstallationType'] = [];
           response['@search.facets']['IntelligentToilet'] = [];
         }
+        response['@search.facets']['ProductNewProduct'] = response['@search.facets']['ProductNewProduct'].filter(item => {
+          item.value = (lang === "en") ? "True" : "Sí";
+          return item;
+        })
       }
 
       return res.status(200).json({ response: response });

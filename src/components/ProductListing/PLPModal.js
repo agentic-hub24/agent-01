@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { HiCheck, HiX } from 'react-icons/hi';
 import { getProductDetails } from '@services/productListingAPI/client';
+import { PDP_LABELS } from '@components/detailsComponent/helper';
 import Loader from '@components/loader';
 import {
   imageFormatter,
@@ -25,6 +26,7 @@ export default function PLPModal({
   const [colorFileName, setColorFileName] = useState('');
   const [image, setImage] = useState({});
   const [loader, setLoader] = useState(true);
+  const [discontinuedBanner, setDiscontinuedBanner] = useState(false);
 
   //product api call
   useEffect(() => {
@@ -60,6 +62,9 @@ export default function PLPModal({
         el => el.ResourceType === 'IMGITEMISO'
       ) || [];
     setImage(carousel_image);
+    // discontinued flag
+    const discontinued_banner = defaultItems?.SKUDiscontinuedDate !== undefined;
+    setDiscontinuedBanner(discontinued_banner);
   }, [modalValues]);
 
   // Color tiles are clickable
@@ -72,6 +77,8 @@ export default function PLPModal({
       item?.links?.ItemResource?.find(el => el.ResourceType === 'IMGITEMISO') ||
       [];
     setImage(carousel_image);
+    const discontinued_banner = item?.SKUDiscontinuedDate !== undefined;
+    setDiscontinuedBanner(discontinued_banner);
   };
   return (
     <div
@@ -86,6 +93,11 @@ export default function PLPModal({
         <div className='flex min-h-full items-center justify-center p-4 text-center'>
           <div className='relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all max-w-screen-lg mx-auto'>
             {loader && <Loader loading={loader} />}
+            {discontinuedBanner && (
+              <div className='flex h-[30px] items-center justify-center py-5 bg-[#FF0000] drop-shadow-lg text-[#fff] font-semibold'>
+                {PDP_LABELS[locale].discontinued}
+              </div>
+            )}
             <div className='flex sm:flex-row flex-col'>
               <div className='flex'>
                 <img
