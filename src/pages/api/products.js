@@ -1,3 +1,4 @@
+
 import { authMiddleware } from './middlewareAuth';
 
 /**
@@ -97,11 +98,7 @@ const products = async (req, res) => {
       }
 
       if (req.body.ProductNewProduct) {
-        req.body.ProductNewProduct =
-          req.body.ProductNewProduct === 'True' ||
-          req.body.ProductNewProduct === 'Sí'
-            ? 'True'
-            : '';
+        req.body.ProductNewProduct = ( req.body.ProductNewProduct === "True"  || req.body.ProductNewProduct ==="Sí") ?  "True" : "";
         filterData += filterData != '' ? 'and ' : '';
         filterData += `ProductNewProduct eq '${req.body.ProductNewProduct}'`;
       }
@@ -209,11 +206,9 @@ const products = async (req, res) => {
       }
 
       if (req.body.toilet_type) {
-        req.body.toilet_type =
-          req.body.toilet_type === 'Intelligent' ? 'Yes' : req.body.toilet_type;
-        req.body.toilet_type =
-          req.body.toilet_type === 'Inteligente' ? 'Sí' : req.body.toilet_type;
-
+        req.body.toilet_type = (req.body.toilet_type=== "Intelligent") ? "Yes" : req.body.toilet_type;
+        req.body.toilet_type = (req.body.toilet_type=== "Inteligente") ? "Sí" : req.body.toilet_type;
+        
         filterData += filterData != '' ? 'and ' : '';
 
         filterData += `ProductInstallationType${
@@ -232,7 +227,7 @@ const products = async (req, res) => {
         }'`;
       }
       // bodyData['filter'] = ((filterData.length) ? `${filterData} and `: '') + `ProductIsDiscontinued ne true` ;
-      bodyData['filter'] = filterData;
+      bodyData['filter'] = filterData ;
 
       let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
 
@@ -265,7 +260,7 @@ const products = async (req, res) => {
             ProductProductNo.includes(searchData)
           ) {
             response['searchResults']['PDP'] = ProductProductNo;
-            response['searchResults']['suggestions'] = 'K-' + ProductDefaultSKU;
+            response['searchResults']['suggestions'] = 'K-' +ProductDefaultSKU;
           }
         }
 
@@ -296,42 +291,29 @@ const products = async (req, res) => {
             productsCount + specificationCount;
         }
 
-        response['@search.facets']['toilet_type'] = [];
-        const bathroomSubCategories =
-          lang === 'en'
-            ? process.env.bathroomSubCategories.split(',')
-            : process.env.bathroomSubCategories_esMX.split(',');
-        if (
-          !req.body.search &&
-          response['@search.facets']['ProductConfiguration'].length &&
-          response['@search.facets']['ProductInstallationType'].length &&
-          response['@search.facets']['IntelligentToilet'].length &&
-          (bathroomSubCategories.includes('Toilets') ||
-            bathroomSubCategories.includes('Sanitarios'))
-        ) {
+        response['@search.facets']['toilet_type'] =[];
+        const bathroomSubCategories = (lang==="en") ? process.env.bathroomSubCategories.split(",") : process.env.bathroomSubCategories_esMX.split(",");
+        if(!req.body.search && response['@search.facets']['ProductConfiguration'].length && response['@search.facets']['ProductInstallationType'].length && response['@search.facets']['IntelligentToilet'].length && (bathroomSubCategories.includes("Toilets") || bathroomSubCategories.includes("Sanitarios"))){
           response['@search.facets']['IntelligentToilet'] = response[
             '@search.facets'
           ]['IntelligentToilet'].filter(item => {
-            if (item.value === 'Sí' || item.value === 'Yes') {
-              item.value = item.value === 'Yes' ? 'Intelligent' : 'Inteligente';
+            if (
+              item.value === 'Sí' ||
+              item.value === 'Yes'
+            ) {
+              item.value = (item.value === "Yes") ? "Intelligent" : "Inteligente";
               return item;
             }
           });
-          response['@search.facets']['toilet_type'].push(
-            ...response['@search.facets']['ProductConfiguration'],
-            ...response['@search.facets']['ProductInstallationType'],
-            ...response['@search.facets']['IntelligentToilet']
-          );
+          response['@search.facets']['toilet_type'].push(...response['@search.facets']['ProductConfiguration'], ...response['@search.facets']['ProductInstallationType'], ...response['@search.facets']['IntelligentToilet']);
           response['@search.facets']['ProductConfiguration'] = [];
           response['@search.facets']['ProductInstallationType'] = [];
           response['@search.facets']['IntelligentToilet'] = [];
         }
-        response['@search.facets']['ProductNewProduct'] = response[
-          '@search.facets'
-        ]['ProductNewProduct'].filter(item => {
-          item.value = lang === 'en' ? 'True' : 'Sí';
+        response['@search.facets']['ProductNewProduct'] = response['@search.facets']['ProductNewProduct'].filter(item => {
+          item.value = (lang === "en") ? "True" : "Sí";
           return item;
-        });
+        })
       }
 
       return res.status(200).json({ response: response });
