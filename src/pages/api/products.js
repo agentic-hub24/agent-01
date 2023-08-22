@@ -228,7 +228,6 @@ const products = async (req, res) => {
       }
       bodyData['filter'] = ((filterData.length) ? `${filterData} and `: '') + `ProductIsDiscontinued ne true and SKUDiscontinuedDate eq null` ;
      // bodyData['filter'] = filterData ;
-
       let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
 
       response['paginationData'] = {};
@@ -260,7 +259,7 @@ const products = async (req, res) => {
             ProductProductNo.includes(searchData)
           ) {
             response['searchResults']['PDP'] = ProductProductNo;
-            response['searchResults']['suggestions'] = 'K-' +ProductDefaultSKU;
+            response['searchResults']['suggestions'] = 'K-' +SkuNumber;
           }
         }
 
