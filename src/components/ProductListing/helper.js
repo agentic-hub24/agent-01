@@ -44,32 +44,33 @@ export const filterMapping = [
       ProductNewProduct: { label: 'New', type: 'checkbox' },
       SKUColorFinishCode: { label: 'color/finish', type: 'image' },
       ProductInstallationType: { label: 'installation type', type: 'list' },
-      ProductNumberofHandles: { label: 'number of identifiers', type: 'list' },
+      ProductNumberofHandles: { label: 'number of handles', type: 'list' },
       ProductProductType: { label: 'product type', type: 'list' },
       ProductOverallWidthMm: { label: 'size - front to back', type: 'range' },
       RegionProductCategoryLocal: { label: 'category', type: 'list' },
       NumberOfHoles: { label: 'number of holes', type: 'list' },
       ProductMaterial: { label: 'material', type: 'list' },
       ProductConfiguration: { label: 'settings', type: 'list' },
-      ProductShape: { label: 'product shape', type: 'list' },
+      ProductShape: { label: 'shape', type: 'list' },
       LitersPerFlush: { label: 'liters per discharge', type: 'list' },
       NightLight: { label: 'night light', type: 'list' },
-      ProductLitersPerMinute: { label: 'liters per minute', type: 'range' },
+      ProductLitersPerMinute: { label: 'LITERS PER FLUSH', type: 'list' },
       SprayType: { label: 'spray type', type: 'list' },
       ProductOverallLengthMm: { label: 'size - side to side', type: 'range' },
       toilet_type: { label: 'toilet type', type: 'list' },
-      HandleStyle: { label: 'Handle style', type: 'list' },
-      TouchlessFaucet: { label: 'touchless faucet', type: 'list' },
+      HandleStyle: { label: 'Handle type', type: 'list' },
+      TouchlessFaucet: { label: 'touchless', type: 'list' },
       IntelligentToilet: { label: 'intelligent toilet', type: 'list' },
       BowlShape: { label: 'bowl shape', type: 'list' },
-      BidetFunctionality: { label: 'bidet functionality', type: 'list' }
+      BidetFunctionality: { label: 'bidet functionality', type: 'list' },
+      ProductBrandNameDisplay: { label: 'Collection', type: 'list' }
     },
     es: {
       ProductNewProduct: { label: 'Nuevos Productos', type: 'checkbox' },
       SKUColorFinishCode: { label: 'color/acabado', type: 'image' },
       ProductInstallationType: { label: 'tipo de instalación', type: 'list' },
       ProductNumberofHandles: {
-        label: 'número de identificadores',
+        label: 'NÚMERO DE MANERALES',
         type: 'list'
       },
       ProductProductType: { label: 'tipo de producto', type: 'list' },
@@ -80,16 +81,17 @@ export const filterMapping = [
       ProductConfiguration: { label: 'ajustes', type: 'list' },
       ProductShape: { label: 'forma', type: 'list' },
       LitersPerFlush: { label: 'litros por descarga', type: 'list' },
-      NightLight: { label: 'Luz de noche', type: 'list' },
-      ProductLitersPerMinute: { label: 'litros por minuto', type: 'range' },
-      SprayType: { label: 'tipo de pulverización', type: 'list' },
+      NightLight: { label: 'Luz NOCTURNA', type: 'list' },
+      ProductLitersPerMinute: { label: 'litros por LIMPIAR', type: 'list' },
+      SprayType: { label: 'TIPO SPRAY', type: 'list' },
       ProductOverallLengthMm: { label: 'longitud Total (mm)', type: 'range' },
-      toilet_type: { label: 'tipo de inodoro', type: 'list' },
-      HandleStyle: { label: 'Estilo de manija', type: 'list' },
+      toilet_type: { label: 'TIPO DE SANITARIO', type: 'list' },
+      HandleStyle: { label: 'tipo de ASAS', type: 'list' },
       TouchlessFaucet: { label: 'sin contacto', type: 'list' },
       IntelligentToilet: { label: 'baño inteligente', type: 'list' },
-      BowlShape: { label: 'forma de cuenco', type: 'list' },
-      BidetFunctionality: { label: 'funcionalidad de bidé', type: 'list' }
+      BowlShape: { label: 'forma CÓNCAVA', type: 'list' },
+      BidetFunctionality: { label: 'funcionalidad de bidé', type: 'list' },
+      ProductBrandNameDisplay: { label: 'COLECCIÓN', type: 'list' }
     }
   }
 ];
@@ -181,7 +183,7 @@ export const filterValueMap = {
   en: {
     'Bathroom Sink Faucets': [
       'SKUColorFinishCode',
-      'IntelligentToilet',
+      'ProductInstallationType',
       'HandleStyle',
       'NumberOfHoles'
     ],
@@ -235,7 +237,7 @@ export const filterValueMap = {
 
     Showerheads: [
       'SKUColorFinishCode',
-      'LitersPerFlush',
+      'ProductLitersPerMinute',
       'SprayType',
       'ProductShape'
     ],
@@ -247,9 +249,9 @@ export const filterValueMap = {
       'HandleStyle'
     ],
 
-    Handshowers: ['SKUColorFinishCode', 'LitersPerFlush', 'SprayType'],
+    Handshowers: ['SKUColorFinishCode', 'ProductLitersPerMinute', 'SprayType'],
 
-    Rainheads: ['SKUColorFinishCode', 'LitersPerFlush', 'ProductShape'],
+    Rainheads: ['SKUColorFinishCode', 'ProductLitersPerMinute', 'ProductShape'],
 
     'Body Sprays': [],
 
@@ -275,13 +277,13 @@ export const filterValueMap = {
     'Commercial Toilets': [
       'SKUColorFinishCode',
       'ProductInstallationType',
-      'LitersPerFlush'
+      'ProductLitersPerMinute'
     ],
 
     'Commercial Flushometers': [
       'SKUColorFinishCode',
       'ProductProductType',
-      'LitersPerFlush'
+      'ProductLitersPerMinute'
     ],
 
     'Kitchen Faucets': [
@@ -302,7 +304,7 @@ export const filterValueMap = {
   es: {
     'Grifería de Lavabo': [
       'SKUColorFinishCode',
-      'IntelligentToilet',
+      'ProductInstallationType',
       'HandleStyle',
       'NumberOfHoles'
     ],
@@ -356,7 +358,7 @@ export const filterValueMap = {
 
     'Cabezas de ducha': [
       'SKUColorFinishCode',
-      'LitersPerFlush',
+      'ProductLitersPerMinute',
       'SprayType',
       'ProductShape'
     ],
@@ -368,11 +370,15 @@ export const filterValueMap = {
       'HandleStyle'
     ],
 
-    'Duchas de mano': ['SKUColorFinishCode', 'LitersPerFlush', 'SprayType'],
+    'Duchas de mano': [
+      'SKUColorFinishCode',
+      'ProductLitersPerMinute',
+      'SprayType'
+    ],
 
     'Cabezas de Lluvia': [
       'SKUColorFinishCode',
-      'LitersPerFlush',
+      'ProductLitersPerMinute',
       'ProductShape'
     ],
 
@@ -382,13 +388,13 @@ export const filterValueMap = {
 
     'Válvulas de Ducha': [],
 
-    'Accesorios de Baño y Ducha': [
+    'Accesorios de Baño y Ducha': ['SKUColorFinishCode', 'ProductProductType'],
+
+    'Manerales de Ducha': [
       'SKUColorFinishCode',
       'NumberOfHoles',
       'HandleStyle'
     ],
-
-    'Manerales de Ducha': ['SKUColorFinishCode', 'ProductProductType'],
 
     'Recubrimientos para Ducha': [
       'SKUColorFinishCode',
@@ -413,7 +419,7 @@ export const filterValueMap = {
     'Fluxómetros Institucionales': [
       'SKUColorFinishCode',
       'ProductProductType',
-      'LitersPerFlush'
+      'ProductLitersPerMinute'
     ],
 
     'Grifería de Cocina': [
