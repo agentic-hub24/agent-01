@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import FilterAccordion from './FilterAccordion';
 import FilterItems from './FilterItems';
-import { staticLabelsPLP, filterMapping } from './helper';
+import { staticLabelsPLP, filterMapping, filterValueMap } from './helper';
 
 export default function FilterContent({
   filterOptions,
@@ -24,12 +24,16 @@ export default function FilterContent({
       : 'RegionProductCategoryLocal';
   const categoryArr = filterOptions?.[categoryType];
   const searchFacetsNode = filterOptions;
-  const filterkeys = Object.keys(searchFacetsNode).filter(
-    el =>
-      ![
-        'RegionProductCategoryLocal',
-        'SpecRegionProductCategoryLocal'
-      ].includes(el)
+  console.log('filter ', searchValue);
+  const filterkeys = Object.keys(searchFacetsNode).filter(el =>
+    searchValue
+      ? ![
+          'RegionProductCategoryLocal',
+          'SpecRegionProductCategoryLocal'
+        ].includes(el)
+      : filterValueMap[locale][
+          selectedFilter?.['RegionProductCategoryLocal']
+        ]?.includes(el)
   );
 
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState();
