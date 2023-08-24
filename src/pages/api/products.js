@@ -1,6 +1,5 @@
 
 import { authMiddleware } from './middlewareAuth';
-
 /**
  * Method - POST
  * @param {*} req
@@ -225,9 +224,26 @@ const products = async (req, res) => {
         filterData += `NumberOfHoles${lang === 'en' ? '' : '_esMX'} eq '${
           req.body.NumberOfHoles
         }'`;
-      }
-      bodyData['filter'] = ((filterData.length) ? `${filterData} and `: '') + `ProductIsDiscontinued ne true and SKUDiscontinuedDate eq null` ;
-     // bodyData['filter'] = filterData ;
+    }
+    let filterString = ((filterData.length) ? `${filterData} and `: '') + `ProductIsDiscontinued ne true and SKUDiscontinuedDate eq null` ;
+    
+    if(req.body.search){
+        const searchVal = req.body.search;
+        if(searchVal.includes("-")){
+            let pdpAPIURL = process.env.PDP_COSMOS_API + `lang=${lang}&value=${searchVal}&key=skuNo&env=${process.env.PDP_API_ENV}`;
+            // console.log("pdp", pdpAPIURL)
+            let checkInPDP = await callPDPAPI(pdpAPIURL);
+            // console.log("checkInPDP", checkInPDP);
+            if(checkInPDP.sku?.id){
+                filterString = filterData;
+            }
+        }
+    }
+
+    bodyData['filter'] = filterString; 
+
+    // console.log("bodydat", bodyData);
+      // bodyData['filter'] = filterData ;
       let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
 
       response['paginationData'] = {};
@@ -241,7 +257,6 @@ const products = async (req, res) => {
         response['searchResults']['suggestions'] =
           req.body.search.split('K-')[1];
       }
-
       if (response.value && response.value.length) {
         if (response.value.length === 1) {
           // pdp page data
@@ -342,6 +357,22 @@ export async function apiCalling(bodyData, url) {
   }
   return response;
 }
+
+export async function callPDPAPI(url) {
+    let response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            "Ocp-Apim-Subscription-Key": process.env.COSMOS_API_KEY,
+            'Content-Type': 'application/json',
+        }
+    });
+    response = await response.json();
+    if (response.error || response.status >= 400) {
+      console.log('response error', response.error);
+      throw response.error;
+    }
+    return response;
+  }
 
 async function getSpecificationCount(bodyData, lang) {
   bodyData['top'] = 2000;
