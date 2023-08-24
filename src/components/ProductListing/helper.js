@@ -180,7 +180,6 @@ export const SHOWALL_LABELS = {
 export const filterValueMap = {
   en: {
     'Bathroom Sink Faucets': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'IntelligentToilet',
       'HandleStyle',
@@ -188,7 +187,6 @@ export const filterValueMap = {
     ],
 
     'Bathroom Sinks': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'ProductMaterial',
       'ProductOverallLengthMm',
@@ -214,39 +212,28 @@ export const filterValueMap = {
     ],
 
     Bathing: [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'ProductMaterial',
       'ProductInstallationType'
     ],
 
-    Bidets: ['ProductNewProduct', 'SKUColorFinishCode'],
+    Bidets: ['SKUColorFinishCode'],
 
-    'Bidet Faucets': ['ProductNewProduct', 'SKUColorFinishCode'],
+    'Bidet Faucets': ['SKUColorFinishCode'],
 
-    'Bathroom Accessories': [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'ProductProductType'
-    ],
+    'Bathroom Accessories': ['SKUColorFinishCode', 'ProductProductType'],
 
-    'Bathroom Furniture': [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'ProductProductType'
-    ],
+    'Bathroom Furniture': ['SKUColorFinishCode', 'ProductProductType'],
 
     'Bath Faucets': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'HandleStyle',
       'ProductInstallationType'
     ],
 
-    'Bath Spouts': ['ProductNewProduct', 'SKUColorFinishCode'],
+    'Bath Spouts': ['SKUColorFinishCode'],
 
     Showerheads: [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'LitersPerFlush',
       'SprayType',
@@ -254,56 +241,31 @@ export const filterValueMap = {
     ],
 
     'Shower Faucets': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'SprayType',
       'NumberOfHoles',
       'HandleStyle'
     ],
 
-    Handshowers: [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'LitersPerFlush',
-      'SprayType'
-    ],
+    Handshowers: ['SKUColorFinishCode', 'LitersPerFlush', 'SprayType'],
 
-    Rainheads: [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'LitersPerFlush',
-      'ProductShape'
-    ],
+    Rainheads: ['SKUColorFinishCode', 'LitersPerFlush', 'ProductShape'],
 
-    'Body Sprays': ['ProductNewProduct', 'SKUColorFinishCode'],
+    'Body Sprays': [],
 
-    Columns: ['ProductNewProduct', 'SKUColorFinishCode'],
+    Columns: ['SKUColorFinishCode'],
 
-    'Shower Valves': ['ProductNewProduct', 'SKUColorFinishCode'],
+    'Shower Valves': [],
 
-    'Shower Valve Trim': [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'NumberOfHoles',
-      'HandleStyle'
-    ],
+    'Shower Valve Trim': ['SKUColorFinishCode', 'NumberOfHoles', 'HandleStyle'],
 
-    'Bath and Shower Fittings': [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'ProductProductType'
-    ],
+    'Bath and Shower Fittings': ['SKUColorFinishCode', 'ProductProductType'],
 
-    'Shower Enclosures': [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'ProductBrandNameDisplay'
-    ],
+    'Shower Enclosures': ['SKUColorFinishCode', 'ProductBrandNameDisplay'],
 
-    'Commercial Faucets': ['ProductNewProduct', 'SKUColorFinishCode'],
+    'Commercial Faucets': ['SKUColorFinishCode'],
 
     'Commercial Urinals': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'ProductProductType',
       'ProductInstallationType',
@@ -311,15 +273,14 @@ export const filterValueMap = {
     ],
 
     'Commercial Toilets': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'ProductInstallationType',
       'LitersPerFlush'
     ],
 
     'Commercial Flushometers': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
+      'ProductProductType',
       'LitersPerFlush'
     ],
 
@@ -331,25 +292,143 @@ export const filterValueMap = {
     ],
 
     'Kitchen Sinks': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'ProductMaterial',
       'ProductInstallationType'
     ],
 
-    'Kitchen Accessories': [
-      'ProductNewProduct',
-      'SKUColorFinishCode',
-      'ProductProductType'
-    ]
+    'Kitchen Accessories': ['SKUColorFinishCode', 'ProductProductType']
   },
   es: {
     'Grifería de Lavabo': [
-      'ProductNewProduct',
       'SKUColorFinishCode',
       'IntelligentToilet',
       'HandleStyle',
       'NumberOfHoles'
-    ]
+    ],
+
+    Lavabos: [
+      'SKUColorFinishCode',
+      'ProductMaterial',
+      'ProductOverallLengthMm',
+      'ProductOverallWidthMm',
+      'ProductInstallationType',
+      'ProductShape'
+    ],
+
+    Sanitarios: [
+      'ProductNewProduct',
+      'SKUColorFinishCode',
+      'toilet_type',
+      'LitersPerFlush',
+      'BowlShape'
+    ],
+
+    'Asiento para Sanitarios': [
+      'ProductNewProduct',
+      'SKUColorFinishCode',
+      'BowlShape',
+      'NightLight',
+      'BidetFunctionality'
+    ],
+
+    Bañeras: [
+      'SKUColorFinishCode',
+      'ProductMaterial',
+      'ProductInstallationType'
+    ],
+
+    Bidés: ['SKUColorFinishCode'],
+
+    'Grifería de Bidé': ['SKUColorFinishCode'],
+
+    'Accesorios de Baño': ['SKUColorFinishCode', 'ProductProductType'],
+
+    'Muebles de Baño': ['SKUColorFinishCode', 'ProductProductType'],
+
+    'Grifería de Baño': [
+      'SKUColorFinishCode',
+      'HandleStyle',
+      'ProductInstallationType'
+    ],
+
+    'Griferías de Bañera': ['SKUColorFinishCode'],
+
+    'Cabezas de ducha': [
+      'SKUColorFinishCode',
+      'LitersPerFlush',
+      'SprayType',
+      'ProductShape'
+    ],
+
+    'Grifería de Ducha': [
+      'SKUColorFinishCode',
+      'SprayType',
+      'NumberOfHoles',
+      'HandleStyle'
+    ],
+
+    'Duchas de mano': ['SKUColorFinishCode', 'LitersPerFlush', 'SprayType'],
+
+    'Cabezas de Lluvia': [
+      'SKUColorFinishCode',
+      'LitersPerFlush',
+      'ProductShape'
+    ],
+
+    Rociadores: [],
+
+    Columnas: ['SKUColorFinishCode'],
+
+    'Válvulas de Ducha': [],
+
+    'Accesorios de Baño y Ducha': [
+      'SKUColorFinishCode',
+      'NumberOfHoles',
+      'HandleStyle'
+    ],
+
+    'Manerales de Ducha': ['SKUColorFinishCode', 'ProductProductType'],
+
+    'Recubrimientos para Ducha': [
+      'SKUColorFinishCode',
+      'ProductBrandNameDisplay'
+    ],
+
+    'Grifería Institucional': ['SKUColorFinishCode'],
+
+    'Urinarios Institucionales': [
+      'SKUColorFinishCode',
+      'ProductProductType',
+      'ProductInstallationType',
+      'LitersPerFlush'
+    ],
+
+    'Sanitarios Institucionales': [
+      'SKUColorFinishCode',
+      'ProductInstallationType',
+      'LitersPerFlush'
+    ],
+
+    'Fluxómetros Institucionales': [
+      'SKUColorFinishCode',
+      'ProductProductType',
+      'LitersPerFlush'
+    ],
+
+    'Grifería de Cocina': [
+      'ProductNewProduct',
+      'SKUColorFinishCode',
+      'ProductNumberofHandles',
+      'TouchlessFaucet'
+    ],
+
+    'Fregaderos de cocina': [
+      'SKUColorFinishCode',
+      'ProductMaterial',
+      'ProductInstallationType'
+    ],
+
+    'Accesorios de Cocina': ['SKUColorFinishCode', 'ProductProductType']
   }
 };
