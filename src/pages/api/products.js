@@ -328,6 +328,20 @@ const products = async (req, res) => {
           item.value = (lang === "en") ? "True" : "Sí";
           return item;
         })
+
+        let colorname = [];
+        response['@search.facets']['SKUColorFinishCode'].filter(item =>
+          response['value'].some(item2 => {
+            if (item.value === item2.SKUColorFinishCode) {
+              return colorname.push({
+                name: item2.SKUColorFinishName,
+                value: item.value,
+                count: item.count
+              });
+            }
+          })
+        );
+        response['@search.facets']['SKUColorFinishCode'] = colorname;
       }
 
       return res.status(200).json({ response: response });
