@@ -91,11 +91,11 @@ const FilterItems = ({
                       className=''
                       src={filterImageFormatter(filter?.[filterName])}
                       alt=''
-                      title={filterOption[0].name}
+                      title={filterOption[0]?.name}
                     />
                   </span>
                   <span className='inline-block float-left text-[12px] font-semibold mr-[10px] mt-[15px]'>
-                    {filterOption[0].name}
+                    {filterOption[0]?.name}
                   </span>
                 </>
               )}
