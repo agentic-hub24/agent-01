@@ -86,7 +86,7 @@ export const filterMapping = [
       SprayType: { label: 'TIPO SPRAY', type: 'list' },
       ProductOverallLengthMm: { label: 'longitud Total (mm)', type: 'range' },
       toilet_type: { label: 'TIPO DE SANITARIO', type: 'list' },
-      HandleStyle: { label: 'tipo de ASAS', type: 'list' },
+      HandleStyle: { label: 'tipo de Mango', type: 'list' },
       TouchlessFaucet: { label: 'sin contacto', type: 'list' },
       IntelligentToilet: { label: 'baño inteligente', type: 'list' },
       BowlShape: { label: 'forma CÓNCAVA', type: 'list' },
