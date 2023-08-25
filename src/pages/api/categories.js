@@ -66,7 +66,7 @@ const categories = async (req, res) => {
                 filterSubCategory = showerSubCategories;
             }  
 
-            bodyData["filter"] = `${regionMainCategory} eq '${category}' and search.in(${regionProductCategory}, '${filterSubCategory.toString()}', ',')`;
+            bodyData["filter"] = `ProductIsDiscontinued ne true and SKUDiscontinuedDate eq null and ${regionMainCategory} eq '${category}' and search.in(${regionProductCategory}, '${filterSubCategory.toString()}', ',')`;
             
             let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
             
