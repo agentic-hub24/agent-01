@@ -85,13 +85,19 @@ const FilterItems = ({
                 </div>
               )}
               {filterType === 'image' && (
-                <span className='block float-left max-w-[13px] h-13 mr-[10px] mt-[15px] ml-[10px] '>
-                  <img
-                    className=''
-                    src={filterImageFormatter(filter?.[filterName])}
-                    alt=''
-                  />
-                </span>
+                <>
+                  <span className='block float-left max-w-[17px] h-13 mr-[10px] mt-[15px] ml-[10px] '>
+                    <img
+                      className=''
+                      src={filterImageFormatter(filter?.[filterName])}
+                      alt=''
+                      title={filterOption[0]?.name}
+                    />
+                  </span>
+                  <span className='inline-block float-left text-[12px] font-semibold mr-[10px] mt-[15px]'>
+                    {filterOption[0]?.name}
+                  </span>
+                </>
               )}
               {filterType === 'list' && (
                 <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
@@ -144,7 +150,7 @@ const FilterItems = ({
                   <li className='block float-left mt-[10px] mb-[5px] m-[1px] mr-[7px] cursor-pointer'>
                     <img
                       key={index}
-                      title={`(${data.count})`}
+                      title={`${data.name} - (${data.count})`}
                       src={filterImageFormatter(data.value)}
                       onClick={() =>
                         onClickHandler(filterName, data.value, data.count)
