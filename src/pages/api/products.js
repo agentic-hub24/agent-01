@@ -370,22 +370,7 @@ const products = async (req, res) => {
                 response['@search.facets']['ProductNewProduct'] = response['@search.facets']['ProductNewProduct'].filter(item => {
                     item.value = lang === 'en' ? 'True' : 'Sí';
                     return item;
-                });
-
-                
-                let colorname = [];
-                response['@search.facets']['SKUColorFinishCode'].filter(item =>
-                    response['value'].some(item2 => {
-                        if (item.value === item2.SKUColorFinishCode) {
-                            return colorname.push({
-                                name: item2.SKUColorFinishName,
-                                value: item.value,
-                                count: item.count
-                            });
-                        }
-                    })
-                );
-                response['@search.facets']['SKUColorFinishCode'] = colorname;
+                });                
             }
             return res.status(200).json({ response: response });
         } catch (error) {
@@ -422,8 +407,10 @@ async function getSpecificationCount(bodyData, lang) {
     let specificationCount = 0;
     const SpecRegionProductCategoryLocal = {};
     const langsuf = lang === 'en' ? '' : '_esMX';
+    let uniqueData = [];
     for (const iterator of products) {
-        if (iterator.DWGPlanView || iterator.ThreeDDXF) {
+        if (!uniqueData.includes(iterator.ProductProductNo) && (iterator.DWGPlanView || iterator.ThreeDDXF)) {
+            uniqueData.push(iterator.ProductProductNo);
             specificationCount++;
             const loaclCat = iterator[`RegionProductCategoryLocal${langsuf}`];
             if (SpecRegionProductCategoryLocal[loaclCat]) {
@@ -577,13 +564,12 @@ export async function conversionKeys(response) {
 
 const applyDistinct = async (response, searchValue, filterData) => {
     // it will give facets values as object and all unique product records
-    let { filterObj, uniqueData} = await findUniqueDataWithFilters(response, searchValue, filterData);
-
+    let { filterObj, uniqueData, getColorInfo} = await findUniqueDataWithFilters(response, searchValue, filterData);
     //Converting each object key values to array, It will prepare all facets as array values. 
-    filterObj = await makeFiltersFacets(filterObj);
+    filterObj = await makeFiltersFacets(filterObj, getColorInfo);
     return { uniqueData, filterObj };
 };
-const findUniqueDataWithFilters = async (response,searchValue, filterData) => {
+const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
     let checkDup = [];//To check duplicates, making unique array of productno.
     let uniqueData = []; // get unique json objects of products
     
@@ -636,9 +622,14 @@ const findUniqueDataWithFilters = async (response,searchValue, filterData) => {
         'ProductProductType':{},
     }; 
 
+    let getColorInfo={};
+    
     for  (const element of response.value) {   
-        const { ProductProductNo, SkuNumber, ProductDefaultSKU } = element;
-        if(!checkDup.includes(ProductProductNo) && filterData.trim().length > 65){
+        const { ProductProductNo, SkuNumber, ProductDefaultSKU, SKUColorFinishCode, SKUColorFinishName } = element;
+        if(!getColorInfo[SKUColorFinishCode]){
+            getColorInfo[SKUColorFinishCode]=SKUColorFinishName;
+        }
+        if(!checkDup.includes(ProductProductNo) && (filterData.trim().length > 65 || (![ProductProductNo, SkuNumber, ProductDefaultSKU].includes(searchValue) && searchValue))){
             // console.log("In case 1-----")
             checkDup.push(ProductProductNo);
             uniqueData.push(element);
@@ -650,26 +641,35 @@ const findUniqueDataWithFilters = async (response,searchValue, filterData) => {
         filterObj = await updateFiltersvalueAndCount(element, filterObj, filterHandler);
         
     }
-    return { filterObj, uniqueData};
+    return { filterObj, uniqueData, getColorInfo};
 }
 const updateFiltersvalueAndCount = async(element, filterObj, filterHandler)=> {
     for (const elementName in element) {
         const elementValue = element[elementName];   
+        // elementName === "SKUColorFinishCode" SKUColorFinishName
         if (elementValue && process.env.filtersToReDesign.split(",").includes(elementName)) {
             await checkSpecificFilter(element.ProductProductNo, elementName, elementValue, filterObj, filterHandler);
         }
     }
     return filterObj;
 }
-const makeFiltersFacets = async (filterObj) => {
+const makeFiltersFacets = async (filterObj, getColorInfo) => {
     for (const key in filterObj) {
-        filterObj[key] = await objToArrayConverion(filterObj[key]);
+        if(key === "SKUColorFinishCode") {
+            filterObj[key] = await objToArrayConverion(filterObj[key], getColorInfo);
+        }else{
+            filterObj[key] = await objToArrayConverion(filterObj[key]);
+        }
     }
     return filterObj;
 }
-const objToArrayConverion = async dataObj => {
+const objToArrayConverion = async (dataObj, getColorInfo) => { 
     let result = Object.keys(dataObj).map(key => {
-        return { count: dataObj[key], value: key };
+        let singleObj = { count: dataObj[key], value: key };
+        if(getColorInfo) {
+            singleObj["name"] = getColorInfo[key];
+        } 
+        return singleObj;
     });
     return result;
 };
