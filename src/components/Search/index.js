@@ -215,6 +215,7 @@ export default function SearchPage({
                 selectedFilter={apiRequestBody}
                 locale={router.locale}
                 totalProductCount={ListingData?.response?.['@odata.count']}
+                setSelectedFilterCount={setSelectedFilterCount}
               />
               {searchResults?.specificationCount > 0 ? (
                 <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
@@ -256,6 +257,7 @@ export default function SearchPage({
                 slug={params?.slug}
                 locale={router.locale}
                 totalProductCount={ListingData?.response?.['@odata.count']}
+                setSelectedFilterCount={setSelectedFilterCount}
               />
               {/* cards div */}
               <div className='flex md:ml-[30px] mb-[20px] pt-[12px] pb-[20px] md:w-3/4 flex-wrap'>

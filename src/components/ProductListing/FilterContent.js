@@ -16,7 +16,8 @@ export default function FilterContent({
   searchValue,
   currentPageValue,
   locale,
-  totalProductCount
+  totalProductCount,
+  setSelectedFilterCount
 }) {
   const categoryType =
     pageType === 'spec'
@@ -24,7 +25,7 @@ export default function FilterContent({
       : 'RegionProductCategoryLocal';
   const categoryArr = filterOptions?.[categoryType];
   const searchFacetsNode = filterOptions;
-  console.log('filter ', searchValue);
+
   const filterkeys = Object.keys(searchFacetsNode).filter(el =>
     searchValue
       ? ![
@@ -37,6 +38,19 @@ export default function FilterContent({
   );
 
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState();
+
+  useEffect(() => {
+    // setSelectedFilterCount
+    const arr = filterkeys
+      .map(item => ({
+        [item]: filterOptions[item]?.[0]?.count
+      }))
+      .reduce((result, currentObject) => {
+        return Object.assign(result, currentObject);
+      }, {});
+
+    setSelectedFilterCount({ ...arr });
+  }, [filterOptions]);
 
   useEffect(() => {
     setIsMobileFilterOpen(false);
