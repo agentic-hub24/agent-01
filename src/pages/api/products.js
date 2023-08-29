@@ -211,24 +211,20 @@ const products = async (req, res) => {
             }
 
             if (req.body.toilet_type) {
-                req.body.toilet_type =
-                    req.body.toilet_type === 'Intelligent'
-                        ? 'Yes'
-                        : req.body.toilet_type;
-                req.body.toilet_type =
-                    req.body.toilet_type === 'Inteligente'
-                        ? 'Sí'
-                        : req.body.toilet_type;
+                let toilet_type = req.body.toilet_type;
+                let checkStr='ProductInstallationType';
+                if(process.env.IntelligentToiletValues.split(",").includes(toilet_type)){
+                    checkStr = 'IntelligentToilet';
+                }else if(process.env.ProductConfigurationValues.split(",").includes(toilet_type)){
+                    checkStr = 'ProductConfiguration';
+                } 
+
+                toilet_type = toilet_type === 'Intelligent' ? 'Yes' : toilet_type;
+                toilet_type = toilet_type === 'Inteligente' ? 'Sí' : toilet_type;
 
                 filterData += filterData != '' ? 'and ' : '';
 
-                filterData += `ProductInstallationType${
-                    lang === 'en' ? '' : '_esMX'
-                } eq '${req.body.toilet_type}' or IntelligentToilet${
-                    lang === 'en' ? '' : '_esMX'
-                } eq '${req.body.toilet_type}' or ProductConfiguration${
-                    lang === 'en' ? '' : '_esMX'
-                } eq '${req.body.toilet_type}' `;
+                filterData += `${checkStr}${ lang === 'en' ? '' : '_esMX' } eq '${toilet_type}' `;
             }
 
             if (req.body.NumberOfHoles) {
