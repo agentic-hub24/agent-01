@@ -566,7 +566,8 @@ export async function applyDistinct(response, searchValue, filterData)  {
     filterObj = await makeFiltersFacets(filterObj, getColorInfo);
 
     return { uniqueData, filterObj };
-};
+}
+
 const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
     let checkDup = [];//To check duplicates, making unique array of productno.
     let uniqueData = []; // get unique json objects of products
@@ -623,7 +624,7 @@ const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
 
     let getColorInfo={};
     for  (const element of response.value) {   
-        const { ProductProductNo, SkuNumber, ProductDefaultSKU, SKUColorFinishCode, SKUColorFinishName, RegionProductCategoryLocal } = element;
+        const { ProductProductNo, SkuNumber, ProductDefaultSKU, SKUColorFinishCode, SKUColorFinishName } = element;
         if(!getColorInfo[SKUColorFinishCode]){
             getColorInfo[SKUColorFinishCode]=SKUColorFinishName;
         }
