@@ -558,11 +558,13 @@ export async function conversionKeys(response) {
     return response;
 }
 
-const applyDistinct = async (response, searchValue, filterData) => {
+export async function applyDistinct(response, searchValue, filterData)  {
     // it will give facets values as object and all unique product records
     let { filterObj, uniqueData, getColorInfo} = await findUniqueDataWithFilters(response, searchValue, filterData);
+    
     //Converting each object key values to array, It will prepare all facets as array values. 
     filterObj = await makeFiltersFacets(filterObj, getColorInfo);
+
     return { uniqueData, filterObj };
 };
 const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
@@ -570,6 +572,7 @@ const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
     let uniqueData = []; // get unique json objects of products
     
     // Managing count for filters/facets based on unique elements
+    
     let filterObj = {
         'BidetFunctionality':{},
         'HandleStyle':{},
@@ -593,7 +596,7 @@ const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
         'ProductShape':{},
         'ProductProductType':{},
     }; 
-
+    
     let filterHandler = {
         'BidetFunctionality':{},
         'HandleStyle':{},
@@ -619,12 +622,12 @@ const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
     }; 
 
     let getColorInfo={};
-    
     for  (const element of response.value) {   
-        const { ProductProductNo, SkuNumber, ProductDefaultSKU, SKUColorFinishCode, SKUColorFinishName } = element;
+        const { ProductProductNo, SkuNumber, ProductDefaultSKU, SKUColorFinishCode, SKUColorFinishName, RegionProductCategoryLocal } = element;
         if(!getColorInfo[SKUColorFinishCode]){
             getColorInfo[SKUColorFinishCode]=SKUColorFinishName;
         }
+
         if(!checkDup.includes(ProductProductNo) && (filterData.trim().length > 65 || (![ProductProductNo, SkuNumber, ProductDefaultSKU].includes(searchValue) && searchValue))){
             // console.log("In case 1-----")
             checkDup.push(ProductProductNo);
@@ -633,18 +636,39 @@ const findUniqueDataWithFilters = async (response, searchValue, filterData) => {
             // console.log("In case 2-----")
             checkDup.push(ProductProductNo);
             uniqueData.push(element);
+            
         }
+
         filterObj = await updateFiltersvalueAndCount(element, filterObj, filterHandler);
-        
     }
+    // console.log("filterHandler", filterHandler["RegionProductCategoryLocal"])
     return { filterObj, uniqueData, getColorInfo};
 }
 const updateFiltersvalueAndCount = async(element, filterObj, filterHandler)=> {
+    const {RegionProductCategoryLocal,ProductDefaultSKU, SkuNumber, ProductProductNo } = element;
     for (const elementName in element) {
-        const elementValue = element[elementName];   
-        // elementName === "SKUColorFinishCode" SKUColorFinishName
+        const elementValue = element[elementName];
         if (elementValue && process.env.filtersToReDesign.split(",").includes(elementName)) {
-            await checkSpecificFilter(element.ProductProductNo, elementName, elementValue, filterObj, filterHandler);
+            await checkSpecificFilter(ProductProductNo, elementName, elementValue, filterObj, filterHandler);
+        }
+        // this is specific to RegionProductCategoryLocal 
+        if (RegionProductCategoryLocal && ProductDefaultSKU===SkuNumber) {
+            if(filterObj["RegionProductCategoryLocal"][RegionProductCategoryLocal]){
+                if(!filterHandler["RegionProductCategoryLocal"][ProductProductNo]){
+                    filterHandler["RegionProductCategoryLocal"][ProductProductNo] = [RegionProductCategoryLocal];
+                    filterObj["RegionProductCategoryLocal"][RegionProductCategoryLocal] = filterObj["RegionProductCategoryLocal"][RegionProductCategoryLocal] + 1;
+                }else if(!filterHandler["RegionProductCategoryLocal"][ProductProductNo].includes(RegionProductCategoryLocal)){
+                    filterHandler["RegionProductCategoryLocal"][ProductProductNo].push(RegionProductCategoryLocal);
+                    filterObj["RegionProductCategoryLocal"][RegionProductCategoryLocal] = filterObj["RegionProductCategoryLocal"][RegionProductCategoryLocal] + 1;
+                }
+            }else{
+                filterObj["RegionProductCategoryLocal"][RegionProductCategoryLocal] = 1;
+                if(filterHandler["RegionProductCategoryLocal"][ProductProductNo]){
+                    filterHandler["RegionProductCategoryLocal"][ProductProductNo].push(RegionProductCategoryLocal);
+                }else{
+                    filterHandler["RegionProductCategoryLocal"][ProductProductNo] = [RegionProductCategoryLocal];
+                }
+            }
         }
     }
     return filterObj;
@@ -687,6 +711,7 @@ export async function callPDPAPI(url) {
 }
 
 const checkSpecificFilter = async (ProductProductNo, elementName, elementValue, filterObj, filterHandler) => {
+    
     if(filterObj[elementName][elementValue]){
         if(!filterHandler[elementName][ProductProductNo]){
             filterHandler[elementName][ProductProductNo] = [elementValue];
