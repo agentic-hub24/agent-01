@@ -34,10 +34,10 @@ export default function ShowAllProducts({
   useEffect(() => {
     filterProductByDefaultCategory();
     setTimeout(() => {
-      const elem = subSlug
-        ? document.getElementById(subSlug).offsetTop - 50
-        : 0;
-      window.scrollTo(0, elem);
+      // const elem = subSlug
+      //   ? document.getElementById(subSlug).offsetTop - 50
+      //   : 0;
+      // window.scrollTo(0, elem);
       setIsLoading(false);
     }, 1000);
   }, []);
