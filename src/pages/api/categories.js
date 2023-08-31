@@ -1,5 +1,5 @@
 import { authMiddleware } from './middlewareAuth';
-import { apiCalling } from './products';
+import { apiCalling, applyDistinct } from './products';
 /**
  * Method - POST
  * @param {*} req 
@@ -65,15 +65,44 @@ const categories = async (req, res) => {
             } else if(category === categores[2]){
                 filterSubCategory = showerSubCategories;
             }  
-
-            bodyData["filter"] = `ProductIsDiscontinued ne true and SKUDiscontinuedDate eq null and ${regionMainCategory} eq '${category}' and search.in(${regionProductCategory}, '${filterSubCategory.toString()}', ',')`;
-            
+            const filterData = `${regionMainCategory} eq '${category}' and search.in(${regionProductCategory}, '${filterSubCategory.toString()}', ',')`;
+            bodyData["filter"] = `ProductIsDiscontinued ne true and SKUDiscontinuedDate eq null and `+filterData;
+            let finalData = [];
             let response = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
+            
+            if(response.value.length){
+                finalData = [...finalData, ...response.value];
+            }
+            
+            bodyData["skip"] = 1000;
+            let response1 = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
+            if(response1.value.length){
+                finalData = [...finalData, ...response1.value];
+            }
+
+            bodyData["skip"] = 2000;
+            let response2 = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
+            if(response2.value.length){
+                finalData = [...finalData, ...response2.value];
+            }
+            bodyData["skip"] = 3000;
+            let response3 = await apiCalling(bodyData, process.env.ACS_PLP_API_URL);
+            
+            if(response3.value.length){
+                finalData = [...finalData, ...response3.value];
+            }
+            console.log("response.value final", finalData.length)
+            response.value = finalData;
             
             // conversion of keys
             if(lang !== "en" && response.value.length > 0){
                 response = await conversionKeys(response);
             }
+
+            const { uniqueData, filterObj } = await applyDistinct(response, '', '');
+            response.value = uniqueData;
+            response["@odata.count"] = uniqueData.length;
+            response["@search.facets"]["RegionProductCategoryLocal"] = filterObj.RegionProductCategoryLocal;
             return res.status(200).json({ response:response });
         }catch(error){
             return res.status(500).json({

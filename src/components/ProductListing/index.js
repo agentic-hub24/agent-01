@@ -109,6 +109,7 @@ export default function ProductListing({
             selectedFilterCount={selectedFilterCount}
             locale={locale}
             totalProductCount={totalProductCount}
+            setSelectedFilterCount={setSelectedFilterCount}
           />
           {/* cards div */}
           <div className='flex md:ml-[30px] mb-[20px] mt-[20px] pb-[20px] md:w-3/4 flex-wrap'>
