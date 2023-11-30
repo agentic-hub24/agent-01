@@ -15,11 +15,6 @@ const PressRelease = ({ pageData }) => {
       !item?.fields.internalTitle.includes('Help Us Improve')
   );
 
-  // Preparing Bottom help us link
-  const helpUsLink = pageSections.find(item =>
-    item?.fields.internalTitle.includes('Help Us Improve')
-  );
-
   // Filtering tabs content data
   const textHeadingImageContentSection = pageSections.filter(
     item => item?.sys?.contentType?.sys?.id === 'textHeadingImageContentSection'
@@ -126,7 +121,7 @@ const PressRelease = ({ pageData }) => {
           ))}
         </div>
       </section>
-      <Cta fields={helpUsLink?.fields} />
+
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
