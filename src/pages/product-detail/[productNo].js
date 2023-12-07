@@ -76,7 +76,7 @@ export async function getServerSideProps(context) {
 
   const productDetailsData = await getProductDetails(languageAPI, productNo);
   // seo meta data
-  const pageData = createPDPSeoData(productDetailsData?.data);
+  const pageData = createPDPSeoData(productDetailsData?.data, context);
 
   return {
     props: {
