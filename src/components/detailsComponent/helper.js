@@ -66,7 +66,7 @@ export const magnify = (imgID, zoom) => {
   glass.addEventListener('touchmove', moveMagnifier);
   img.addEventListener('touchmove', moveMagnifier);
   function moveMagnifier(e) {
-    var pos, x, y;
+    let pos, x, y;
     /*prevent any other actions that may occur when moving over the image*/
     e.preventDefault();
     /*get the cursor's x and y positions:*/
@@ -94,7 +94,7 @@ export const magnify = (imgID, zoom) => {
       '-' + (x * zoom - w + bw) + 'px -' + (y * zoom - h + bw) + 'px';
   }
   function getCursorPos(e) {
-    var a,
+    let a,
       x = 0,
       y = 0;
     e = e || window.event;
