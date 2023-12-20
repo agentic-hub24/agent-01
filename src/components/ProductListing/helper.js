@@ -438,3 +438,17 @@ export const filterValueMap = {
     'Accesorios de Cocina': ['SKUColorFinishCode', 'ProductProductType']
   }
 };
+
+export const formatRedirectionUrl = (
+  urlName,
+  pageType,
+  searchValue,
+  currentPageValue
+) => {
+  return `results/Category/${urlName.replace(
+    / /g,
+    '+'
+  )}?type=${pageType}&search=${searchValue}${
+    currentPageValue ? `&currentPage=${currentPageValue}` : ``
+  }`;
+};
