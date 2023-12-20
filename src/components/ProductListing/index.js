@@ -115,7 +115,7 @@ export default function ProductListing({
           <div className='flex md:ml-[30px] mb-[20px] mt-[20px] pb-[20px] md:w-3/4 flex-wrap'>
             {/* Repeater div 1 */}
             {productValueArray && productValueArray.length > 0 ? (
-              productValueArray?.map((item, index) => {
+              productValueArray?.map(item => {
                 return (
                   <PLPCards
                     handleMouseOut={() => handleMouseOut()}
@@ -126,7 +126,7 @@ export default function ProductListing({
                     handleModalOpen={() => handleModalOpen()}
                     handleModalClose={() => handleModalClose()}
                     modalOpen={modalOpen}
-                    key={index}
+                    key={item?.SkuNumber}
                     locale={locale}
                   />
                 );
