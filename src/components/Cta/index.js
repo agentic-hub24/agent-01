@@ -12,7 +12,7 @@ const Cta = ({ fields }) => {
     let url = CTAURL[locale];
     let height = 700;
     let width = 700;
-    var left = (screen.width - width) / 2;
+    let left = (screen.width - width) / 2;
     window.open(
       url,
       'center window',

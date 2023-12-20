@@ -2,7 +2,7 @@ import { memo } from 'react';
 import Head from 'next/head';
 
 const CustomHead = ({ seoMetaData }) => {
-  var {
+  const {
     canonicalUrl,
     pageTitle,
     ogTitle,

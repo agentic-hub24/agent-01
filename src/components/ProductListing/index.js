@@ -118,13 +118,13 @@ export default function ProductListing({
               productValueArray?.map((item, index) => {
                 return (
                   <PLPCards
-                    handleMouseOut={e => handleMouseOut(e)}
+                    handleMouseOut={() => handleMouseOut()}
                     handleMouseOver={e => handleMouseOver(e)}
                     isHovering={isHovering}
                     skuId={skuId}
                     item={item}
-                    handleModalOpen={e => handleModalOpen(e)}
-                    handleModalClose={e => handleModalClose(e)}
+                    handleModalOpen={() => handleModalOpen()}
+                    handleModalClose={() => handleModalClose()}
                     modalOpen={modalOpen}
                     key={index}
                     locale={locale}
