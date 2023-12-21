@@ -153,13 +153,13 @@ export default function ShowAllProducts({
                     cardData.cardItem?.map((item, index) => {
                       return (
                         <PLPCards
-                          handleMouseOut={e => handleMouseOut(e)}
-                          handleMouseOver={e => handleMouseOver(e)}
+                          handleMouseOut={() => handleMouseOut()}
+                          handleMouseOver={() => handleMouseOver()}
                           isHovering={isHovering}
                           skuId={skuId}
                           item={item}
-                          handleModalOpen={e => handleModalOpen(e)}
-                          handleModalClose={e => handleModalClose(e)}
+                          handleModalOpen={() => handleModalOpen()}
+                          handleModalClose={() => handleModalClose()}
                           modalOpen={modalOpen}
                           key={index}
                         />

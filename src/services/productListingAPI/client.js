@@ -1,8 +1,8 @@
 import { removeQuotesFromString } from '@utils/footerUtils';
 
 export async function getProductListing(requestBody) {
-  var newObj = {};
-  for (var i in requestBody) {
+  let newObj = {};
+  for (let i in requestBody) {
     newObj[i] = removeQuotesFromString(requestBody[i]);
   }
   try {

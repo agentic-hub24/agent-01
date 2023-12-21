@@ -2,7 +2,12 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import FilterAccordion from './FilterAccordion';
 import FilterItems from './FilterItems';
-import { staticLabelsPLP, filterMapping, filterValueMap } from './helper';
+import {
+  staticLabelsPLP,
+  filterMapping,
+  filterValueMap,
+  formatRedirectionUrl
+} from './helper';
 
 export default function FilterContent({
   filterOptions,
@@ -56,14 +61,6 @@ export default function FilterContent({
     setIsMobileFilterOpen(false);
   }, [selectedFilter]);
 
-  const formatRedirectionUrl = urlName => {
-    return `results/Category/${urlName.replace(
-      / /g,
-      '+'
-    )}?type=${pageType}&search=${searchValue}${
-      currentPageValue ? `&currentPage=${currentPageValue}` : ``
-    }`;
-  };
   const toggleMobileFilter = () => {
     setIsMobileFilterOpen(!isMobileFilterOpen);
   };
@@ -155,7 +152,12 @@ export default function FilterContent({
               {categoryArr?.map((item, index) => (
                 <li className='py-[16px] cursor-pointer' key={index}>
                   <a
-                    href={formatRedirectionUrl(item.value)}
+                    href={formatRedirectionUrl(
+                      item.value,
+                      pageType,
+                      searchValue,
+                      currentPageValue
+                    )}
                     className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
                   >
                     {item.value} ({item.count})

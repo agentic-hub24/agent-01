@@ -266,7 +266,7 @@ export default function SearchPage({
                   productValueArray?.map((item, index) => {
                     return (
                       <PLPCards
-                        handleMouseOut={e => handleMouseOut(e)}
+                        handleMouseOut={() => handleMouseOut()}
                         handleMouseOver={e => handleMouseOver(e)}
                         skuId={skuId}
                         item={item}
