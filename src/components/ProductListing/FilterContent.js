@@ -9,6 +9,9 @@ import {
   formatRedirectionUrl
 } from './helper';
 
+const specRegional = 'SpecRegionProductCategoryLocal';
+const regional = 'RegionProductCategoryLocal';
+
 export default function FilterContent({
   filterOptions,
   slug,
@@ -24,10 +27,7 @@ export default function FilterContent({
   totalProductCount,
   setSelectedFilterCount
 }) {
-  const categoryType =
-    pageType === 'spec'
-      ? 'SpecRegionProductCategoryLocal'
-      : 'RegionProductCategoryLocal';
+  const categoryType = pageType === 'spec' ? specRegional : regional;
   const categoryArr = filterOptions?.[categoryType];
   const searchFacetsNode = filterOptions;
 
@@ -65,6 +65,117 @@ export default function FilterContent({
     setIsMobileFilterOpen(!isMobileFilterOpen);
   };
 
+  const getResultLink = () => {
+    if (pageType) {
+      const resultPath = `/results?type=${pageType}&search=${
+        selectedFilter?.search
+      }${pageType === 'spec' ? '' : '&currentPage=1'}`;
+      return {
+        pathname: resultPath,
+        query: {
+          search: selectedFilter?.search,
+          CurrentPage: pageType === 'spec' ? '' : 1,
+          lang: locale,
+          subSlug: subSlug
+        }
+      };
+    } else {
+      return { pathname: `/browse/${slug}/${subSlug}` };
+    }
+  };
+
+  const linkProps = getResultLink();
+
+  const generateLinkProps = () => {
+    const baseLink = pageType
+      ? `/results?type=${pageType}&search=${selectedFilter?.search}${
+          pageType === 'spec' ? '' : '&currentPage=1'
+        }`
+      : `/browse/${slug}`;
+
+    const linkProps = {
+      pathname: baseLink,
+      query: {
+        search: selectedFilter?.search,
+        CurrentPage: pageType === 'spec' ? '' : 1,
+        lang: locale,
+        subSlug: subSlug
+      }
+    };
+
+    return linkProps;
+  };
+
+  const linkPropsShowAll = generateLinkProps();
+
+  const ResultLinkButton = ({
+    pageType,
+    selectedFilter,
+    totalProductCount,
+    locale,
+    subSlug
+  }) => (
+    <Link
+      href={{
+        pathname: pageType
+          ? `/results?type=${pageType}&search=${selectedFilter?.search}${
+              pageType === `spec` ? `` : `&currentPage=1`
+            }`
+          : `/browse/${slug}`,
+        query: {
+          search: selectedFilter?.search,
+          CurrentPage: pageType === `spec` ? `` : 1,
+          lang: locale,
+          subSlug: subSlug
+        }
+      }}
+      as={
+        pageType
+          ? `/results?type=${pageType}&search=${selectedFilter?.search}${
+              pageType === `spec` ? `` : `&currentPage=1`
+            }`
+          : `/browse/${slug}`
+      }
+    >
+      <button className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full pb-[10px]'>
+        <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
+          {selectedFilter?.['RegionProductCategoryLocal']}
+        </span>
+        <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
+          ({totalProductCount})
+        </span>
+        <span className='absolute mt-[10px] right-2 text-gray-400 font-normal text-base'>
+          x
+        </span>
+      </button>
+    </Link>
+  );
+
+  const CategoryListDesktop = ({
+    categoryArr,
+    pageType,
+    searchValue,
+    currentPageValue
+  }) => (
+    <ul className='m-0 mb-[10px] outline-none relative text-left w-full'>
+      {categoryArr?.map((item, index) => (
+        <li className='py-[16px] cursor-pointer' key={index}>
+          <a
+            href={formatRedirectionUrl(
+              item.value,
+              pageType,
+              searchValue,
+              currentPageValue
+            )}
+            className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
+          >
+            {item.value} ({item.count})
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <>
       <div className='flex flex-col pl-[10px] w-1/4 mb-[38px] hidden md:block'>
@@ -77,26 +188,8 @@ export default function FilterContent({
             </div>
             <div className='flex mt-[5px]'>
               <Link
-                href={{
-                  pathname: pageType
-                    ? `/results?type=${pageType}&search=${
-                        selectedFilter?.search
-                      }${pageType === `spec` ? `` : `&currentPage=1`}`
-                    : `/browse/${slug}`,
-                  query: {
-                    search: selectedFilter?.search,
-                    CurrentPage: pageType === `spec` ? `` : 1,
-                    lang: locale,
-                    subSlug: subSlug
-                  }
-                }}
-                as={
-                  pageType
-                    ? `/results?type=${pageType}&search=${
-                        selectedFilter?.search
-                      }${pageType === `spec` ? `` : `&currentPage=1`}`
-                    : `/browse/${slug}`
-                }
+                href={linkPropsShowAll}
+                as={linkPropsShowAll.pathname}
                 className='font-helveticaLight leading-relaxed text-[14px] font-normal'
               >
                 {staticLabelsPLP[locale].showAll}
@@ -104,67 +197,20 @@ export default function FilterContent({
             </div>
           </div>
           {slug ? (
-            <>
-              <ul className='m-0 mb-[10px]  outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
-                <li className=''>
-                  <Link
-                    href={{
-                      pathname: pageType
-                        ? `/results?type=${pageType}&search=${
-                            selectedFilter?.search
-                          }${pageType === `spec` ? `` : `&currentPage=1`}`
-                        : `/browse/${slug}`,
-                      query: {
-                        search: selectedFilter?.search,
-                        CurrentPage: pageType === `spec` ? `` : 1,
-                        lang: locale,
-                        subSlug: subSlug
-                      }
-                    }}
-                    as={
-                      pageType
-                        ? `/results?type=${pageType}&search=${
-                            selectedFilter?.search
-                          }${pageType === `spec` ? `` : `&currentPage=1`}`
-                        : `/browse/${slug}`
-                    }
-                  >
-                    <button
-                      // onClick={onClickHandler(filterName, '')}
-                      className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'
-                    >
-                      <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
-                        {selectedFilter?.['RegionProductCategoryLocal']}
-                      </span>
-                      <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
-                        ({totalProductCount})
-                      </span>
-                      <span className='absolute mt-[10px] right-2 text-gray-400 font-normal text-base'>
-                        x
-                      </span>
-                    </button>
-                  </Link>
-                </li>
-              </ul>
-            </>
+            <ResultLinkButton
+              pageType={pageType}
+              selectedFilter={selectedFilter}
+              totalProductCount={totalProductCount}
+              locale={locale}
+              subSlug={subSlug}
+            />
           ) : (
-            <ul className=' m-0 mb-[10px]  outline-none  relative text-left w-full'>
-              {categoryArr?.map((item, index) => (
-                <li className='py-[16px] cursor-pointer' key={index}>
-                  <a
-                    href={formatRedirectionUrl(
-                      item.value,
-                      pageType,
-                      searchValue,
-                      currentPageValue
-                    )}
-                    className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
-                  >
-                    {item.value} ({item.count})
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <CategoryListDesktop
+              categoryArr={categoryArr}
+              pageType={pageType}
+              searchValue={searchValue}
+              currentPageValue={currentPageValue}
+            />
           )}
         </div>
         {!showAll && (
@@ -176,34 +222,13 @@ export default function FilterContent({
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
-                <Link
-                  href={{
-                    pathname: pageType
-                      ? `/results?type=${pageType}&search=${
-                          selectedFilter?.search
-                        }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}/${subSlug}`,
-                    query: {
-                      search: selectedFilter?.search,
-                      CurrentPage: pageType === `spec` ? `` : 1,
-                      lang: locale,
-                      subSlug: subSlug
-                    }
-                  }}
-                  as={
-                    pageType
-                      ? `/results?type=${pageType}&search=${
-                          selectedFilter?.search
-                        }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}/${subSlug}`
-                  }
-                >
+                <Link href={linkProps} as={linkProps.pathname}>
                   {staticLabelsPLP[locale].clearAll}
                 </Link>
               </div>
             </div>
 
-            {filterkeys.map((option, i) => {
+            {filterkeys.map(option => {
               const filterType = filterMapping?.[0]?.[locale]?.[option]?.type;
 
               let minValue = 0;
@@ -222,7 +247,7 @@ export default function FilterContent({
                 searchFacetsNode?.[option]?.length > 0 && (
                   <FilterAccordion
                     header={filterMapping?.[0]?.[locale]?.[option]?.label}
-                    key={i}
+                    key={filterMapping?.[0]?.[locale]?.[option]?.label}
                   >
                     <FilterItems
                       filterOption={searchFacetsNode?.[option]}
@@ -243,12 +268,12 @@ export default function FilterContent({
       </div>
       <div className='block appearance-none w-full py-[10px] px-[10px] pr-[10px] rounded leading-normal focus:outline-none focus:bg-white focus:border-gray-500 md:hidden'>
         {/* Mobile filter toggle button */}
-        <div
+        <button
           className='m-0 mb-[20px] outline-none bg-white text-[#232323] inline-block border border-solid border-gray-300 rounded-md font-HelveticaRoman text-lg font-normal text-center w-full py-5 px-8 cursor-pointer '
           onClick={toggleMobileFilter}
         >
           <span>{staticLabelsPLP[locale].buttonMDLabel}</span>
-        </div>
+        </button>
 
         {/* Mobile filter content */}
         {isMobileFilterOpen && (
@@ -261,26 +286,8 @@ export default function FilterContent({
               </div>
               <div className='flex mt-[5px]'>
                 <Link
-                  href={{
-                    pathname: pageType
-                      ? `/results?type=${pageType}&search=${
-                          selectedFilter?.search
-                        }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}`,
-                    query: {
-                      search: selectedFilter?.search,
-                      CurrentPage: pageType === `spec` ? `` : 1,
-                      lang: locale,
-                      subSlug: subSlug
-                    }
-                  }}
-                  as={
-                    pageType
-                      ? `/results?type=${pageType}&search=${
-                          selectedFilter?.search
-                        }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}`
-                  }
+                  href={linkPropsShowAll}
+                  as={linkPropsShowAll.pathname}
                   className='font-helveticaLight leading-relaxed text-[14px] font-normal'
                 >
                   {staticLabelsPLP[locale].showAll}
@@ -289,38 +296,20 @@ export default function FilterContent({
             </div>
             <div className='mb-[5px] pr-[30px] border-b-2'>
               {slug ? (
-                <ul className='m-0 mb-[10px]  outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
-                  <li className=''>
-                    <button
-                      // onClick={onClickHandler(filterName, '')}
-                      className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'
-                    >
-                      <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
-                        {selectedFilter?.['RegionProductCategoryLocal']}
-                      </span>
-                      <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
-                        ({totalProductCount})
-                      </span>
-                      <span className='absolute mt-[10px] right-4 text-gray-400 font-normal text-base'>
-                        x
-                      </span>
-                    </button>
-                  </li>
-                </ul>
+                <ResultLinkButton
+                  pageType={pageType}
+                  selectedFilter={selectedFilter}
+                  totalProductCount={totalProductCount}
+                  locale={locale}
+                  subSlug={subSlug}
+                />
               ) : (
-                <ul className=' m-0 mb-[10px]  outline-none  relative text-left w-full'>
-                  {categoryArr?.map((item, index) => (
-                    <li className='py-[16px] cursor-pointer' key={index}>
-                      {/* TODO: href link */}
-                      <a
-                        // href={formatRedirectionUrl(item.value)}
-                        className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
-                      >
-                        {item.value} ({item.count})
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                <CategoryListDesktop
+                  categoryArr={categoryArr}
+                  pageType={pageType}
+                  searchValue={searchValue}
+                  currentPageValue={currentPageValue}
+                />
               )}
             </div>
             <div className='flex justify-between pb-[22px] mt-[14px] mb-[22px] border-b-2'>
@@ -330,34 +319,13 @@ export default function FilterContent({
                 </h3>
               </div>
               <div className='flex mt-[5px]'>
-                <Link
-                  href={{
-                    pathname: pageType
-                      ? `/results?type=${pageType}&search=${
-                          selectedFilter?.search
-                        }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}/${subSlug}`,
-                    query: {
-                      search: selectedFilter?.search,
-                      CurrentPage: pageType === `spec` ? `` : 1,
-                      lang: locale,
-                      subSlug: subSlug
-                    }
-                  }}
-                  as={
-                    pageType
-                      ? `/results?type=${pageType}&search=${
-                          selectedFilter?.search
-                        }${pageType === `spec` ? `` : `&currentPage=1`}`
-                      : `/browse/${slug}/${subSlug}`
-                  }
-                >
+                <Link href={linkProps} as={linkProps.pathname}>
                   {staticLabelsPLP[locale].clearAll}
                 </Link>
               </div>
             </div>
 
-            {filterkeys.map((option, i) => {
+            {filterkeys.map(option => {
               const filterType = filterMapping?.[0]?.[locale]?.[option]?.type;
 
               let minValue = 0;
@@ -376,7 +344,7 @@ export default function FilterContent({
                 <FilterAccordion
                   header={filterMapping?.[0]?.[locale]?.[option]?.label}
                   subSlug={subSlug}
-                  key={i}
+                  key={filterMapping?.[0]?.[locale]?.[option]?.label}
                 >
                   <FilterItems
                     filterOption={searchFacetsNode?.[option]}
