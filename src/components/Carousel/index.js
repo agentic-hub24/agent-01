@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import { HiChevronRight, HiChevronLeft } from 'react-icons/hi2';
 import { Carousel } from 'react-responsive-carousel';

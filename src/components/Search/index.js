@@ -289,7 +289,7 @@ export default function SearchPage({
           />
         </>
       )}
-      <Cta fields={CTAObject[router.locale]} />
+      {/* <Cta fields={CTAObject[router.locale]} /> */}
       <BackToTop topHeight={0} localeProp={router.locale} />
     </>
   );

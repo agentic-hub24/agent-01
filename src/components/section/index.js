@@ -11,9 +11,8 @@ import ArticleContent from '@components/articleContent';
 import EmbededScript from '@components/embededScript';
 import TextContent from '@components/textContent';
 
-const Section = ({ fields, sys, position, pageHeading }) => {
+const Section = ({ fields, sys, pageHeading }) => {
   const sectionType = sys?.contentType?.sys?.id;
-  const page = fields?.internalTitle;
 
   if (sectionType === 'articleContent') {
     return (
@@ -25,7 +24,6 @@ const Section = ({ fields, sys, position, pageHeading }) => {
       />
     );
   } else if (sectionType === 'locator') {
-    // ToDo create a separate component for below work same as above ArticleContent
     return (
       <StoreListing
         pageHeading={
@@ -35,7 +33,6 @@ const Section = ({ fields, sys, position, pageHeading }) => {
       />
     );
   } else if (sectionType === 'form') {
-    // ToDo create a separate component for below work same as above ArticleContent
     return (
       <StoreListingLocator
         pageHeading={

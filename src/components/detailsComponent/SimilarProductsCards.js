@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from 'next/link';
 import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
 
 export default function SimilarProductsCards({
@@ -14,7 +13,7 @@ export default function SimilarProductsCards({
             {item.ProductATGISACTIVE && (
               <div
                 className='h-[380px] hover:shadow-2xl text-[#232323] bg-[#f9f9f9] md:basis-1/4 basis-1/3 grow lg:grow-0 mr-[2px] mb-[5px] ml-[2px] md:max-w-[33%] max-w-[50%] hover:cursor-pointer pb-[40px]'
-                key={index}
+                key={item?.id || index}
               >
                 <div className='mb-[10px] flex justify-center border-4 border-neutral-50'>
                   <img

@@ -635,18 +635,18 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               </div>
             )}
             <div className='flex mt-5'>
-              <div
+              <button
                 className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
                 onClick={() => window.print()}
               >
                 <HiMiniPrinter size={20} />
-              </div>
-              <div
+              </button>
+              <button
                 className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
                 onClick={() => setSocial(true)}
               >
                 <HiShare size={20} />
-              </div>
+              </button>
             </div>
             {social && (
               <div className='ml-20 relative' ref={ref}>
@@ -655,7 +655,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   style={{ top: '-20px' }}
                 >
                   <li className=''>
-                    <a
+                    <button
                       data-href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
                       target='popup'
                       onClick={() => {
@@ -677,10 +677,10 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           Facebook
                         </div>
                       </div>
-                    </a>
+                    </button>
                   </li>
                   <li className='relative'>
-                    <a
+                    <button
                       target='popup'
                       data-href={`http://twitter.com/share?text=${PDP_LABELS[locale].twitterText}&url=${window.location.href}`}
                       onClick={() => {
@@ -702,7 +702,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           Twitter
                         </div>
                       </div>
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -908,18 +908,16 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   </div>
                   <div className='flex flex-col'>
                     {bimRevit && (
-                      <>
-                        <ul className='inline-flex flex-wrap mb-2'>
-                          <HiOutlineDownload size={20} />
-                          <li>
-                            <LinkWithLabel
-                              url={bimRevit.ResourceFullWebURL}
-                              label={PDP_LABELS[locale].bimRevit}
-                              className='font-helveticaGroup font-light text-[14px] uppercase'
-                            />
-                          </li>
-                        </ul>
-                      </>
+                      <ul className='inline-flex flex-wrap mb-2'>
+                        <HiOutlineDownload size={20} />
+                        <li>
+                          <LinkWithLabel
+                            url={bimRevit.ResourceFullWebURL}
+                            label={PDP_LABELS[locale].bimRevit}
+                            className='font-helveticaGroup font-light text-[14px] uppercase'
+                          />
+                        </li>
+                      </ul>
                     )}
                   </div>
 
@@ -938,7 +936,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <ul className='inline-flex mb-1'>
                                 <HiOutlineDownload size={20} />
                                 {plan2D?.map((el, id) => (
-                                  <li key={id}>
+                                  <li key={el?.ResourceName || id}>
                                     <LinkWithLabel
                                       label={
                                         PRODUCT_PLAN_NAME_2D[el.ResourceType]
@@ -961,7 +959,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <ul className='inline-flex mb-1'>
                                 <HiOutlineDownload size={20} />
                                 {front2D?.map((el, id) => (
-                                  <li key={id}>
+                                  <li key={el?.ResourceName || id}>
                                     <LinkWithLabel
                                       label={
                                         PRODUCT_FRONT_NAME_2D[el.ResourceType]
@@ -984,7 +982,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <ul className='inline-flex mb-1'>
                                 <HiOutlineDownload size={20} />
                                 {side2D?.map((el, id) => (
-                                  <li key={id}>
+                                  <li key={el?.ResourceName || id}>
                                     <LinkWithLabel
                                       url={el.ResourceFullWebURL}
                                       label={
@@ -1013,7 +1011,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           <ul className='inline-flex flex-wrap mb-1'>
                             <HiOutlineDownload size={20} />
                             {PlanView3D?.map((el, id) => (
-                              <li key={id}>
+                              <li key={el?.ResourceName || id}>
                                 <LinkWithLabel
                                   url={el.ResourceFullWebURL}
                                   label={PRODUCT_PLAN_NAME_3D[el.ResourceType]}
@@ -1170,21 +1168,20 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 )}
 
                 <div className='mt-[20px] flex-col flex'>
-                  {technicalInfoFiles &&
-                    technicalInfoFiles?.map((element, id) => (
-                      <div className='inline-flex mt-[10px]' key={id}>
-                        <LinkWithLabel
-                          icon={<FaRegFilePdf color='red' />}
-                          url={element.ResourceFullWebURL}
-                          label={
-                            TECHNICAL_INFORMATION_FILES_NAMES[locale][
-                              element.ResourceType
-                            ]
-                          }
-                          className='inline-flex'
-                        />
-                      </div>
-                    ))}
+                  {technicalInfoFiles?.map((element, id) => (
+                    <div className='inline-flex mt-[10px]' key={id}>
+                      <LinkWithLabel
+                        icon={<FaRegFilePdf color='red' />}
+                        url={element.ResourceFullWebURL}
+                        label={
+                          TECHNICAL_INFORMATION_FILES_NAMES[locale][
+                            element.ResourceType
+                          ]
+                        }
+                        className='inline-flex'
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className='flex flex-col ml-[20px] mt-[30px] md:mt-0'>
