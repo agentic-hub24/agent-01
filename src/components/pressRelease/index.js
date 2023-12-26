@@ -1,6 +1,5 @@
 import React, { useState, memo } from 'react';
 import { useRouter } from 'next/router';
-import Cta from '@components/Cta';
 import { RichText } from '@components/RichText';
 import BackToTop from '@components/backToTop';
 

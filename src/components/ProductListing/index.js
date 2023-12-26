@@ -137,7 +137,7 @@ export default function ProductListing({
           </div>
         </div>
       </section>
-      <Cta fields={CTAObject[locale]} />
+      {/* <Cta fields={CTAObject[locale]} /> */}
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );

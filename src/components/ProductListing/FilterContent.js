@@ -74,7 +74,7 @@ export default function FilterContent({
         pathname: resultPath,
         query: {
           search: selectedFilter?.search,
-          CurrentPage: pageType === 'spec' ? '' : 1,
+          currentPage: pageType === 'spec' ? '' : 1,
           lang: locale,
           subSlug: subSlug
         }
@@ -97,7 +97,7 @@ export default function FilterContent({
       pathname: baseLink,
       query: {
         search: selectedFilter?.search,
-        CurrentPage: pageType === 'spec' ? '' : 1,
+        currentPage: pageType === 'spec' ? '' : '1',
         lang: locale,
         subSlug: subSlug
       }

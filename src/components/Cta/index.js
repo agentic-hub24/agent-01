@@ -28,12 +28,12 @@ const Cta = ({ fields }) => {
 
   return (
     <div className='p-[20px] max-w-screen-lg mx-auto text-right '>
-      <span
+      <button
         onClick={openPopUp}
-        className='font-HelveticaRomanpx-[10px] pb-[10] text-[12px] text-black cursor-pointer hover:underline'
+        className='font-HelveticaRoman px-[10px] pb-[10] text-[12px] text-black cursor-pointer hover:underline'
       >
         {fields.label}
-      </span>
+      </button>
     </div>
   );
 };

@@ -27,7 +27,6 @@ export default function ResultPage({
       router.push(
         `/product-detail/${productListingData?.response?.searchResults?.PDP}?skuid=${productListingData?.response?.searchResults?.suggestions}`
       );
-      // return null;
     }
   }, [productListingData]);
 

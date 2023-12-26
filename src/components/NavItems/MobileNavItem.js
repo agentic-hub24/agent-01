@@ -36,7 +36,6 @@ const MobileNavItem = ({
           onClick={() => handleCloseHandle()}
         >
           <div className={linkClass}>
-            {/* {socialIcon ? <span className="mr-1">{socialIcon}</span> : null} */}
             {navItem?.fields?.label ? (
               <>
                 <span>{navItem?.fields?.label}</span>

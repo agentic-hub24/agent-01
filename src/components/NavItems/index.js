@@ -8,7 +8,6 @@ const NavItems = ({
   secondaryNavItemFunc,
   handleCloseHandle
 }) => {
-  // const socialIcon = getSocialIcon(navItem?.fields?.label);
   const [cookieClass, setCookieClass] = useState('');
 
   useEffect(() => {
@@ -38,11 +37,8 @@ const NavItems = ({
           onClick={() => handleCloseHandle()}
         >
           <div className={linkClass}>
-            {/* {socialIcon ? <span className="mr-1">{socialIcon}</span> : null} */}
             {navItem?.fields?.label ? (
-              <>
-                <span>{navItem?.fields?.label}</span>
-              </>
+              <span>{navItem?.fields?.label}</span>
             ) : null}
           </div>
         </a>
