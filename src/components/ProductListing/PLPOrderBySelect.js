@@ -12,7 +12,10 @@ export default function PLPOrderBySelect({ orderBySelect, sortingArray }) {
           {sortingArray[0]?.label}
         </option>
         {sortingArray?.map((item, index) => (
-          <option key={index} value={item?.value.replace(/\"/g, '')}>
+          <option
+            key={item?.label || index}
+            value={item?.value.replace(/\"/g, '')}
+          >
             {item?.label}
           </option>
         ))}

@@ -281,25 +281,6 @@ export const PDP_LABELS = {
   }
 };
 
-export const CTAObject = {
-  es: {
-    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-    label: 'Ayúdenos a mejorar este sitio',
-    ariaLabel: 'Help us Improve this Site ',
-    visible: true,
-    buttonBrandColor: 'None',
-    ctaType: 'Text Link'
-  },
-  en: {
-    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-    label: 'Help us Improve this Site',
-    ariaLabel: 'Help us Improve this Site ',
-    visible: true,
-    buttonBrandColor: 'None',
-    ctaType: 'Text Link'
-  }
-};
-
 export const thumbsImageFormatter = (url, isNewProduct, type) => {
   if (PRODUCT_RESOURCE_TYPE_VIDEO.includes(type)) {
     return `http://img.youtube.com/vi/${url}/hqdefault.jpg`;

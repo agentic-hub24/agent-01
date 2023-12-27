@@ -86,7 +86,7 @@ export default function HeaderSection({ navData = {}, world }) {
     }
   }, [secondaryNavItem]);
 
-  const handleSearch = e => {
+  const handleSearch = () => {
     setSearchVisible(true);
     setOpenMobileMenu(true);
     if (searchVisible) {
@@ -130,7 +130,7 @@ export default function HeaderSection({ navData = {}, world }) {
                 ?.slice(0, 2)
                 ?.map((navItem, id) => (
                   <NavItems
-                    key={id}
+                    key={navItem?.sys?.id || id}
                     navItem={navItem}
                     secondaryNavItemFunc={(e, data) =>
                       handleSecondaryNav(e, data)
@@ -162,7 +162,7 @@ export default function HeaderSection({ navData = {}, world }) {
             <ul className='flex space-x-4 h-full'>
               {primaryNav[0]?.fields?.navItems?.slice(2)?.map((navItem, id) => (
                 <NavItems
-                  key={id}
+                  key={navItem?.sys?.id || id}
                   navItem={navItem}
                   linkClass='text-[#232323]'
                   classNames='font-helveticaLight text-[16px] leading-loose font-light text-[#232323] uppercase px-6 py-6 hover:bg-[#e5e5e5] hover:opacity-75'
@@ -185,7 +185,10 @@ export default function HeaderSection({ navData = {}, world }) {
                 <div className='mt-7 flex'>
                   {secondaryNavItem?.map((secondaryNav, id) => {
                     return (
-                      <ul className='flex flex-col pr-8 navMenu' key={id}>
+                      <ul
+                        className='flex flex-col pr-8 navMenu'
+                        key={secondaryNav?.sys?.id || id}
+                      >
                         <li onClick={() => setNavOpen(false)}>
                           <Link
                             href={
@@ -200,7 +203,7 @@ export default function HeaderSection({ navData = {}, world }) {
                         </li>
                         {secondaryNav?.fields?.navItems?.map((navItem, id) => (
                           <NavItems
-                            key={id}
+                            key={navItem?.sys?.id || id}
                             navItem={navItem}
                             handleCloseHandle={() => setNavOpen(false)}
                             linkClass='text-[#666] hover:text-[#232323]'
@@ -225,12 +228,12 @@ export default function HeaderSection({ navData = {}, world }) {
       >
         {/* Mobile menu header -- start */}
         <div className='flex justify-between items-center h-[60px] p-3 border-b-2'>
-          <div
+          <button
             className='flex text-[#bebebe] hover:cursor-pointer'
             onClick={() => handleHamburger()}
           >
             <HiOutlineMenu size={25} />
-          </div>
+          </button>
           <div className='flex'>
             {/* brand logo --start */}
             <div className='flex items-center hover:cursor-pointer'>
@@ -250,9 +253,12 @@ export default function HeaderSection({ navData = {}, world }) {
             </div>
             {/* brand logo --end */}
           </div>
-          <div className='flex text-[#bebebe]' onClick={e => handleSearch(e)}>
+          <button
+            className='flex text-[#bebebe]'
+            onClick={() => handleSearch()}
+          >
             <HiSearch size={25} />
-          </div>
+          </button>
         </div>
         {/* mobile menu header--end */}
         {openMobileMenu && (
@@ -263,72 +269,71 @@ export default function HeaderSection({ navData = {}, world }) {
               </div>
             )}
             <div className='w-full bg-[#fff]'>
-              {primaryNav &&
-                primaryNav[0]?.fields?.navItems?.map((navItem, id) => (
-                  <div key={id}>
-                    <MobileNavItem
-                      key={id}
-                      navItem={navItem}
-                      secondaryNavItemFuncMobile={(e, data) =>
-                        secondaryNavItemFuncMobile(e, data)
-                      }
-                      svgElement={handleIcon(
-                        navItem?.fields?.label,
-                        navItem?.fields?.url
-                      )}
-                      linkClass='text-[#000] flex justify-between'
-                      classNames='uppercase font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b'
-                    />
-                    {secondaryNavItemMobile &&
-                      secondaryNavLabelMobile === navItem?.fields?.label && (
-                        <div className='bg-[#e5e5e5] text-[#232323] shadow '>
-                          <div className='font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b border-[#dbdbdb]'>
-                            <span>{secondaryNavLabelMobile}</span>
-                          </div>
-                          <div className=''>
-                            {secondaryNavItemMobile?.map((secondaryNav, id) => {
-                              return (
-                                <ul
-                                  className='flex flex-col pr-8 navMenu'
-                                  key={id}
-                                >
-                                  <li
-                                    onClick={() => setOpenMobileMenu(false)}
-                                    className='font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b border-[#dbdbdb]'
-                                  >
-                                    <Link
-                                      href={
-                                        formatUrl[
-                                          secondaryNav?.fields?.headingLabel.toLowerCase()
-                                        ] || '#'
-                                      }
-                                      className='text-[14px] leading-tight font-normal font-HelveticaBold pb-1 !text-[#666]'
-                                    >
-                                      {secondaryNav?.fields?.headingLabel}
-                                    </Link>
-                                  </li>
-                                  {secondaryNav?.fields?.navItems?.map(
-                                    (navItem, id) => (
-                                      <MobileNavItem
-                                        key={id}
-                                        navItem={navItem}
-                                        handleCloseHandle={() => {
-                                          setOpenMobileMenu(false);
-                                          setSecondaryNavItemMobile([]);
-                                        }}
-                                        linkClass='text-[#000]'
-                                        classNames='font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b border-[#dbdbdb]'
-                                      />
-                                    )
-                                  )}
-                                </ul>
-                              );
-                            })}
-                          </div>
+              {primaryNav[0]?.fields?.navItems?.map((navItem, id) => (
+                <div key={navItem?.sys?.id || id}>
+                  <MobileNavItem
+                    key={navItem?.sys?.id || id}
+                    navItem={navItem}
+                    secondaryNavItemFuncMobile={(e, data) =>
+                      secondaryNavItemFuncMobile(e, data)
+                    }
+                    svgElement={handleIcon(
+                      navItem?.fields?.label,
+                      navItem?.fields?.url
+                    )}
+                    linkClass='text-[#000] flex justify-between'
+                    classNames='uppercase font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b'
+                  />
+                  {secondaryNavItemMobile &&
+                    secondaryNavLabelMobile === navItem?.fields?.label && (
+                      <div className='bg-[#e5e5e5] text-[#232323] shadow '>
+                        <div className='font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b border-[#dbdbdb]'>
+                          <span>{secondaryNavLabelMobile}</span>
                         </div>
-                      )}
-                  </div>
-                ))}
+                        <div className=''>
+                          {secondaryNavItemMobile?.map((secondaryNav, id) => {
+                            return (
+                              <ul
+                                className='flex flex-col pr-8 navMenu'
+                                key={secondaryNav?.sys?.id || id}
+                              >
+                                <li
+                                  onClick={() => setOpenMobileMenu(false)}
+                                  className='font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b border-[#dbdbdb]'
+                                >
+                                  <Link
+                                    href={
+                                      formatUrl[
+                                        secondaryNav?.fields?.headingLabel.toLowerCase()
+                                      ] || '#'
+                                    }
+                                    className='text-[14px] leading-tight font-normal font-HelveticaBold pb-1 !text-[#666]'
+                                  >
+                                    {secondaryNav?.fields?.headingLabel}
+                                  </Link>
+                                </li>
+                                {secondaryNav?.fields?.navItems?.map(
+                                  (navItem, id) => (
+                                    <MobileNavItem
+                                      key={navItem?.sys?.id || id}
+                                      navItem={navItem}
+                                      handleCloseHandle={() => {
+                                        setOpenMobileMenu(false);
+                                        setSecondaryNavItemMobile([]);
+                                      }}
+                                      linkClass='text-[#000]'
+                                      classNames='font-helveticaLight font-bold leading-normal py-[16px] px-[14px] border-b border-[#dbdbdb]'
+                                    />
+                                  )
+                                )}
+                              </ul>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                </div>
+              ))}
             </div>
             <TopHeaderMobile
               world={world}

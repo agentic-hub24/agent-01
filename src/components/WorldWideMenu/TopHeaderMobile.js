@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { HiOutlineChevronRight } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 import Accordion from '../Accordion';
@@ -23,15 +24,15 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
         {topNavMenu?.slice(3)?.map((item, index) => {
           return (
             <div
-              onClick={e => {
+              onClick={() => {
                 handleRedirect(item?.fields?.url);
                 handleCloseHandle(false);
               }}
-              key={index}
+              key={item?.sys?.id || index}
               style={{ borderBottom: '1px solid #4d4d4f' }}
             >
               <Accordion
-                key={index}
+                key={item?.sys?.id || index}
                 // isActive={true}
                 header={item?.fields?.label}
                 style={{
@@ -77,7 +78,7 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
                         {i.fields.navItems.map((navItem, index) => {
                           return (
                             <MobileNavItem
-                              key={index}
+                              key={navItem?.sys?.id || index}
                               navItem={navItem}
                               svgElement={<HiOutlineChevronRight size={20} />}
                               classNames='hover:text-white text-white cursor-pointer text-[14px] md:text-[22px]'
@@ -97,7 +98,7 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
         {topNavMenu?.slice(1, 3)?.map((item, index) => {
           return (
             <div
-              onClick={e => {
+              onClick={() => {
                 handleRedirect(item?.fields?.url);
                 handleCloseHandle(false);
               }}
@@ -105,7 +106,7 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
               style={{ borderBottom: '1px solid #4d4d4f' }}
             >
               <Accordion
-                key={index}
+                key={item?.sys?.id || index}
                 // isActive={true}
                 header={item?.fields?.label}
                 style={{
@@ -130,7 +131,7 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
                     textAlign: 'left',
                     background: '#666'
                   }}
-                  key={index}
+                  key={i?.sys?.id || index}
                 >
                   <li>
                     <a
@@ -142,7 +143,7 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
                       <img
                         style={{ paddingLeft: '10px', paddingRight: '10px' }}
                         src={i.fields.mediaItem[0].fields.asset.fields.file.url}
-                        alt=''
+                        alt={i.fields.mediaItem[0].fields?.altText}
                       />
                     </a>
                   </li>

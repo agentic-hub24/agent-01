@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import {
   imageFormatter,
@@ -56,15 +57,13 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                   </SearchAccordion>
                 )}
                 {(item?.DWGPlanView || item?.ThreeDDXF) && (
-                  <>
-                    <SearchAccordion header={staticLabelsPLP[locale].template}>
-                      <SpecItems
-                        downloadLink={item}
-                        linkType='template'
-                        locale={locale}
-                      />
-                    </SearchAccordion>
-                  </>
+                  <SearchAccordion header={staticLabelsPLP[locale].template}>
+                    <SpecItems
+                      downloadLink={item}
+                      linkType='template'
+                      locale={locale}
+                    />
+                  </SearchAccordion>
                 )}
               </div>
             )}

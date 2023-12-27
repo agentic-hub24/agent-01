@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 
 const Search = () => {
   const router = useRouter();
-  const [searchValue, setSearchvalue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    setSearchvalue('');
+    setSearchValue('');
   }, []);
   const handleKeyUp = event => {
     if (event.key === 'Enter') {
@@ -29,7 +29,7 @@ const Search = () => {
           placeholder='Search'
           type='text'
           name='search'
-          onChange={event => setSearchvalue(event.target.value)}
+          onChange={event => setSearchValue(event.target.value)}
           onKeyUp={handleKeyUp}
           onClick={searchOnClick}
         />

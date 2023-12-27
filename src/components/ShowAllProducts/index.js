@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi';
-import { useRouter } from 'next/router';
-import Cta from '@components/Cta';
 import PLPCards from '@components/ProductListing/PLPCards';
 import {
   SHOWALL_LABELS,
-  staticLabelsPLP,
-  CTAObject
+  staticLabelsPLP
 } from '@components/ProductListing/helper';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
@@ -16,8 +13,6 @@ export default function ShowAllProducts({
   locale,
   categoryProductData
 }) {
-  const router = useRouter();
-  const subSlug = router?.query?.subSlug?.replace(/\+/g, ' ');
   const categoryArr =
     categoryProductData?.response?.['@search.facets']
       ?.RegionProductCategoryLocal;
@@ -28,16 +23,12 @@ export default function ShowAllProducts({
   const [modalOpen, setModalOpen] = useState(false);
   const [skuId, setSkuId] = useState('');
   const [newPLPCards, setNewPLPCards] = useState([]);
-  const [showCategoryList, setShowCategory] = useState(false);
+  const [showCategoryList, setShowCategoryList] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     filterProductByDefaultCategory();
     setTimeout(() => {
-      // const elem = subSlug
-      //   ? document.getElementById(subSlug).offsetTop - 50
-      //   : 0;
-      // window.scrollTo(0, elem);
       setIsLoading(false);
     }, 1000);
   }, []);
@@ -95,10 +86,9 @@ export default function ShowAllProducts({
         <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
           <div className='flex flex-col md:w-1/4 md:mb-[38px] grow w-full'>
             <div className='md:hidden flex justify-center mb-[20px] bg-[fff] text-[#232323] border-2 my-[10px] rounded-md'>
-              {/* TODO: Dynamic button label */}
               <button
                 className='p-[20px] font-HelveticaRoman'
-                onClick={() => setShowCategory(!showCategoryList)}
+                onClick={() => setShowCategoryList(!showCategoryList)}
               >
                 {SHOWALL_LABELS[locale].categoryButton}
               </button>
@@ -107,7 +97,6 @@ export default function ShowAllProducts({
               className={`${!showCategoryList ? `hidden` : `block`} md:block`}
             >
               <div className='flex mx-[10px]'>
-                {/* TODO: dynamic label */}
                 <h3 className='font-helveticaLight text-2xl leading-normal pb-[22px]'>
                   {SHOWALL_LABELS[locale].category}:
                 </h3>
@@ -115,8 +104,7 @@ export default function ShowAllProducts({
               <div className='border-b-2 '></div>
               <ul className='mx-[10px]'>
                 {categoryArr?.map((item, index) => (
-                  <li className='py-[16px]' key={index}>
-                    {/* TODO: href link */}
+                  <li className='py-[16px]' key={item?.value || index}>
                     <a
                       href={formatRedirectionUrl(item.value)}
                       className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
@@ -134,7 +122,7 @@ export default function ShowAllProducts({
             {newPLPCards?.map((cardData, index) => (
               <div
                 className='flex flex-col'
-                key={index}
+                key={cardData?.RegionProductCategoryLocal || index}
                 id={cardData?.RegionProductCategoryLocal}
               >
                 <a
@@ -161,7 +149,7 @@ export default function ShowAllProducts({
                           handleModalOpen={() => handleModalOpen()}
                           handleModalClose={() => handleModalClose()}
                           modalOpen={modalOpen}
-                          key={index}
+                          key={item?.SkuNumber || index}
                         />
                       );
                     })

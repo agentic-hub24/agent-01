@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState, useEffect } from 'react';
 import { FaCheck, FaRegSquare } from 'react-icons/fa6';
 import Slider from 'react-slider';
@@ -119,7 +120,7 @@ const FilterItems = ({
           {filterType === 'checkbox' &&
             filterOption.map((data, index) => {
               return (
-                <ul key={index} style={{ listStyle: 'none' }}>
+                <ul key={data.value || index} style={{ listStyle: 'none' }}>
                   <li className='cursor-pointer'>
                     {/* <input
                       type='checkbox'
@@ -146,7 +147,7 @@ const FilterItems = ({
           {filterType === 'image' &&
             filterOption.map((data, index) => {
               return (
-                <ul key={index} className=''>
+                <ul key={data.name || index} className=''>
                   <li className='block float-left mt-[10px] mb-[5px] m-[1px] mr-[7px] cursor-pointer'>
                     <img
                       key={index}
@@ -183,33 +184,30 @@ const FilterItems = ({
           {filterType === 'range' && (
             <div>
               {isRange && (
-                <>
-                  {' '}
-                  <ul className='m-0 mb-[10px]  outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
-                    <li
-                      className=''
-                      onClick={() => {
-                        onClickHandler(filterName, '');
-                      }}
-                    >
-                      <button className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
-                        {' '}
-                        <span className='block float-left max-w-[13px] h-13 mr-[10px] mt-[10px] ml-[10px] '>
-                          {values[0]}
-                        </span>
-                        <span className='float-left  mr-[10px] mt-[10px] ml-[15px] text-base leading-normal font-normal text-gray-600'>
-                          -
-                        </span>
-                        <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
-                          {values[1]}
-                        </span>
-                        <span className='absolute mt-[10px] right-4 text-gray-400 font-normal text-base'>
-                          x
-                        </span>
-                      </button>
-                    </li>
-                  </ul>
-                </>
+                <ul className='m-0 mb-[10px]  outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
+                  <li
+                    className=''
+                    onClick={() => {
+                      onClickHandler(filterName, '');
+                    }}
+                  >
+                    <button className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full'>
+                      {' '}
+                      <span className='block float-left max-w-[13px] h-13 mr-[10px] mt-[10px] ml-[10px] '>
+                        {values[0]}
+                      </span>
+                      <span className='float-left  mr-[10px] mt-[10px] ml-[15px] text-base leading-normal font-normal text-gray-600'>
+                        -
+                      </span>
+                      <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
+                        {values[1]}
+                      </span>
+                      <span className='absolute mt-[10px] right-4 text-gray-400 font-normal text-base'>
+                        x
+                      </span>
+                    </button>
+                  </li>
+                </ul>
               )}
               <div
                 className='font-bold text-base leading-normal font-helvaticaFont'

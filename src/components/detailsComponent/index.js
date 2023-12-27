@@ -23,7 +23,6 @@ import {
   getProductListing,
   getYoutubeMetaData
 } from '@services/productListingAPI/client';
-import Cta from '@components/Cta';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
 import { Fb, Twitter } from '@components/svgs';
@@ -53,7 +52,6 @@ import {
   TECHNICAL_INFORMATION_FILES,
   TECHNICAL_INFORMATION_FILES_NAMES,
   DEFAULT_IMAGE_LINK,
-  CTAObject,
   carouselImageFormatter,
   PRODUCT_RESOURCE_TYPE_VIDEO,
   thumbsImageFormatter
@@ -1249,7 +1247,6 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
           </div>
         )}
       </section>
-      <Cta fields={CTAObject[locale]} />
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );

@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getProductListing } from '@services/productListingAPI/client';
-import Cta from '@components/Cta';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
 import FilterContent from './FilterContent';
 import PLPCards from './PLPCards';
 import PLPHeader from './PLPHeader';
 import PLPOrderBySelect from './PLPOrderBySelect';
-import {
-  CTAObject,
-  selectOptions,
-  formatterHeader,
-  staticLabelsPLP
-} from './helper';
+import { selectOptions, formatterHeader, staticLabelsPLP } from './helper';
 
 export default function ProductListing({
   productListingData,
@@ -137,7 +131,6 @@ export default function ProductListing({
           </div>
         </div>
       </section>
-      {/* <Cta fields={CTAObject[locale]} /> */}
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );

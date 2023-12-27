@@ -22,7 +22,7 @@ export default function PLPModal({
   const [modalValues, setModalValues] = useState({});
   const [colorName, setColorName] = useState('');
   const [skuNumber, setSKUNumber] = useState('');
-  const [colorFinishCodeArray, setColorFinisCodeArray] = useState([]);
+  const [colorFinishCodeArray, setColorFinishCodeArray] = useState([]);
   const [colorFileName, setColorFileName] = useState('');
   const [image, setImage] = useState({});
   const [loader, setLoader] = useState(true);
@@ -56,7 +56,7 @@ export default function PLPModal({
         el.SKUColorFinishCode !== undefined &&
         el?.links?.ItemResource !== undefined
     )?.slice(0, 7);
-    setColorFinisCodeArray(color_finish_code_array);
+    setColorFinishCodeArray(color_finish_code_array);
     const carousel_image =
       defaultItems?.links?.ItemResource?.find(
         el => el.ResourceType === 'IMGITEMISO'
@@ -84,7 +84,6 @@ export default function PLPModal({
     <div
       className='relative z-50'
       aria-labelledby={modalItem.ProductBrandName}
-      role='dialog'
       aria-modal='true'
     >
       <div className='fixed inset-0 bg-gray-800 bg-opacity-80 transition-opacity'></div>
@@ -176,12 +175,12 @@ export default function PLPModal({
                 </div>
               </div>
 
-              <div
+              <button
                 className='absolute top-0 right-0 p-3 opacity-50 hover:opacity-95 cursor-pointer'
                 onClick={() => handleModalClose()}
               >
                 <HiX size={30} />
-              </div>
+              </button>
             </div>
           </div>
         </div>

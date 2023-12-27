@@ -9,13 +9,16 @@ const Suggestion = ({ searchTerm, list, searchOnSuggestion }) => {
           <li
             key={item}
             className='p-4 bg-[#f5f5f5] hover:bg-[#6c89ad] hover:text-[#fff] text-[12px] cursor-pointer'
-            onClick={() => searchOnSuggestion(item, list?.pageRedirection)}
           >
-            <span
-              dangerouslySetInnerHTML={{
-                __html: highlightTerm(item, searchTerm)
-              }}
-            ></span>
+            <button
+              onClick={() => searchOnSuggestion(item, list?.pageRedirection)}
+            >
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: highlightTerm(item, searchTerm)
+                }}
+              ></span>
+            </button>
           </li>
         ))}
       </ul>

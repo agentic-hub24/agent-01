@@ -40,8 +40,8 @@ const FooterAccordion = ({
           'bg-[#999999]': isNavHeader
         })}
       >
-        <div
-          className={classNames('', {
+        <button
+          className={classNames('!w-full', {
             'flex p-3.5 flex-wrap items-center list-none cursor-pointer':
               isHeader,
             'flex border-b-[1px] border-[#666] flex-wrap items-center list-none cursor-pointer':
@@ -54,8 +54,8 @@ const FooterAccordion = ({
           <h4 className={footerHeadingClass}>
             {header} {!open ? <DropSvgOpen /> : <DropSvg />}
           </h4>
-        </div>
-        {/* {open ? children : null} */}
+        </button>
+
         {/*Changing this to below coz Cookie modal does open for smaller screens*/}
         <div style={{ display: open ? 'block' : 'none' }}>{children}</div>
       </div>
