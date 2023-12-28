@@ -31,7 +31,7 @@ export default function SearchPage({
   const [apiRequestBody, setApiRequestBody] = useState();
   const [selectedFilterCount, setSelectedFilterCount] = useState();
   const [activeIndex, setActiveIndex] = useState();
-  const [ListingData, setListingData] = useState(productListingData);
+  const [listingData, setListingData] = useState(productListingData);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function SearchPage({
             <span className='font-bold capitalize'>{requestBody?.search}</span>
           </h1>
           <p className='my-5 font-sans font-bold text-xl leading-none'>
-            {ListingData?.response?.searchResults?.totalSearchResults}
+            {listingData?.response?.searchResults?.totalSearchResults}
             &nbsp;{staticLabelsPLP[router.locale].totalProductLabel}
           </p>
           <div className='relative mb-20 hidden lg:block'>
@@ -146,7 +146,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].product}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.productsCount})
+                    ({listingData?.response?.searchResults?.productsCount})
                   </span>
                 </span>
               </li>
@@ -159,7 +159,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].spec}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.specificationCount})
+                    ({listingData?.response?.searchResults?.specificationCount})
                   </span>
                 </span>
               </li>
@@ -178,7 +178,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].product}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.productsCount})
+                    ({listingData?.response?.searchResults?.productsCount})
                   </span>
                 </span>
               </option>
@@ -186,7 +186,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].spec}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.specificationCount})
+                    ({listingData?.response?.searchResults?.specificationCount})
                   </span>
                 </span>
               </option>
@@ -205,14 +205,14 @@ export default function SearchPage({
           </div>
           <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
             <FilterContent
-              filterOptions={ListingData?.response?.['@search.facets']}
+              filterOptions={listingData?.response?.['@search.facets']}
               showAll={true}
               pageType={'spec'}
               searchValue={requestBody?.search}
               slug={params?.slug}
               selectedFilter={apiRequestBody}
               locale={router.locale}
-              totalProductCount={ListingData?.response?.['@odata.count']}
+              totalProductCount={listingData?.response?.['@odata.count']}
               setSelectedFilterCount={setSelectedFilterCount}
             />
             {searchResults?.specificationCount > 0 ? (
@@ -244,7 +244,7 @@ export default function SearchPage({
 
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
               <FilterContent
-                filterOptions={ListingData?.response?.['@search.facets']}
+                filterOptions={listingData?.response?.['@search.facets']}
                 filterSelect={filterSelect}
                 selectedFilter={apiRequestBody}
                 selectedFilterCount={selectedFilterCount}
@@ -253,7 +253,7 @@ export default function SearchPage({
                 currentPageValue={1}
                 slug={params?.slug}
                 locale={router.locale}
-                totalProductCount={ListingData?.response?.['@odata.count']}
+                totalProductCount={listingData?.response?.['@odata.count']}
                 setSelectedFilterCount={setSelectedFilterCount}
               />
               {/* cards div */}
@@ -267,7 +267,7 @@ export default function SearchPage({
                         handleMouseOver={e => handleMouseOver(e)}
                         skuId={skuId}
                         item={item}
-                        key={index}
+                        key={skuId || index}
                       />
                     );
                   })
@@ -278,9 +278,9 @@ export default function SearchPage({
             </div>
           </section>
           <Pagination
-            currentPage={ListingData?.response?.paginationData?.CurrentPage}
+            currentPage={listingData?.response?.paginationData?.CurrentPage}
             totalPages={
-              ListingData?.response?.paginationData?.totalNumberOfPages
+              listingData?.response?.paginationData?.totalNumberOfPages
             }
             onPageChange={handlePageChange}
           />

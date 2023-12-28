@@ -1,6 +1,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import SelectSection from '@components/SelectSection';
 import { storeDetailsLabel, storeLocatorOption } from '@utils/footerUtils';
 import StoreDetails from './StoreDetails';
@@ -150,6 +151,49 @@ export default function StoreListingLocator({ pageHeading, fields }) {
     </div>
   );
 }
+
+StoreListingLocator.propTypes = {
+  pageHeading: PropTypes.string,
+  fields: PropTypes.shape({
+    formItemRow: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          formItemSection: PropTypes.shape({
+            fields: PropTypes.shape({
+              country: PropTypes.arrayOf(
+                PropTypes.shape({
+                  fields: PropTypes.shape({
+                    countryName: PropTypes.string,
+                    stateregion: PropTypes.arrayOf(
+                      PropTypes.shape({
+                        fields: PropTypes.shape({
+                          stateregionName: PropTypes.string,
+                          city: PropTypes.arrayOf(
+                            PropTypes.shape({
+                              fields: PropTypes.shape({
+                                cityName: PropTypes.string,
+                                storeDetails: PropTypes.arrayOf(
+                                  PropTypes.shape({})
+                                )
+                              })
+                            })
+                          )
+                        })
+                      })
+                    )
+                  })
+                })
+              ),
+              cityLabel: PropTypes.string,
+              countryLabel: PropTypes.string,
+              stateregionLabel: PropTypes.string
+            })
+          })
+        })
+      })
+    )
+  })
+};
 
 StoreListingLocator.defaultProps = {
   fields: {

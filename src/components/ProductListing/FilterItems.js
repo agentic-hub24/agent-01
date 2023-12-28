@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { FaCheck, FaRegSquare } from 'react-icons/fa6';
 import Slider from 'react-slider';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { filterImageFormatter } from './helper';
 
 const FilterItems = ({
@@ -276,6 +277,24 @@ const FilterItems = ({
       )}
     </div>
   );
+};
+
+FilterItems.propTypes = {
+  filterOption: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      name: PropTypes.string,
+      count: PropTypes.number
+    })
+  ).isRequired,
+  filterType: PropTypes.oneOf(['checkbox', 'image', 'list', 'range'])
+    .isRequired,
+  filterName: PropTypes.string.isRequired,
+  minRange: PropTypes.number,
+  maxRange: PropTypes.number,
+  filterSelect: PropTypes.func.isRequired,
+  selectedFilter: PropTypes.object.isRequired,
+  selectedFilterCount: PropTypes.object.isRequired
 };
 
 export default FilterItems;

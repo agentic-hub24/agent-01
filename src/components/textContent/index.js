@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { RichText } from '@components/RichText';
 
 const TextContent = ({ fields, pageHeading }) => {
@@ -24,6 +25,17 @@ const TextContent = ({ fields, pageHeading }) => {
       ))}
     </div>
   );
+};
+
+TextContent.propTypes = {
+  fields: PropTypes.shape({
+    internalTitle: PropTypes.string,
+    heading: PropTypes.string,
+    richText: PropTypes.shape({
+      content: PropTypes.arrayOf(PropTypes.string)
+    })
+  }),
+  pageHeading: PropTypes.string
 };
 
 export default TextContent;

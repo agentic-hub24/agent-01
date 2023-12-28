@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export default function Loader({ loading = true }) {
   return (
     <>
@@ -11,3 +13,7 @@ export default function Loader({ loading = true }) {
     </>
   );
 }
+
+Loader.propTypes = {
+  loading: PropTypes.bool.isRequired
+};

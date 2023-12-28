@@ -87,7 +87,6 @@ export default function ProductListing({
             productCount={totalProductCount}
             pageHeading={formatterHeader(sub_slug)}
           />
-          {/* order by select -- start ==> TODO: Select option from CTFL */}
           <PLPOrderBySelect
             orderBySelect={e => orderBySelect(e)}
             sortingArray={selectOptions[locale]}
@@ -165,6 +164,5 @@ ProductListing.defaultProps = {
   params: {
     slug: '',
     sub_slug: ''
-  },
-  pageData: {}
+  }
 };

@@ -1,6 +1,6 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import { useState } from 'react';
-import Link from 'next/link';
+import PropTypes from 'prop-types';
 import SelectSection from '@components/SelectSection';
 import StoreDetails from './StoreDetails';
 
@@ -87,6 +87,29 @@ export default function StoreListing({ pageHeading, fields }) {
     </div>
   );
 }
+
+StoreListing.propTypes = {
+  pageHeading: PropTypes.string,
+  fields: PropTypes.shape({
+    stateregion: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          stateregionName: PropTypes.string,
+          city: PropTypes.arrayOf(
+            PropTypes.shape({
+              fields: PropTypes.shape({
+                cityName: PropTypes.string,
+                storeDetails: PropTypes.array
+              })
+            })
+          )
+        })
+      })
+    ),
+    stateregionLabel: PropTypes.string,
+    cityLabel: PropTypes.string
+  })
+};
 
 StoreListing.defaultProps = {
   fields: { stateregion: [] },

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CarouselComponent from '@components/Carousel';
 import Cta from '@components/Cta';
 import HomeSection from '@components/HomeSection';
@@ -67,6 +68,18 @@ const Section = ({ fields, sys, pageHeading }) => {
   }
   // render multiple type of sections
   return <HomeSection homePageData={fields} />;
+};
+
+Section.propTypes = {
+  fields: PropTypes.object.isRequired,
+  sys: PropTypes.shape({
+    contentType: PropTypes.shape({
+      sys: PropTypes.shape({
+        id: PropTypes.string
+      })
+    })
+  }),
+  pageHeading: PropTypes.string
 };
 
 export default Section;
