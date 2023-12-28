@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import PropTypes from 'prop-types';
 import { carouselImageFormatter } from './helper';
 
 export default function ImageZoomModal({
@@ -17,7 +18,6 @@ export default function ImageZoomModal({
     <div
       className='relative z-50'
       aria-labelledby={'image-zoom'}
-      role='dialog'
       aria-modal='true'
     >
       <div className='fixed inset-0 bg-white bg-opacity-100 transition-opacity'></div>
@@ -29,17 +29,17 @@ export default function ImageZoomModal({
               <div className='flex'>
                 <img
                   src={carouselImageFormatter(imageResource, isNewProduct)}
-                  alt={'image-zoom'}
+                  alt={'zoom-modal'}
                   className='h-[500px] w-auto'
                   onError={e => (e.target.src = defaultImageLink)}
                 />
               </div>
-              <div
+              <button
                 className='flex px-[30px] text-5xl cursor-pointer absolute top-0 right-0'
                 onClick={() => showImageZoom(false)}
               >
                 x
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -47,3 +47,11 @@ export default function ImageZoomModal({
     </div>
   );
 }
+
+ImageZoomModal.propTypes = {
+  showImageZoom: PropTypes.func,
+  skuName: PropTypes.string,
+  carouselItem: PropTypes.object,
+  defaultImageLink: PropTypes.string,
+  isNewProduct: PropTypes.bool
+};

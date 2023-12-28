@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export default function LinkWithLabel({ url, className, icon, label }) {
   return (
     <a
@@ -11,3 +13,10 @@ export default function LinkWithLabel({ url, className, icon, label }) {
     </a>
   );
 }
+
+LinkWithLabel.propTypes = {
+  url: PropTypes.string,
+  className: PropTypes.string,
+  icon: PropTypes.node,
+  label: PropTypes.string
+};

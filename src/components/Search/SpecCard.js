@@ -1,4 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import {
   imageFormatter,
   staticLabelsPLP
@@ -56,15 +58,13 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                   </SearchAccordion>
                 )}
                 {(item?.DWGPlanView || item?.ThreeDDXF) && (
-                  <>
-                    <SearchAccordion header={staticLabelsPLP[locale].template}>
-                      <SpecItems
-                        downloadLink={item}
-                        linkType='template'
-                        locale={locale}
-                      />
-                    </SearchAccordion>
-                  </>
+                  <SearchAccordion header={staticLabelsPLP[locale].template}>
+                    <SpecItems
+                      downloadLink={item}
+                      linkType='template'
+                      locale={locale}
+                    />
+                  </SearchAccordion>
                 )}
               </div>
             )}
@@ -74,3 +74,22 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
     </>
   );
 }
+
+SpecCard.propTypes = {
+  productValueArray: PropTypes.arrayOf(
+    PropTypes.shape({
+      DWGPlanView: PropTypes.string,
+      ThreeDDXF: PropTypes.string,
+      SkuResourceImgName: PropTypes.string,
+      ProductProductNo: PropTypes.string,
+      SkuNumber: PropTypes.string,
+      ProductDefaultSKU: PropTypes.string,
+      ProductDescriptionProductShort: PropTypes.string,
+      SpecPDFFileName: PropTypes.string,
+      InstallationWithoutSPPDF: PropTypes.string,
+      HomeguideWithSPPDF: PropTypes.string,
+      HomeguideWithoutSPPDF: PropTypes.string
+    })
+  ),
+  locale: PropTypes.string
+};

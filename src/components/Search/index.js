@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getProductListing } from '@services/productListingAPI/client';
-import Cta from '@components/Cta';
+import PropTypes from 'prop-types';
 import FilterContent from '@components/ProductListing/FilterContent';
 import PLPCards from '@components/ProductListing/PLPCards';
 import PLPOrderBySelect from '@components/ProductListing/PLPOrderBySelect';
 import {
   selectOptions,
-  CTAObject,
   staticLabelsPLP
 } from '@components/ProductListing/helper';
 import BackToTop from '@components/backToTop';
@@ -196,43 +195,41 @@ export default function SearchPage({
         </div>
       </div>
       {activeIndex === 1 ? (
-        <>
-          <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
-            <div className='flex justify-between flex-wrap md:flex-nowrap'>
-              <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
-              <PLPOrderBySelect
-                sortingArray={selectOptions[router.locale]}
-                orderBySelect={e => orderBySelect(e)}
-              />
-            </div>
-            <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
-              <FilterContent
-                filterOptions={ListingData?.response?.['@search.facets']}
-                showAll={true}
-                pageType={'spec'}
-                searchValue={requestBody?.search}
-                slug={params?.slug}
-                selectedFilter={apiRequestBody}
-                locale={router.locale}
-                totalProductCount={ListingData?.response?.['@odata.count']}
-                setSelectedFilterCount={setSelectedFilterCount}
-              />
-              {searchResults?.specificationCount > 0 ? (
-                <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
-                  <SpecCard
-                    skuId={skuId}
-                    productValueArray={productValueArray}
-                    locale={locale}
-                  />
-                </div>
-              ) : (
-                <div className='lg:mx-10 md:mx-10 my-0 py-10px'>
-                  {staticLabelsPLP[router.locale].noProductFound}
-                </div>
-              )}
-            </div>
-          </section>
-        </>
+        <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
+          <div className='flex justify-between flex-wrap md:flex-nowrap'>
+            <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
+            <PLPOrderBySelect
+              sortingArray={selectOptions[router.locale]}
+              orderBySelect={e => orderBySelect(e)}
+            />
+          </div>
+          <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
+            <FilterContent
+              filterOptions={ListingData?.response?.['@search.facets']}
+              showAll={true}
+              pageType={'spec'}
+              searchValue={requestBody?.search}
+              slug={params?.slug}
+              selectedFilter={apiRequestBody}
+              locale={router.locale}
+              totalProductCount={ListingData?.response?.['@odata.count']}
+              setSelectedFilterCount={setSelectedFilterCount}
+            />
+            {searchResults?.specificationCount > 0 ? (
+              <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
+                <SpecCard
+                  skuId={skuId}
+                  productValueArray={productValueArray}
+                  locale={locale}
+                />
+              </div>
+            ) : (
+              <div className='lg:mx-10 md:mx-10 my-0 py-10px'>
+                {staticLabelsPLP[router.locale].noProductFound}
+              </div>
+            )}
+          </div>
+        </section>
       ) : (
         <>
           <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
@@ -289,8 +286,26 @@ export default function SearchPage({
           />
         </>
       )}
-      {/* <Cta fields={CTAObject[router.locale]} /> */}
       <BackToTop topHeight={0} localeProp={router.locale} />
     </>
   );
 }
+
+SearchPage.propTypes = {
+  productListingData: PropTypes.shape({
+    response: PropTypes.shape({
+      value: PropTypes.array,
+      searchResults: PropTypes.shape({
+        totalSearchResults: PropTypes.number,
+        productsCount: PropTypes.number,
+        specificationCount: PropTypes.number
+      })
+    })
+  }),
+  requestBody: PropTypes.object,
+  params: PropTypes.shape({
+    slug: PropTypes.string
+  }),
+  pageType: PropTypes.string,
+  locale: PropTypes.string
+};

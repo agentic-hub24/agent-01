@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 const NavItems = ({
   navItem,
@@ -47,6 +48,14 @@ const NavItems = ({
   );
 };
 export default NavItems;
+
+NavItems.propTypes = {
+  navItem: PropTypes.object,
+  secondaryNavItemFunc: PropTypes.func,
+  linkClass: PropTypes.string,
+  classNames: PropTypes.string,
+  handleCloseHandle: PropTypes.func
+};
 
 NavItems.defaultProps = {
   secondaryNavItemFunc: () => {},

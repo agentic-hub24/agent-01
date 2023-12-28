@@ -145,25 +145,6 @@ export const staticLabelsPLP = {
 export const DEFAULT_IMAGE_LINK =
   'https://kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is%7BPAWEB%2Fdefault%7D';
 
-export const CTAObject = {
-  es: {
-    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-    label: 'Ayúdenos a mejorar este sitio',
-    ariaLabel: 'Help us Improve this Site ',
-    visible: true,
-    buttonBrandColor: 'None',
-    ctaType: 'Text Link'
-  },
-  en: {
-    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-    label: 'Help us Improve this Site',
-    ariaLabel: 'Help us Improve this Site ',
-    visible: true,
-    buttonBrandColor: 'None',
-    ctaType: 'Text Link'
-  }
-};
-
 export const formatterHeader = header => {
   return header.replace(/\+/g, ' ');
 };

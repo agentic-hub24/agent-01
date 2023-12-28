@@ -1,7 +1,8 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import { PlusSvg, MinusSvg } from '@components/svgs';
 
-const SearchAccordion = ({ children, header, subSlug }) => {
+const SearchAccordion = ({ children, header }) => {
   const ref = useRef();
   const [open, setOpen] = useState(false);
 
@@ -21,6 +22,11 @@ const SearchAccordion = ({ children, header, subSlug }) => {
       </details>
     </div>
   );
+};
+
+SearchAccordion.propTypes = {
+  children: PropTypes.node,
+  header: PropTypes.string
 };
 
 export default SearchAccordion;

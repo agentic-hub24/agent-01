@@ -19,7 +19,7 @@ const ArticleContent = ({ heading, fields }) => {
 };
 
 ArticleContent.propTypes = {
-  heading: PropTypes.string.isRequired,
+  heading: PropTypes.string,
   fields: PropTypes.shape({
     sections: PropTypes.arrayOf(
       PropTypes.shape({

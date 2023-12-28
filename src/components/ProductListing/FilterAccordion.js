@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { PlusSvg, MinusSvg } from '@components/svgs';
 
 const FilterAccordion = ({ children, header, subSlug }) => {
@@ -24,6 +25,12 @@ const FilterAccordion = ({ children, header, subSlug }) => {
       </details>
     </div>
   );
+};
+
+FilterAccordion.propTypes = {
+  children: PropTypes.node,
+  header: PropTypes.string,
+  subSlug: PropTypes.string
 };
 
 export default FilterAccordion;

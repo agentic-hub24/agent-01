@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import FilterAccordion from './FilterAccordion';
 import FilterItems from './FilterItems';
 import {
@@ -11,6 +12,75 @@ import {
 
 const specRegional = 'SpecRegionProductCategoryLocal';
 const regional = 'RegionProductCategoryLocal';
+
+const ResultLinkButton = ({
+  pageType,
+  selectedFilter,
+  totalProductCount,
+  locale,
+  subSlug,
+  slug
+}) => (
+  <Link
+    href={{
+      pathname: pageType
+        ? `/results?type=${pageType}&search=${selectedFilter?.search}${
+            pageType === `spec` ? `` : `&currentPage=1`
+          }`
+        : `/browse/${slug}`,
+      query: {
+        search: selectedFilter?.search,
+        CurrentPage: pageType === `spec` ? `` : 1,
+        lang: locale,
+        subSlug: subSlug
+      }
+    }}
+    as={
+      pageType
+        ? `/results?type=${pageType}&search=${selectedFilter?.search}${
+            pageType === `spec` ? `` : `&currentPage=1`
+          }`
+        : `/browse/${slug}`
+    }
+  >
+    <button className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full pb-[10px]'>
+      <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
+        {selectedFilter?.['RegionProductCategoryLocal']}
+      </span>
+      <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
+        ({totalProductCount})
+      </span>
+      <span className='absolute mt-[10px] right-2 text-gray-400 font-normal text-base'>
+        x
+      </span>
+    </button>
+  </Link>
+);
+
+const CategoryListDesktop = ({
+  categoryArr,
+  pageType,
+  searchValue,
+  currentPageValue
+}) => (
+  <ul className='m-0 mb-[10px] outline-none relative text-left w-full'>
+    {categoryArr?.map((item, index) => (
+      <li className='py-[16px] cursor-pointer' key={item.value || index}>
+        <a
+          href={formatRedirectionUrl(
+            item.value,
+            pageType,
+            searchValue,
+            currentPageValue
+          )}
+          className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
+        >
+          {item.value} ({item.count})
+        </a>
+      </li>
+    ))}
+  </ul>
+);
 
 export default function FilterContent({
   filterOptions,
@@ -108,74 +178,6 @@ export default function FilterContent({
 
   const linkPropsShowAll = generateLinkProps();
 
-  const ResultLinkButton = ({
-    pageType,
-    selectedFilter,
-    totalProductCount,
-    locale,
-    subSlug
-  }) => (
-    <Link
-      href={{
-        pathname: pageType
-          ? `/results?type=${pageType}&search=${selectedFilter?.search}${
-              pageType === `spec` ? `` : `&currentPage=1`
-            }`
-          : `/browse/${slug}`,
-        query: {
-          search: selectedFilter?.search,
-          CurrentPage: pageType === `spec` ? `` : 1,
-          lang: locale,
-          subSlug: subSlug
-        }
-      }}
-      as={
-        pageType
-          ? `/results?type=${pageType}&search=${selectedFilter?.search}${
-              pageType === `spec` ? `` : `&currentPage=1`
-            }`
-          : `/browse/${slug}`
-      }
-    >
-      <button className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full pb-[10px]'>
-        <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>
-          {selectedFilter?.['RegionProductCategoryLocal']}
-        </span>
-        <span className='float-left  mr-[10px] mt-[10px]  text-base leading-normal font-normal text-gray-600'>
-          ({totalProductCount})
-        </span>
-        <span className='absolute mt-[10px] right-2 text-gray-400 font-normal text-base'>
-          x
-        </span>
-      </button>
-    </Link>
-  );
-
-  const CategoryListDesktop = ({
-    categoryArr,
-    pageType,
-    searchValue,
-    currentPageValue
-  }) => (
-    <ul className='m-0 mb-[10px] outline-none relative text-left w-full'>
-      {categoryArr?.map((item, index) => (
-        <li className='py-[16px] cursor-pointer' key={index}>
-          <a
-            href={formatRedirectionUrl(
-              item.value,
-              pageType,
-              searchValue,
-              currentPageValue
-            )}
-            className='font-helveticaLight text-[15px] leading-tight font-light text-[#232323] hover:no-underline'
-          >
-            {item.value} ({item.count})
-          </a>
-        </li>
-      ))}
-    </ul>
-  );
-
   return (
     <>
       <div className='flex flex-col pl-[10px] w-1/4 mb-[38px] hidden md:block'>
@@ -203,6 +205,7 @@ export default function FilterContent({
               totalProductCount={totalProductCount}
               locale={locale}
               subSlug={subSlug}
+              slug={slug}
             />
           ) : (
             <CategoryListDesktop
@@ -367,6 +370,47 @@ export default function FilterContent({
     </>
   );
 }
+
+FilterContent.propTypes = {
+  filterOptions: PropTypes.shape({
+    RegionProductCategoryLocal: PropTypes.array,
+    SpecRegionProductCategoryLocal: PropTypes.array
+  }),
+  slug: PropTypes.string,
+  subSlug: PropTypes.string,
+  filterSelect: PropTypes.func,
+  selectedFilter: PropTypes.shape({
+    search: PropTypes.string,
+    RegionProductCategoryLocal: PropTypes.string
+  }),
+  selectedFilterCount: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]),
+  showAll: PropTypes.bool,
+  pageType: PropTypes.string,
+  searchValue: PropTypes.string,
+  currentPageValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  locale: PropTypes.string,
+  totalProductCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  setSelectedFilterCount: PropTypes.func
+};
+
+ResultLinkButton.propTypes = {
+  pageType: PropTypes.string,
+  selectedFilter: PropTypes.array,
+  locale: PropTypes.string,
+  slug: PropTypes.string,
+  subSlug: PropTypes.string,
+  totalProductCount: PropTypes.string
+};
+
+CategoryListDesktop.propTypes = {
+  categoryArr: PropTypes.arrayOf(PropTypes.shape({ value: PropTypes.string })),
+  pageType: PropTypes.string,
+  searchValue: PropTypes.string,
+  currentPageValue: PropTypes.string
+};
 
 FilterContent.defaultProps = {
   filterOptions: {

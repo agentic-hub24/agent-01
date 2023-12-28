@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import MediaItem from '@components/MediaItem/MediaItem';
 
 /***
@@ -103,6 +104,17 @@ const ArticleCard = ({
       ))}
     </>
   );
+};
+
+ArticleCard.propTypes = {
+  cardRows: PropTypes.arrayOf(PropTypes.shape({})),
+  isLiterature: PropTypes.bool,
+  isIntelligent: PropTypes.bool,
+  isBidetSeat: PropTypes.bool,
+  isCadSymbol: PropTypes.bool,
+  isWaterFilterationES: PropTypes.bool,
+  isWaterFilterationEN: PropTypes.bool,
+  isFreeStandingBath: PropTypes.bool
 };
 
 export default ArticleCard;

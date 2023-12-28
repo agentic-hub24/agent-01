@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { RichText } from '@components/RichText';
 
 export default function StoreDetails({
@@ -74,6 +75,28 @@ export default function StoreDetails({
     </>
   );
 }
+
+StoreDetails.propTypes = {
+  city: PropTypes.string,
+  details: PropTypes.arrayOf(
+    PropTypes.shape({
+      fields: PropTypes.shape({
+        internalTitle: PropTypes.string,
+        storeName: PropTypes.string,
+        storeDetails: PropTypes.string,
+        storeTelephoneNumber: PropTypes.string,
+        mobile: PropTypes.string,
+        emailAddress: PropTypes.string,
+        websiteLink: PropTypes.string,
+        storeOpeningHours: PropTypes.shape({
+          content: PropTypes.arrayOf(PropTypes.string)
+        })
+      })
+    })
+  ),
+  locale: PropTypes.string,
+  storeDetailsLabel: PropTypes.object
+};
 
 StoreDetails.defaultProps = {
   city: '',

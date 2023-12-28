@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { HiSearch } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 import { getSuggestions } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import { searchLabel, removeQuotesFromString } from '@utils/footerUtils';
 import Suggestion from './Suggestion';
 
@@ -92,6 +93,10 @@ export default function HeaderSearch({ setOpenMobileMenu }) {
     </div>
   );
 }
+
+HeaderSearch.propTypes = {
+  setOpenMobileMenu: PropTypes.func
+};
 
 HeaderSearch.defaultProps = {
   setOpenMobileMenu: () => {}

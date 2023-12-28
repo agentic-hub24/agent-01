@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { HiOutlinePlus } from 'react-icons/hi';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import PLPModal from './PLPModal';
 import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
 
@@ -76,6 +77,25 @@ export default function PLPCards({
     </>
   );
 }
+
+PLPCards.propTypes = {
+  handleMouseOver: PropTypes.func,
+  handleMouseOut: PropTypes.func,
+  isHovering: PropTypes.bool,
+  skuId: PropTypes.string,
+  handleModalOpen: PropTypes.func,
+  handleModalClose: PropTypes.func,
+  modalOpen: PropTypes.bool,
+  locale: PropTypes.string,
+  item: PropTypes.shape({
+    SkuNumber: PropTypes.string,
+    SkuResourceImgName: PropTypes.string,
+    ProductNewProduct: PropTypes.string,
+    ProductProductNo: PropTypes.string,
+    ProductBrandName: PropTypes.string,
+    ProductDescriptionProductShort: PropTypes.string
+  })
+};
 
 PLPCards.defaultProps = {
   handleMouseOver: () => {},

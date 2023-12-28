@@ -36,6 +36,6 @@ export default function BackToTop({ topHeight, localeProp = '' }) {
 }
 
 BackToTop.propTypes = {
-  topHeight: PropTypes.number.isRequired,
-  localeProp: PropTypes.string.isRequired
+  topHeight: PropTypes.number,
+  localeProp: PropTypes.string
 };

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import MediaItem from '@components/MediaItem/MediaItem';
 import { RichText } from '@components/RichText';
 
@@ -42,7 +43,7 @@ export default function TextHeadingImageContentSection({ fields }) {
 
       <div>
         {fields?.cta &&
-          fields?.cta.map(({ fields, sys }, id) => (
+          fields?.cta.map(({ fields, sys }) => (
             <div className='pt-2' key={sys?.id}>
               <Link
                 href={fields?.url || ''}
@@ -71,3 +72,31 @@ export default function TextHeadingImageContentSection({ fields }) {
     </div>
   );
 }
+
+TextHeadingImageContentSection.propTypes = {
+  fields: PropTypes.shape({
+    internalTitle: PropTypes.string,
+    heading: PropTypes.shape({
+      content: PropTypes.arrayOf(PropTypes.string)
+    }),
+    textContent: PropTypes.shape({
+      content: PropTypes.arrayOf(PropTypes.string)
+    }),
+    richText: PropTypes.shape({
+      content: PropTypes.arrayOf(PropTypes.string)
+    }),
+    cta: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          url: PropTypes.string,
+          openerType: PropTypes.string,
+          label: PropTypes.string
+        }),
+        sys: PropTypes.shape({
+          id: PropTypes.string
+        })
+      })
+    ),
+    mediaItem: PropTypes.shape({})
+  })
+};

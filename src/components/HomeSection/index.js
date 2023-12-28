@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ArticleCard from '@components/cards/ArticleCard';
 
 const HomeSection = ({ homePageData }) => {
@@ -56,6 +57,23 @@ const HomeSection = ({ homePageData }) => {
       </div>
     </section>
   );
+};
+
+HomeSection.propTypes = {
+  homePageData: PropTypes.shape({
+    internalTitle: PropTypes.string,
+    heading: PropTypes.string,
+    cardRows: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          cardItem: PropTypes.array
+        }),
+        sys: PropTypes.shape({
+          id: PropTypes.string
+        })
+      })
+    )
+  })
 };
 
 export default HomeSection;

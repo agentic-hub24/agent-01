@@ -1,4 +1,5 @@
 import { HiOutlineDownload } from 'react-icons/hi';
+import PropTypes from 'prop-types';
 import {
   PDP_LABELS,
   TECHNICAL_INFORMATION_FILES_NAMES
@@ -213,6 +214,27 @@ const SpecItems = ({ downloadLink, linkType, locale }) => {
       </ul>
     </div>
   );
+};
+
+SpecItems.propTypes = {
+  downloadLink: PropTypes.shape({
+    DWGPlanView: PropTypes.string,
+    DWGFrontView: PropTypes.string,
+    DWGSideView: PropTypes.string,
+    DXFPlanView: PropTypes.string,
+    DXFFrontView: PropTypes.string,
+    DXFSideView: PropTypes.string,
+    ThreeDDXF: PropTypes.string,
+    ThreeDThreeDS: PropTypes.string,
+    ThreeDSketchup: PropTypes.string,
+    ThreeDRevit: PropTypes.string,
+    InstallationWithoutSPPDF: PropTypes.string,
+    SpecPDFFileName: PropTypes.string,
+    HomeguideWithSPPDF: PropTypes.string,
+    HomeguideWithoutSPPDF: PropTypes.string
+  }),
+  linkType: PropTypes.string,
+  locale: PropTypes.string
 };
 
 export default SpecItems;
