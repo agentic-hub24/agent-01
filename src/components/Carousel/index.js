@@ -5,6 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const CarouselComponent = ({ carouselItem, showBanner }) => {
   const [clicked, setClicked] = useState(null);
@@ -116,9 +117,39 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
   );
 };
 
-export default CarouselComponent;
+CarouselComponent.propTypes = {
+  carouselItem: PropTypes.arrayOf(
+    PropTypes.shape({
+      fields: PropTypes.shape({
+        url: PropTypes.string,
+        mediaItem: PropTypes.arrayOf(
+          PropTypes.shape({
+            fields: PropTypes.shape({
+              asset: PropTypes.shape({
+                fields: PropTypes.shape({
+                  file: PropTypes.shape({
+                    url: PropTypes.string
+                  }),
+                  altText: PropTypes.string,
+                  title: PropTypes.string,
+                  description: PropTypes.string
+                })
+              })
+            })
+          })
+        )
+      }),
+      sys: PropTypes.shape({
+        id: PropTypes.string
+      })
+    })
+  ),
+  showBanner: PropTypes.bool
+};
 
 CarouselComponent.defaultProps = {
   showBanner: true,
   carouselItem: []
 };
+
+export default CarouselComponent;

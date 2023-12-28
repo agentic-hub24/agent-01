@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { HiCheck, HiX } from 'react-icons/hi';
 import { getProductDetails } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import { PDP_LABELS } from '@components/detailsComponent/helper';
 import Loader from '@components/loader';
 import {
@@ -188,7 +189,13 @@ export default function PLPModal({
     </div>
   );
 }
-
+PLPModal.propTypes = {
+  modalItem: PropTypes.shape({ ProductBrandName: PropTypes.string }),
+  handleModalClose: PropTypes.func,
+  ProductProductNo: PropTypes.string,
+  locale: PropTypes.string,
+  skuId: PropTypes.string
+};
 PLPModal.defaultProps = {
   modalItem: {},
   handleModalClose: () => {},

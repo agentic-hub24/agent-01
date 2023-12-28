@@ -8,6 +8,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import NavItems from '@components/NavItems';
 import MobileNavItem from '@components/NavItems/MobileNavItem';
 import TopHeaderMobile from '@components/WorldWideMenu/TopHeaderMobile';
@@ -345,6 +346,16 @@ export default function HeaderSection({ navData = {}, world }) {
     </>
   );
 }
+
+HeaderSection.propTypes = {
+  navData: PropTypes.shape({
+    logo: PropTypes.object,
+    primaryNav: PropTypes.arrayOf(PropTypes.object)
+  }),
+  world: PropTypes.shape({
+    items: PropTypes.arrayOf(PropTypes.object)
+  })
+};
 
 HeaderSection.defaultProps = {
   navData: {},

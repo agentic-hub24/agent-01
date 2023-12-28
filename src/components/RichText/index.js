@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { INLINES, BLOCKS } from '@contentful/rich-text-types';
+import PropTypes from 'prop-types';
 
 export const RichText = ({
   text,
@@ -33,4 +34,10 @@ export const RichText = ({
   const renderedText = documentToReactComponents(text, options);
 
   return <div className='rich-text'>{renderedText}</div>;
+};
+
+RichText.propTypes = {
+  text: PropTypes.object,
+  urlTarget: PropTypes.oneOf(['New Tab', '']),
+  paragraphCustomClasses: PropTypes.string
 };

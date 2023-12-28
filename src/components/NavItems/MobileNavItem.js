@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 const MobileNavItem = ({
   navItem,
@@ -49,6 +50,15 @@ const MobileNavItem = ({
   );
 };
 export default MobileNavItem;
+
+MobileNavItem.propTypes = {
+  navItem: PropTypes.object,
+  secondaryNavItemFuncMobile: PropTypes.func,
+  svgElement: PropTypes.element,
+  linkClass: PropTypes.string,
+  classNames: PropTypes.string,
+  handleCloseHandle: PropTypes.func
+};
 
 MobileNavItem.defaultProps = {
   secondaryNavItemFuncMobile: () => {},

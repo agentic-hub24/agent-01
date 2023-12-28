@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import { PlusSvg, MinusSvg } from '@components/svgs';
 
 const SearchAccordion = ({ children, header }) => {
@@ -21,6 +22,11 @@ const SearchAccordion = ({ children, header }) => {
       </details>
     </div>
   );
+};
+
+SearchAccordion.propTypes = {
+  children: PropTypes.node,
+  header: PropTypes.string
 };
 
 export default SearchAccordion;

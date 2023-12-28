@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getProductListing } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import FilterContent from '@components/ProductListing/FilterContent';
 import PLPCards from '@components/ProductListing/PLPCards';
 import PLPOrderBySelect from '@components/ProductListing/PLPOrderBySelect';
@@ -289,3 +290,22 @@ export default function SearchPage({
     </>
   );
 }
+
+SearchPage.propTypes = {
+  productListingData: PropTypes.shape({
+    response: PropTypes.shape({
+      value: PropTypes.array,
+      searchResults: PropTypes.shape({
+        totalSearchResults: PropTypes.number,
+        productsCount: PropTypes.number,
+        specificationCount: PropTypes.number
+      })
+    })
+  }),
+  requestBody: PropTypes.object,
+  params: PropTypes.shape({
+    slug: PropTypes.string
+  }),
+  pageType: PropTypes.string,
+  locale: PropTypes.string
+};

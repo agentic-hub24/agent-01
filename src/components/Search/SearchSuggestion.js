@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import { staticLabelsPLP } from '@components/ProductListing/helper';
 
 const SearchSuggestion = ({ requestBody, suggestion, locale = 'en' }) => {
@@ -57,6 +58,12 @@ const SearchSuggestion = ({ requestBody, suggestion, locale = 'en' }) => {
       )}
     </>
   );
+};
+
+SearchSuggestion.propTypes = {
+  requestBody: PropTypes.shape({ search: PropTypes.string }),
+  locale: PropTypes.string,
+  suggestion: PropTypes.string
 };
 
 export default SearchSuggestion;

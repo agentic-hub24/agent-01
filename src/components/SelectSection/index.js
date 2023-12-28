@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export default function SelectSection({
   selectOptions,
   label,
@@ -25,7 +27,10 @@ export default function SelectSection({
           disabled={disabled}
         >
           {selectOptions?.map((item, index) => (
-            <option key={index} className='font-HelveticaRoman text-[14px]'>
+            <option
+              key={item || index}
+              className='font-HelveticaRoman text-[14px]'
+            >
               {item}
             </option>
           ))}
@@ -43,6 +48,16 @@ export default function SelectSection({
     </div>
   );
 }
+
+SelectSection.propTypes = {
+  selectOptions: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  ),
+  label: PropTypes.string,
+  onChange: PropTypes.func,
+  selectValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool
+};
 
 SelectSection.defaultProps = {
   selectOptions: [],

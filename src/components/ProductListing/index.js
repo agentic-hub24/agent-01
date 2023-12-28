@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProductListing } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
 import FilterContent from './FilterContent';
@@ -135,6 +136,23 @@ export default function ProductListing({
     </>
   );
 }
+
+ProductListing.propTypes = {
+  productListingData: PropTypes.shape({
+    response: PropTypes.shape({
+      value: PropTypes.array,
+      '@search.facets': PropTypes.object,
+      '@odata.count': PropTypes.string
+    })
+  }),
+  requestBody: PropTypes.object,
+  params: PropTypes.shape({
+    slug: PropTypes.string,
+    sub_slug: PropTypes.string
+  }),
+  locale: PropTypes.string
+};
+
 ProductListing.defaultProps = {
   productListingData: {
     response: {

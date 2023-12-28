@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { staticLabelsPLP } from '@components/ProductListing/helper';
 
 const SearchNotFound = ({ requestBody, locale = 'en' }) => {
@@ -47,6 +48,11 @@ const SearchNotFound = ({ requestBody, locale = 'en' }) => {
       )}
     </>
   );
+};
+
+SearchNotFound.propTypes = {
+  requestBody: PropTypes.shape({ search: PropTypes.string }),
+  locale: PropTypes.string
 };
 
 export default SearchNotFound;

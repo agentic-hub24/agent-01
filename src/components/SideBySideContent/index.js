@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import MediaItem from '@components/MediaItem/MediaItem';
 import { RichText } from '@components/RichText';
 
@@ -127,3 +128,69 @@ export default function SideBySideContent({ fields }) {
     </div>
   );
 }
+
+SideBySideContent.propTypes = {
+  fields: PropTypes.shape({
+    leftContent: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          heading: PropTypes.shape({
+            content: PropTypes.arrayOf(PropTypes.string)
+          }),
+          textContent: PropTypes.shape({
+            content: PropTypes.arrayOf(PropTypes.string)
+          }),
+          richText: PropTypes.shape({
+            content: PropTypes.arrayOf(PropTypes.string)
+          }),
+          cta: PropTypes.arrayOf(
+            PropTypes.shape({
+              fields: PropTypes.shape({
+                url: PropTypes.string,
+                label: PropTypes.string,
+                openerType: PropTypes.string
+              }),
+              sys: PropTypes.shape({
+                id: PropTypes.string
+              })
+            })
+          )
+        })
+      })
+    ),
+    rightContent: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          heading: PropTypes.shape({
+            content: PropTypes.arrayOf(PropTypes.string)
+          }),
+          textContent: PropTypes.shape({
+            content: PropTypes.arrayOf(PropTypes.string)
+          }),
+          richText: PropTypes.shape({
+            content: PropTypes.arrayOf(PropTypes.string)
+          }),
+          cta: PropTypes.arrayOf(
+            PropTypes.shape({
+              fields: PropTypes.shape({
+                url: PropTypes.string,
+                label: PropTypes.string,
+                openerType: PropTypes.string
+              }),
+              sys: PropTypes.shape({
+                id: PropTypes.string
+              })
+            })
+          )
+        })
+      })
+    )
+  })
+};
+
+SideBySideContent.defaultProps = {
+  fields: {
+    leftContent: [],
+    rightContent: []
+  }
+};

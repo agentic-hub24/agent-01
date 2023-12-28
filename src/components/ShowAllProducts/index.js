@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { HiOutlineChevronRight } from 'react-icons/hi';
+import PropTypes from 'prop-types';
 import PLPCards from '@components/ProductListing/PLPCards';
 import {
   SHOWALL_LABELS,
@@ -162,8 +163,20 @@ export default function ShowAllProducts({
           </div>
         </div>
       </section>
-      {/* <Cta fields={CTAObject[locale]} /> */}
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
 }
+
+ShowAllProducts.propTypes = {
+  params: PropTypes.object,
+  locale: PropTypes.string,
+  categoryProductData: PropTypes.shape({
+    response: PropTypes.shape({
+      '@search.facets': PropTypes.shape({
+        RegionProductCategoryLocal: PropTypes.arrayOf(PropTypes.object)
+      }),
+      value: PropTypes.arrayOf(PropTypes.object)
+    })
+  })
+};

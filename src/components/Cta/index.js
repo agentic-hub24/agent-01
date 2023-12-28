@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 
 const CTAURL = {
   en: process.env.NEXT_PUBLIC_EMPLIFY_EN,
@@ -36,6 +37,12 @@ const Cta = ({ fields }) => {
       </button>
     </div>
   );
+};
+
+Cta.propTypes = {
+  fields: PropTypes.shape({
+    label: PropTypes.string
+  })
 };
 
 export default Cta;

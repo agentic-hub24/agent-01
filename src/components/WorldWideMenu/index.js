@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import NavItems from '@components/NavItems';
 
 export default function WorldWideMenu({ world }) {
@@ -158,3 +159,91 @@ export default function WorldWideMenu({ world }) {
     </div>
   );
 }
+
+WorldWideMenu.propTypes = {
+  world: PropTypes.shape({
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          topNav: PropTypes.arrayOf(
+            PropTypes.shape({
+              fields: PropTypes.shape({
+                navItems: PropTypes.arrayOf(
+                  PropTypes.shape({
+                    fields: PropTypes.shape({
+                      url: PropTypes.string,
+                      label: PropTypes.string,
+                      ariaLabel: PropTypes.string,
+                      sys: PropTypes.shape({
+                        id: PropTypes.string
+                      })
+                    })
+                  })
+                )
+              })
+            })
+          ),
+          primaryNav: PropTypes.arrayOf(
+            PropTypes.shape({
+              fields: PropTypes.shape({
+                internalTitle: PropTypes.string,
+                navItems: PropTypes.arrayOf(
+                  PropTypes.shape({
+                    sys: PropTypes.shape({
+                      id: PropTypes.string
+                    }),
+                    fields: PropTypes.shape({
+                      label: PropTypes.string,
+                      url: PropTypes.string,
+                      ariaLabel: PropTypes.string,
+                      mediaItem: PropTypes.arrayOf(
+                        PropTypes.shape({
+                          fields: PropTypes.shape({
+                            altText: PropTypes.string,
+                            asset: PropTypes.shape({
+                              fields: PropTypes.shape({
+                                file: PropTypes.shape({
+                                  url: PropTypes.string
+                                })
+                              })
+                            })
+                          })
+                        })
+                      )
+                    })
+                  })
+                )
+              })
+            })
+          ),
+          bottomNav: PropTypes.shape({
+            fields: PropTypes.shape({
+              navItems: PropTypes.arrayOf(
+                PropTypes.shape({
+                  fields: PropTypes.shape({
+                    label: PropTypes.string,
+                    url: PropTypes.string,
+                    mediaItem: PropTypes.arrayOf(
+                      PropTypes.shape({
+                        fields: PropTypes.shape({
+                          altText: PropTypes.string,
+                          asset: PropTypes.shape({
+                            fields: PropTypes.shape({
+                              file: PropTypes.shape({
+                                url: PropTypes.string
+                              })
+                            })
+                          })
+                        })
+                      })
+                    )
+                  })
+                })
+              )
+            })
+          })
+        })
+      })
+    )
+  })
+};

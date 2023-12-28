@@ -1,4 +1,6 @@
 /* eslint-disable no-useless-escape */
+import PropTypes from 'prop-types';
+
 export default function PLPOrderBySelect({ orderBySelect, sortingArray }) {
   return (
     <div className='flex md:mt-[58px] md:mb-[55px] mx-[10px] relative md:w-1/3 w-full'>
@@ -33,7 +35,16 @@ export default function PLPOrderBySelect({ orderBySelect, sortingArray }) {
   );
 }
 
+PLPOrderBySelect.propTypes = {
+  orderBySelect: PropTypes.func,
+  sortingArray: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.string
+    })
+  )
+};
+
 PLPOrderBySelect.defaultProps = {
-  selectOptions: [],
   orderBySelect: () => {}
 };

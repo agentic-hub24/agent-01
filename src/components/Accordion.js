@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { DropSvg, DropSvgOpen } from './svgs';
 
 const Accordion = ({
@@ -80,6 +81,19 @@ const Accordion = ({
       </details>
     </div>
   );
+};
+
+Accordion.propTypes = {
+  header: PropTypes.string,
+  children: PropTypes.node,
+  isActive: PropTypes.bool,
+  isHeader: PropTypes.bool,
+  isNavHeader: PropTypes.bool,
+  isTopNavMobile: PropTypes.bool,
+  isTopNavMobileLogo: PropTypes.bool,
+  isTopNavInnerData: PropTypes.bool,
+  isTopNavSubInnerData: PropTypes.bool,
+  isTopNavInnerContainer: PropTypes.bool
 };
 
 export default Accordion;

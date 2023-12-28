@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import PropTypes from 'prop-types';
 import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
 
 export default function SimilarProductsCards({
@@ -47,3 +48,17 @@ export default function SimilarProductsCards({
     </>
   );
 }
+
+SimilarProductsCards.propTypes = {
+  productProductLinkType: PropTypes.arrayOf(
+    PropTypes.shape({
+      SkuResourceImgName: PropTypes.string,
+      ProductNewProduct: PropTypes.bool,
+      ProductProductNo: PropTypes.string,
+      SkuNumber: PropTypes.string,
+      ProductBrandName: PropTypes.string,
+      ProductDescriptionProductShort: PropTypes.string
+    })
+  ),
+  locale: PropTypes.string
+};

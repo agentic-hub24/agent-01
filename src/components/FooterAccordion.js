@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { DropSvg, DropSvgOpen } from './svgs';
 
 const FooterAccordion = ({
@@ -61,6 +62,18 @@ const FooterAccordion = ({
       </div>
     </div>
   );
+};
+
+FooterAccordion.propTypes = {
+  isActive: PropTypes.bool,
+  isNavHeader: PropTypes.bool,
+  isTopNavMobile: PropTypes.bool,
+  isTopNavMobileLogo: PropTypes.bool,
+  isHeader: PropTypes.bool,
+  header: PropTypes.string,
+  handleToggle: PropTypes.func,
+  open: PropTypes.bool,
+  children: PropTypes.node
 };
 
 export default FooterAccordion;

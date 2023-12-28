@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { HiOutlineChevronRight } from 'react-icons/hi';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import Accordion from '../Accordion';
 import MobileNavItem from '../NavItems/MobileNavItem';
 
@@ -154,5 +155,16 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
       </div>
     </div>
   );
+};
+TopHeaderMobile.propTypes = {
+  world: PropTypes.shape({
+    sys: PropTypes.shape({
+      id: PropTypes.string
+    }),
+    fields: PropTypes.shape({
+      topNav: PropTypes.arrayOf(PropTypes.shape({}))
+    })
+  }),
+  handleCloseHandle: PropTypes.func
 };
 export default TopHeaderMobile;
