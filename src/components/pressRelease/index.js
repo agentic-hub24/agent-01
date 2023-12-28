@@ -1,5 +1,6 @@
 import React, { useState, memo } from 'react';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import { RichText } from '@components/RichText';
 import BackToTop from '@components/backToTop';
 
@@ -102,9 +103,9 @@ const PressRelease = ({ pageData }) => {
               </select>
             </div>
           </div>
-          {tabsData.map(({ fields }, index) => (
+          {tabsData.map(({ fields, sys }, index) => (
             <div
-              key={index}
+              key={sys?.id || index}
               className={`${
                 index === 0
                   ? 'bg-[#e5e5e5] p-4 mb-8'
@@ -124,6 +125,28 @@ const PressRelease = ({ pageData }) => {
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
+};
+
+PressRelease.propTypes = {
+  pageData: PropTypes.shape({
+    pageHeading: PropTypes.string,
+    pageSections: PropTypes.arrayOf(
+      PropTypes.shape({
+        sys: PropTypes.shape({
+          contentType: PropTypes.shape({
+            sys: PropTypes.shape({
+              id: PropTypes.string
+            })
+          })
+        }),
+        fields: PropTypes.shape({
+          internalTitle: PropTypes.string,
+          date: PropTypes.string,
+          textContent: PropTypes.arrayOf(PropTypes.string)
+        })
+      })
+    )
+  })
 };
 
 export default memo(PressRelease);

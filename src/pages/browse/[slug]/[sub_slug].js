@@ -2,6 +2,7 @@ import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import ProductListing from '@components/ProductListing';
 
 export default function ProductList({
@@ -19,6 +20,13 @@ export default function ProductList({
     />
   );
 }
+
+ProductList.propTypes = {
+  productListingData: PropTypes.object.isRequired,
+  requestBody: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
+  locale: PropTypes.string.isRequired
+};
 
 export async function getServerSideProps(context) {
   const { params, locale, preview, query } = context;

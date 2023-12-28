@@ -9,11 +9,11 @@ import Suggestion from './Suggestion';
 export default function HeaderSearch({ setOpenMobileMenu }) {
   const router = useRouter();
   const { locale = '' } = router;
-  const [searchValue, setSearchvalue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
   const [suggestionList, setSuggestionList] = useState({});
 
   useEffect(() => {
-    setSearchvalue('');
+    setSearchValue('');
   }, []);
 
   useEffect(() => {
@@ -49,13 +49,13 @@ export default function HeaderSearch({ setOpenMobileMenu }) {
     }
   };
   const handleChange = e => {
-    setSearchvalue(removeQuotesFromString(e.target.value));
+    setSearchValue(removeQuotesFromString(e.target.value));
   };
 
   const searchOnSuggestion = (selectedVal, pageRedirection) => {
     if (selectedVal) {
       setOpenMobileMenu(false);
-      setSearchvalue('');
+      setSearchValue('');
       setSuggestionList({});
       // if (pageRedirection === 'PDP') {
       //   window.location = `/${locale}/product-detail/${

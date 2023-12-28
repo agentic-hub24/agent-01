@@ -2,10 +2,15 @@ import { memo } from 'react';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
+import PropTypes from 'prop-types';
 import Landing from '@components/landing';
 
 const Home = ({ pageData }) => {
   return <Landing pageData={pageData} />;
+};
+
+Home.propTypes = {
+  pageData: PropTypes.shape({})
 };
 
 export async function getStaticProps({ preview, locale }) {

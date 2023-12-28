@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export default function StoreDetails({ state, details }) {
   return (
     <>
@@ -6,7 +8,10 @@ export default function StoreDetails({ state, details }) {
       </h2>
       <div className='flex md:flex-row flex-col font-helveticaNeueLTRoman text-[14px] text-[#232323]'>
         {details.map((innerItem, index) => (
-          <div className='flex flex-col md:w-1/4 w-2/3 mr-[30px]' key={index}>
+          <div
+            className='flex flex-col md:w-1/4 w-2/3 mr-[30px]'
+            key={innerItem.fields.internalTitle || index}
+          >
             <div className='font-helveticaNeueLTBd text-[14px] text-[#232323]'>
               {innerItem.fields.storeName}
             </div>
@@ -33,6 +38,26 @@ export default function StoreDetails({ state, details }) {
     </>
   );
 }
+
+StoreDetails.propTypes = {
+  state: PropTypes.string,
+  details: PropTypes.arrayOf(
+    PropTypes.shape({
+      fields: PropTypes.shape({
+        internalTitle: PropTypes.string,
+        storeName: PropTypes.string,
+        storeDetails: PropTypes.string,
+        storeTelephoneNumber: PropTypes.string,
+        mobile: PropTypes.string,
+        emailAddress: PropTypes.string,
+        websiteLink: PropTypes.string,
+        storeOpeningHours: PropTypes.shape({
+          content: PropTypes.arrayOf(PropTypes.string)
+        })
+      })
+    })
+  )
+};
 
 StoreDetails.defaultProps = {
   state: '',
