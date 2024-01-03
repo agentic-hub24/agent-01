@@ -17,6 +17,7 @@ export async function getStaticProps({ preview, locale }) {
   const slugName = ['default', 'es'].includes(locale) ? 'es' : 'en';
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const client = preview ? contentfulPreviewClient : contentfulClient;
+
   const res = client.getEntries({
     'metadata.tags.sys.id[in]': 'kohlerLatam',
     content_type: 'latamLandingPage',
@@ -43,10 +44,17 @@ export async function getStaticProps({ preview, locale }) {
   });
 
   const results = await Promise.all([res]);
+  const pageData = results?.[0]?.items?.[0]?.fields;
+  if (!pageData) {
+    return {
+      notFound: true,
+      revalidate: 10
+    };
+  }
 
   return {
     props: {
-      pageData: results[0]?.items?.[0]?.fields,
+      pageData: pageData,
       footerNavigationData,
       headerNavigationData,
       world
