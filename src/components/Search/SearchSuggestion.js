@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import { staticLabelsPLP } from '@components/ProductListing/helper';
 
 const SearchSuggestion = ({ requestBody, suggestion, locale = 'en' }) => {
@@ -25,42 +26,44 @@ const SearchSuggestion = ({ requestBody, suggestion, locale = 'en' }) => {
         </div>
       </div>
       {locale === 'en' ? (
-        <>
-          <section className='text-xs w-full mx-auto bg-white text-gray-800 overflow-auto relative z-0'>
-            <div className='font-sans font-light text-xl leading-5 font-medium relative float-left w-full min-h-1px mb-[20px] pt-[100px] px-10'>
-              <h3>We did not find any results for your search.</h3>
-              <div className='mt-[20px] mb-[10px] text-xl'>
-                <h3>SEARCH TIPS:</h3>
-                <ul className='text-base mb-10 list-disc ml-[50px]'>
-                  <li>Check spelling again.</li>
-                  <li>Try different keywords.</li>
-                  <li>Try more generic keywords.</li>
-                  <li>Try fewer keywords.</li>
-                </ul>
-              </div>
+        <section className='text-xs w-full mx-auto bg-white text-gray-800 overflow-auto relative z-0'>
+          <div className='font-sans font-light text-xl leading-5 font-medium relative float-left w-full min-h-1px mb-[20px] pt-[100px] px-10'>
+            <h3>We did not find any results for your search.</h3>
+            <div className='mt-[20px] mb-[10px] text-xl'>
+              <h3>SEARCH TIPS:</h3>
+              <ul className='text-base mb-10 list-disc ml-[50px]'>
+                <li>Check spelling again.</li>
+                <li>Try different keywords.</li>
+                <li>Try more generic keywords.</li>
+                <li>Try fewer keywords.</li>
+              </ul>
             </div>
-          </section>
-        </>
+          </div>
+        </section>
       ) : (
-        <>
-          <section className='text-xs w-full mx-auto bg-white text-gray-800 overflow-auto relative z-0'>
-            <div className='font-sans font-light text-xl leading-5 font-medium relative float-left w-full min-h-1px mb-[20px] pt-[100px] px-10'>
-              <h3>No encontramos ningún resultado para su búsqueda.</h3>
-              <div className='mt-[20px] mb-[10px] text-xl'>
-                <h3>CONSEJOS DE BÚSQUEDA: </h3>
-                <ul className='text-base mb-10 list-disc ml-[50px]'>
-                  <li>Revisar ortografía nuevamente.</li>
-                  <li>Pruebe diferentes palabras clave.</li>
-                  <li>Pruebe palabras clave más genéricas.</li>
-                  <li>Pruebe con menos palabras clave.</li>
-                </ul>
-              </div>
+        <section className='text-xs w-full mx-auto bg-white text-gray-800 overflow-auto relative z-0'>
+          <div className='font-sans font-light text-xl leading-5 font-medium relative float-left w-full min-h-1px mb-[20px] pt-[100px] px-10'>
+            <h3>No encontramos ningún resultado para su búsqueda.</h3>
+            <div className='mt-[20px] mb-[10px] text-xl'>
+              <h3>CONSEJOS DE BÚSQUEDA: </h3>
+              <ul className='text-base mb-10 list-disc ml-[50px]'>
+                <li>Revisar ortografía nuevamente.</li>
+                <li>Pruebe diferentes palabras clave.</li>
+                <li>Pruebe palabras clave más genéricas.</li>
+                <li>Pruebe con menos palabras clave.</li>
+              </ul>
             </div>
-          </section>
-        </>
+          </div>
+        </section>
       )}
     </>
   );
+};
+
+SearchSuggestion.propTypes = {
+  requestBody: PropTypes.shape({ search: PropTypes.string }),
+  locale: PropTypes.string,
+  suggestion: PropTypes.string
 };
 
 export default SearchSuggestion;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CarouselComponent from '@components/Carousel';
 import Cta from '@components/Cta';
 import HomeSection from '@components/HomeSection';
@@ -11,9 +12,8 @@ import ArticleContent from '@components/articleContent';
 import EmbededScript from '@components/embededScript';
 import TextContent from '@components/textContent';
 
-const Section = ({ fields, sys, position, pageHeading }) => {
+const Section = ({ fields, sys, pageHeading }) => {
   const sectionType = sys?.contentType?.sys?.id;
-  const page = fields?.internalTitle;
 
   if (sectionType === 'articleContent') {
     return (
@@ -25,7 +25,6 @@ const Section = ({ fields, sys, position, pageHeading }) => {
       />
     );
   } else if (sectionType === 'locator') {
-    // ToDo create a separate component for below work same as above ArticleContent
     return (
       <StoreListing
         pageHeading={
@@ -35,7 +34,6 @@ const Section = ({ fields, sys, position, pageHeading }) => {
       />
     );
   } else if (sectionType === 'form') {
-    // ToDo create a separate component for below work same as above ArticleContent
     return (
       <StoreListingLocator
         pageHeading={
@@ -70,6 +68,18 @@ const Section = ({ fields, sys, position, pageHeading }) => {
   }
   // render multiple type of sections
   return <HomeSection homePageData={fields} />;
+};
+
+Section.propTypes = {
+  fields: PropTypes.object.isRequired,
+  sys: PropTypes.shape({
+    contentType: PropTypes.shape({
+      sys: PropTypes.shape({
+        id: PropTypes.string
+      })
+    })
+  }),
+  pageHeading: PropTypes.string
 };
 
 export default Section;

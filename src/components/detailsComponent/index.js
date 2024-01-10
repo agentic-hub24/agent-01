@@ -23,7 +23,7 @@ import {
   getProductListing,
   getYoutubeMetaData
 } from '@services/productListingAPI/client';
-import Cta from '@components/Cta';
+import PropTypes from 'prop-types';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
 import { Fb, Twitter } from '@components/svgs';
@@ -34,7 +34,6 @@ import SimilarProductsCards from './SimilarProductsCards';
 import {
   imageFormatter,
   magnify,
-  gifLineArtImageFormatter,
   PRODUCT_RESOURCE_TYPE_SPEC_DOC,
   PRODUCT_GIF_LINE_ART_IMAGE,
   PRODUCT_CAROUSEL_IMAGE,
@@ -53,14 +52,13 @@ import {
   TECHNICAL_INFORMATION_FILES,
   TECHNICAL_INFORMATION_FILES_NAMES,
   DEFAULT_IMAGE_LINK,
-  CTAObject,
   carouselImageFormatter,
   PRODUCT_RESOURCE_TYPE_VIDEO,
   thumbsImageFormatter
 } from './helper';
 import VideoModal from './videoModal';
 
-export default function DetailsComponent({ productDetailsData, skuID }) {
+export default function DetailsComponent({ productDetailsData }) {
   const router = useRouter();
   const { locale = '' } = router;
   const ref = useRef();
@@ -70,8 +68,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [showColorName, setShowColorName] = useState('');
   const [colorFileName, setColorFileName] = useState('');
   const [specPdfFile, setSpecPdfFile] = useState('');
-  const [lineArt, setLineArtUrl] = useState('');
-  const [PlanView3D, setPlanView3D] = useState([]);
+  const [lineArt, setLineArt] = useState('');
+  const [planView3D, setPlanView3D] = useState([]);
   const [front2D, setFront2D] = useState([]);
   const [plan2D, setPlan2D] = useState([]);
   const [side2D, setSide2D] = useState([]);
@@ -79,15 +77,15 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
   const [bimRevit, setBimRevit] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const [zoomActive, setZoomActive] = useState(true);
-  const [showZoom, showImageZoom] = useState(false);
+  const [showZoom, setShowZoom] = useState(false);
   const [technicalInfoFiles, setTechnicalInfoFiles] = useState([]);
-  const [colorFinishCodeArray, setColorFinisCodeArray] = useState([]);
+  const [colorFinishCodeArray, setColorFinishCodeArray] = useState([]);
   const [social, setSocial] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [thumbsPosition, setThumbsPosition] = useState(0);
   const [imageName, setImageName] = useState('');
-  const [hasLinkedprodcts, setHasLinkedproduct] = useState(false);
-  const [youTubeLink, setYoutubeLink] = useState([]);
+  const [hasLinkedprodcts, setHasLinkedprodcts] = useState(false);
+  const [youTubeLink, setYouTubeLink] = useState([]);
   const [youtubeMetaData, setYoutubeMetaData] = useState([]);
   const [youtubeLinkOpen, setYoutubeLinkOpen] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -228,7 +226,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
         el.SKUColorFinishCode !== undefined &&
         el?.links?.ItemResource !== undefined
     );
-    setColorFinisCodeArray(color_finish_code_array);
+    setColorFinishCodeArray(color_finish_code_array);
     const defaultItems = ProductItem?.find(el => el.SKUSKUNo === skuId) || {};
     const carousel_image_array =
       defaultItems?.links?.ItemResource?.filter(
@@ -243,7 +241,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     const youtube_link = ProductResource?.filter(item =>
       PRODUCT_RESOURCE_TYPE_VIDEO.includes(item?.ResourceType)
     );
-    setYoutubeLink(youtube_link);
+    setYouTubeLink(youtube_link);
 
     setCarousel([...carousel_image_array, ...other_images, ...youtube_link]);
     setColorName(defaultItems?.SKUColorFinishName);
@@ -260,7 +258,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     const gif_line_art = ProductResource?.find(
       el1 => el1.ResourceType === PRODUCT_GIF_LINE_ART_IMAGE
     );
-    setLineArtUrl(gif_line_art);
+    setLineArt(gif_line_art);
 
     const region_retailer_url = defaultItems?.links?.ItemRegion.find(
       el => el.RegionRetailer1URL != undefined
@@ -299,7 +297,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
     const has_linked_products = ProductProductLinkType?.find(
       ele => ele.ProductATGISACTIVE === true
     );
-    setHasLinkedproduct(has_linked_products);
+    setHasLinkedprodcts(has_linked_products);
     setIsLoading(false);
   }, [skuId]);
 
@@ -330,11 +328,9 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
             lang: locale
           };
           const productListingData = await getProductListing(requestBody);
-          const filteredData =
-            productListingData &&
-            productListingData?.response?.value?.filter(
-              el => el.ProductDefaultSKU !== skuNumber
-            );
+          const filteredData = productListingData?.response?.value?.filter(
+            el => el.ProductDefaultSKU !== skuNumber
+          );
           setSimilarProducts(filteredData);
         } catch (err) {
           console.log('err', err);
@@ -389,12 +385,13 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               {/* Custom image thumbs */}
               <div className='flex lg:flex-col flex-row lg:w-1/6 items-center'>
                 {carousel &&
+                  carousel.length > 0 &&
                   carousel
                     ?.slice(thumbsPosition, thumbsPosition + 3)
                     ?.map((imgs, id) => {
                       return (
                         <div
-                          key={id}
+                          key={imgs?.ResourceName || id}
                           className={`${
                             imageName === imgs?.ResourceName &&
                             'border-2 border-black'
@@ -424,13 +421,13 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     <>
                       <button
                         className='lg:hidden block text-[#e5e5e5] hover:text-[#232323]'
-                        onClick={e => handlePrevClick(e)}
+                        onClick={() => handlePrevClick()}
                       >
                         <HiOutlineChevronRight size={35} />
                       </button>
                       <button
                         className='lg:block hidden text-[#e5e5e5] hover:text-[#232323]'
-                        onClick={e => handlePrevClick(e)}
+                        onClick={() => handlePrevClick()}
                       >
                         <HiOutlineChevronDown size={45} />
                       </button>
@@ -447,9 +444,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                       width='100%'
                       src={`https://www.youtube.com/embed/${carousel[imageIndex]?.ResourceName}?rel=0`}
                       title='YouTube video player'
-                      frameborder='0'
                       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                      allowfullscreen='allowfullscreen'
+                      allowFullScreen='allowFullScreen'
                       mozallowfullscreen='mozallowfullscreen'
                       msallowfullscreen='msallowfullscreen'
                       oallowfullscreen='oallowfullscreen'
@@ -499,7 +495,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           {!PRODUCT_RESOURCE_TYPE_VIDEO.includes(
                             element?.ResourceType
                           ) ? (
-                            <div key={id}>
+                            <div key={element?.ResourceName || id}>
                               <img
                                 src={carouselImageFormatter(
                                   element?.ResourceName,
@@ -518,9 +514,8 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               width='100%'
                               src={`https://www.youtube.com/embed/${carousel[imageIndex]?.ResourceName}?rel=0`}
                               title='YouTube video player'
-                              frameborder='0'
                               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                              allowfullscreen='allowfullscreen'
+                              allowFullScreen='allowFullScreen'
                               mozallowfullscreen='mozallowfullscreen'
                               msallowfullscreen='msallowfullscreen'
                               oallowfullscreen='oallowfullscreen'
@@ -540,17 +535,17 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     )}
                   </Carousel>
                 </div>
-                <div
+                <button
                   className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0'
-                  onClick={() => showImageZoom(true)}
+                  onClick={() => setShowZoom(true)}
                 >
                   <MdOutlineZoomOutMap size={30} />
-                </div>
+                </button>
               </div>
 
               {showZoom && (
                 <ImageZoomModal
-                  showImageZoom={showImageZoom}
+                  showImageZoom={setShowZoom}
                   skuName={imageIndex}
                   carouselItem={carousel}
                   defaultImageLink={DEFAULT_IMAGE_LINK}
@@ -635,18 +630,18 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               </div>
             )}
             <div className='flex mt-5'>
-              <div
+              <button
                 className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
                 onClick={() => window.print()}
               >
                 <HiMiniPrinter size={20} />
-              </div>
-              <div
+              </button>
+              <button
                 className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
                 onClick={() => setSocial(true)}
               >
                 <HiShare size={20} />
-              </div>
+              </button>
             </div>
             {social && (
               <div className='ml-20 relative' ref={ref}>
@@ -655,7 +650,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   style={{ top: '-20px' }}
                 >
                   <li className=''>
-                    <a
+                    <button
                       data-href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
                       target='popup'
                       onClick={() => {
@@ -677,10 +672,10 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           Facebook
                         </div>
                       </div>
-                    </a>
+                    </button>
                   </li>
                   <li className='relative'>
-                    <a
+                    <button
                       target='popup'
                       data-href={`http://twitter.com/share?text=${PDP_LABELS[locale].twitterText}&url=${window.location.href}`}
                       onClick={() => {
@@ -702,7 +697,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                           Twitter
                         </div>
                       </div>
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -876,7 +871,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
               {((front2D && front2D.length > 0) ||
                 (side2D && side2D.length > 0) ||
                 (plan2D && plan2D.length > 0) ||
-                (PlanView3D && PlanView3D.length > 0) ||
+                (planView3D && planView3D.length > 0) ||
                 cutOutDXF) && (
                 <>
                   <hr />
@@ -908,18 +903,16 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                   </div>
                   <div className='flex flex-col'>
                     {bimRevit && (
-                      <>
-                        <ul className='inline-flex flex-wrap mb-2'>
-                          <HiOutlineDownload size={20} />
-                          <li>
-                            <LinkWithLabel
-                              url={bimRevit.ResourceFullWebURL}
-                              label={PDP_LABELS[locale].bimRevit}
-                              className='font-helveticaGroup font-light text-[14px] uppercase'
-                            />
-                          </li>
-                        </ul>
-                      </>
+                      <ul className='inline-flex flex-wrap mb-2'>
+                        <HiOutlineDownload size={20} />
+                        <li>
+                          <LinkWithLabel
+                            url={bimRevit.ResourceFullWebURL}
+                            label={PDP_LABELS[locale].bimRevit}
+                            className='font-helveticaGroup font-light text-[14px] uppercase'
+                          />
+                        </li>
+                      </ul>
                     )}
                   </div>
 
@@ -938,7 +931,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <ul className='inline-flex mb-1'>
                                 <HiOutlineDownload size={20} />
                                 {plan2D?.map((el, id) => (
-                                  <li key={id}>
+                                  <li key={el?.ResourceName || id}>
                                     <LinkWithLabel
                                       label={
                                         PRODUCT_PLAN_NAME_2D[el.ResourceType]
@@ -961,7 +954,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <ul className='inline-flex mb-1'>
                                 <HiOutlineDownload size={20} />
                                 {front2D?.map((el, id) => (
-                                  <li key={id}>
+                                  <li key={el?.ResourceName || id}>
                                     <LinkWithLabel
                                       label={
                                         PRODUCT_FRONT_NAME_2D[el.ResourceType]
@@ -984,7 +977,7 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                               <ul className='inline-flex mb-1'>
                                 <HiOutlineDownload size={20} />
                                 {side2D?.map((el, id) => (
-                                  <li key={id}>
+                                  <li key={el?.ResourceName || id}>
                                     <LinkWithLabel
                                       url={el.ResourceFullWebURL}
                                       label={
@@ -1005,20 +998,20 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     )}
 
                     <div className='flex flex-col mt-[20px] md:mt-0'>
-                      {PlanView3D.length > 0 && (
+                      {planView3D.length > 0 && (
                         <>
                           <p className='font-helveticaGroup font-semibold text-[14px]'>
                             {PDP_LABELS[locale].cadFiles3D}
                           </p>
                           <ul className='inline-flex flex-wrap mb-1'>
                             <HiOutlineDownload size={20} />
-                            {PlanView3D?.map((el, id) => (
-                              <li key={id}>
+                            {planView3D?.map((el, id) => (
+                              <li key={el?.ResourceName || id}>
                                 <LinkWithLabel
                                   url={el.ResourceFullWebURL}
                                   label={PRODUCT_PLAN_NAME_3D[el.ResourceType]}
                                   className={`font-helveticaGroup font-light text-[14px] pr-2 uppercase ${
-                                    id !== PlanView3D.length - 1 &&
+                                    id !== planView3D.length - 1 &&
                                     `border-r border-black`
                                   }`}
                                 />
@@ -1043,7 +1036,10 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                     {youtubeMetaData?.map((item, id) => (
                       <>
                         {item?.metaData?.items.length > 0 && (
-                          <div key={id} className='pr-4 md:w-1/3 w-full pb-4'>
+                          <div
+                            key={item?.i?.ResourceName || id}
+                            className='pr-4 md:w-1/3 w-full pb-4'
+                          >
                             <div className='relative'>
                               <img
                                 src={
@@ -1055,17 +1051,17 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                                   (e.target.src = DEFAULT_IMAGE_LINK)
                                 }
                                 className='w-full'
-                                alt='youtube thumbnail image'
+                                alt='youtube thumbnail'
                               />
 
-                              <div
+                              <button
                                 className='absolute top-[40%] right-[40%] h-[50px] w-[50px] bg-black opacity-40 border-2 rounded-full border-neutral-500 cursor-pointer'
                                 onClick={() => setYoutubeLinkOpen(item)}
                               >
                                 <div className='absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-[#fff]'>
                                   <HiPlay size={30} />
                                 </div>
-                              </div>
+                              </button>
                             </div>
                             <div className='font-helveticaLight text-[14px] font-bold text-[#232323] mb-1 leading-tight'>
                               {item?.metaData?.items &&
@@ -1170,21 +1166,23 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
                 )}
 
                 <div className='mt-[20px] flex-col flex'>
-                  {technicalInfoFiles &&
-                    technicalInfoFiles?.map((element, id) => (
-                      <div className='inline-flex mt-[10px]' key={id}>
-                        <LinkWithLabel
-                          icon={<FaRegFilePdf color='red' />}
-                          url={element.ResourceFullWebURL}
-                          label={
-                            TECHNICAL_INFORMATION_FILES_NAMES[locale][
-                              element.ResourceType
-                            ]
-                          }
-                          className='inline-flex'
-                        />
-                      </div>
-                    ))}
+                  {technicalInfoFiles?.map((element, id) => (
+                    <div
+                      className='inline-flex mt-[10px]'
+                      key={element?.ResourceName || id}
+                    >
+                      <LinkWithLabel
+                        icon={<FaRegFilePdf color='red' />}
+                        url={element.ResourceFullWebURL}
+                        label={
+                          TECHNICAL_INFORMATION_FILES_NAMES[locale][
+                            element.ResourceType
+                          ]
+                        }
+                        className='inline-flex'
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className='flex flex-col ml-[20px] mt-[30px] md:mt-0'>
@@ -1252,11 +1250,64 @@ export default function DetailsComponent({ productDetailsData, skuID }) {
           </div>
         )}
       </section>
-      <Cta fields={CTAObject[locale]} />
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
 }
+
+DetailsComponent.propTypes = {
+  productDetailsData: PropTypes.shape({
+    data: PropTypes.shape({
+      product: PropTypes.shape({
+        links: PropTypes.shape({
+          ProductItem: PropTypes.array,
+          ProductResource: PropTypes.array,
+          ProductProductLinkType: PropTypes.array
+        }),
+        ProductBrandName: PropTypes.string,
+        ProductProductNo: PropTypes.string,
+        ProductDescriptionProductShort: PropTypes.string,
+        ProductDefaultSKU: PropTypes.string,
+        ProductNarrativeDescription: PropTypes.string,
+        ProductWebFeatures01: PropTypes.string,
+        ProductWebFeatures02: PropTypes.string,
+        ProductWebFeatures03: PropTypes.string,
+        ProductWebFeatures04: PropTypes.string,
+        ProductWebFeatures05: PropTypes.string,
+        ProductWebFeatures06: PropTypes.string,
+        ProductWebFeatures07: PropTypes.string,
+        ProductWebFeatures08: PropTypes.string,
+        ProductWebFeatures09: PropTypes.string,
+        ProductWebFeatures10: PropTypes.string,
+        ProductWebFeatures11: PropTypes.string,
+        ProductWebFeatures12: PropTypes.string,
+        ProductWebFeatures13: PropTypes.string,
+        ProductWebInstallation01: PropTypes.string,
+        ProductWebInstallation02: PropTypes.string,
+        ProductWebInstallation03: PropTypes.string,
+        ProductWebInstallation04: PropTypes.string,
+        ProductWebInstallation05: PropTypes.string,
+        ProductWebInstallation06: PropTypes.string,
+        ProductWebMaterial01: PropTypes.string,
+        ProductWebMaterial02: PropTypes.string,
+        ProductWebMaterial03: PropTypes.string,
+        ProductWebTechnology01: PropTypes.string,
+        ProductWebTechnology02: PropTypes.string,
+        ProductWebTechnology03: PropTypes.string,
+        ProductOverallLengthMm: PropTypes.number,
+        ProductOverallHeightMm: PropTypes.number,
+        ProductOverallWidthMm: PropTypes.number,
+        ProductMaterial: PropTypes.string,
+        ProductInstallationType: PropTypes.string,
+        ProductLocalCategory: PropTypes.array,
+        ProductSection: PropTypes.array,
+        ProductProductType: PropTypes.string,
+        ProductMETADESCRIPTION: PropTypes.string,
+        ProductNewProduct: PropTypes.bool
+      })
+    })
+  })
+};
 
 DetailsComponent.defaultProps = {
   productDetailsData: {
@@ -1321,6 +1372,5 @@ DetailsComponent.defaultProps = {
         ProductMETADESCRIPTION: ''
       }
     }
-  },
-  skuID: ''
+  }
 };

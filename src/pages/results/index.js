@@ -4,6 +4,7 @@ import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import SearchPage from '@components/Search';
 import SearchNotFound from '@components/Search/SearchNotFound';
 import SearchSuggestion from '@components/Search/SearchSuggestion';
@@ -27,7 +28,6 @@ export default function ResultPage({
       router.push(
         `/product-detail/${productListingData?.response?.searchResults?.PDP}?skuid=${productListingData?.response?.searchResults?.suggestions}`
       );
-      // return null;
     }
   }, [productListingData]);
 
@@ -58,6 +58,22 @@ export default function ResultPage({
     return <SearchNotFound requestBody={requestBody} locale={locale} />;
   }
 }
+
+ResultPage.propTypes = {
+  productListingData: PropTypes.object,
+  requestBody: PropTypes.object,
+  pageType: PropTypes.string,
+  pageData: PropTypes.object,
+  locale: PropTypes.string
+};
+
+ResultPage.defaultProps = {
+  productListingData: {},
+  requestBody: {},
+  pageType: '',
+  pageData: {},
+  locale: ''
+};
 
 export async function getServerSideProps(context) {
   const { preview, query, locale } = context;

@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import PropTypes from 'prop-types';
 import PressRelease from '@components/pressRelease';
 import Section from '@components/section';
 
@@ -34,5 +35,20 @@ function Landing({ pageData }) {
     );
   }
 }
+
+Landing.propTypes = {
+  pageData: PropTypes.shape({
+    internalTitle: PropTypes.string,
+    pageSections: PropTypes.arrayOf(
+      PropTypes.shape({
+        sys: PropTypes.shape({
+          id: PropTypes.string
+        }),
+        fields: PropTypes.object
+      })
+    ),
+    pageHeading: PropTypes.string
+  })
+};
 
 export default memo(Landing);

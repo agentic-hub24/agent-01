@@ -1,10 +1,11 @@
 /* eslint-disable react/no-unknown-property */
+import PropTypes from 'prop-types';
+
 export default function VideoModal({ item, setYoutubeLinkOpen }) {
   return (
     <div
       className='relative z-50'
       aria-labelledby='modal-title'
-      role='dialog'
       aria-modal='true'
     >
       <div className='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity'></div>
@@ -18,7 +19,7 @@ export default function VideoModal({ item, setYoutubeLinkOpen }) {
                   src={`https://www.youtube.com/embed/${item?.i?.ResourceName}?rel=0`}
                   title='YouTube video player'
                   allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-                  allowfullscreen='allowfullscreen'
+                  allowFullScreen='allowFullScreen'
                   mozallowfullscreen='mozallowfullscreen'
                   msallowfullscreen='msallowfullscreen'
                   oallowfullscreen='oallowfullscreen'
@@ -26,12 +27,12 @@ export default function VideoModal({ item, setYoutubeLinkOpen }) {
                   className='w-full'
                 ></iframe>
               </div>
-              <div
+              <button
                 className='absolute top-0 right-0 text-[16px] md:p-3 cursor-pointer'
                 onClick={() => setYoutubeLinkOpen({})}
               >
                 X
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -39,3 +40,12 @@ export default function VideoModal({ item, setYoutubeLinkOpen }) {
     </div>
   );
 }
+
+VideoModal.propTypes = {
+  item: PropTypes.shape({
+    i: PropTypes.shape({
+      ResourceName: PropTypes.string
+    })
+  }),
+  setYoutubeLinkOpen: PropTypes.func
+};

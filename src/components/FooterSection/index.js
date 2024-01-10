@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import FooterAccordion from '@components/FooterAccordion';
 import NavItems from '@components/NavItems';
 
@@ -21,7 +22,7 @@ const FooterSection = ({ navData = [], copyRightText = '' }) => {
                 </div>
                 {item?.fields?.navItems.map((navItem, key) => (
                   <NavItems
-                    key={key}
+                    key={navItem?.sys?.id || key}
                     navItem={navItem}
                     classNames="text-footermenutext hover:text-white cursor-pointer my-2 font-['Helvetica'] text-[12px]"
                     linkClass='flex lg:p-[4px] w-full text-footermenutext hover:text-white cursor-pointer'
@@ -57,7 +58,7 @@ const FooterSection = ({ navData = [], copyRightText = '' }) => {
                 open={openKey === item?.fields?.heading}
               >
                 {item?.fields?.navItems.map((navItem, key) => (
-                  <React.Fragment key={key}>
+                  <React.Fragment key={navItem?.sys?.id || key}>
                     <NavItems
                       navItem={navItem}
                       data-te-collapse-item
@@ -88,6 +89,21 @@ const FooterSection = ({ navData = [], copyRightText = '' }) => {
       </div>
     </>
   ) : null;
+};
+
+FooterSection.propTypes = {
+  navData: PropTypes.arrayOf(
+    PropTypes.shape({
+      sys: PropTypes.shape({
+        id: PropTypes.string
+      }),
+      fields: PropTypes.shape({
+        heading: PropTypes.string,
+        navItems: PropTypes.arrayOf(PropTypes.shape({}))
+      })
+    })
+  ),
+  copyRightText: PropTypes.string
 };
 
 export default FooterSection;

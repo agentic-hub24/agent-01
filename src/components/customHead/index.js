@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import Head from 'next/head';
+import PropTypes from 'prop-types';
 
 const CustomHead = ({ seoMetaData }) => {
-  var {
+  const {
     canonicalUrl,
     pageTitle,
     ogTitle,
@@ -30,6 +31,28 @@ const CustomHead = ({ seoMetaData }) => {
       </script>
     </Head>
   );
+};
+
+CustomHead.propTypes = {
+  seoMetaData: PropTypes.shape({
+    fields: PropTypes.shape({
+      canonicalUrl: PropTypes.string,
+      pageTitle: PropTypes.string,
+      ogTitle: PropTypes.string,
+      pageDescription: PropTypes.string,
+      ogDescription: PropTypes.string,
+      ogType: PropTypes.string,
+      ogUrl: PropTypes.string,
+      ogImage: PropTypes.shape({
+        fields: PropTypes.shape({
+          file: PropTypes.shape({
+            url: PropTypes.string
+          })
+        })
+      }),
+      keywords: PropTypes.string
+    })
+  })
 };
 
 export default memo(CustomHead);

@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
+import PropTypes from 'prop-types';
 import Landing from '@components/landing';
 import Loader from '@components/loader';
 
@@ -69,6 +70,12 @@ const LandingPage = ({ pageData }) => {
     return <Loader loading={router.isFallback} />;
   }
   return <Landing pageData={pageData} />;
+};
+
+LandingPage.propTypes = {
+  pageData: PropTypes.shape({
+    fields: PropTypes.object
+  })
 };
 
 export default LandingPage;

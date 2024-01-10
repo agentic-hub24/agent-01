@@ -1,6 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import NavItems from '@components/NavItems';
 
 export default function WorldWideMenu({ world }) {
@@ -34,7 +36,7 @@ export default function WorldWideMenu({ world }) {
               {topNavMenu?.slice(1, 3)?.map((item, index) => (
                 <Link
                   href={item?.fields?.url || '/'}
-                  key={index}
+                  key={item?.sys?.id || index}
                   locale={item?.fields?.url.replace('/', '')}
                 >
                   <div>
@@ -63,7 +65,7 @@ export default function WorldWideMenu({ world }) {
             {topNavMenu?.slice(3)?.map((item, index) => (
               <Link
                 href={item?.fields?.url || '/'}
-                key={index}
+                key={item?.sys?.id || index}
                 locale={item?.fields?.url.replace('/', '')}
               >
                 <h4
@@ -105,7 +107,7 @@ export default function WorldWideMenu({ world }) {
                     </div>
                     {i?.fields?.navItems?.map((navItem, index) => (
                       <NavItems
-                        key={index}
+                        key={navItem?.sys?.id || index}
                         navItem={navItem}
                         classNames='hover:text-white text-[#999999] cursor-pointer text-[13px]'
                         linkClass='flex lg:p-[5px] w-full hover:text-white text-[#999999]'
@@ -121,34 +123,34 @@ export default function WorldWideMenu({ world }) {
             >
               {world.items &&
                 world?.items[0]?.fields?.bottomNav?.fields?.navItems?.map(i => (
-                  <>
-                    <ul
-                      style={{
-                        borderRight: 'solid 1px #333',
-                        listStyle: 'none',
-                        textAlign: 'left'
-                      }}
-                    >
-                      <li>
-                        <a
-                          href={i.fields.url}
-                          target='_blank'
-                          rel='noreferrer'
-                          style={{ padding: '0px 10px', listStyle: 'nono' }}
-                        >
-                          <img
-                            style={{
-                              paddingLeft: '10px',
-                              paddingRight: '10px'
-                            }}
-                            src={
-                              i.fields.mediaItem[0].fields.asset.fields.file.url
-                            }
-                          />
-                        </a>
-                      </li>
-                    </ul>
-                  </>
+                  <ul
+                    style={{
+                      borderRight: 'solid 1px #333',
+                      listStyle: 'none',
+                      textAlign: 'left'
+                    }}
+                    key={i?.fields?.label}
+                  >
+                    <li>
+                      <a
+                        href={i.fields.url}
+                        target='_blank'
+                        rel='noreferrer'
+                        style={{ padding: '0px 10px', listStyle: 'nono' }}
+                      >
+                        <img
+                          style={{
+                            paddingLeft: '10px',
+                            paddingRight: '10px'
+                          }}
+                          alt={i.fields.mediaItem[0].fields?.altText}
+                          src={
+                            i.fields.mediaItem[0].fields.asset.fields.file.url
+                          }
+                        />
+                      </a>
+                    </li>
+                  </ul>
                 ))}
             </div>
           </section>
@@ -157,3 +159,91 @@ export default function WorldWideMenu({ world }) {
     </div>
   );
 }
+
+WorldWideMenu.propTypes = {
+  world: PropTypes.shape({
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        fields: PropTypes.shape({
+          topNav: PropTypes.arrayOf(
+            PropTypes.shape({
+              fields: PropTypes.shape({
+                navItems: PropTypes.arrayOf(
+                  PropTypes.shape({
+                    fields: PropTypes.shape({
+                      url: PropTypes.string,
+                      label: PropTypes.string,
+                      ariaLabel: PropTypes.string,
+                      sys: PropTypes.shape({
+                        id: PropTypes.string
+                      })
+                    })
+                  })
+                )
+              })
+            })
+          ),
+          primaryNav: PropTypes.arrayOf(
+            PropTypes.shape({
+              fields: PropTypes.shape({
+                internalTitle: PropTypes.string,
+                navItems: PropTypes.arrayOf(
+                  PropTypes.shape({
+                    sys: PropTypes.shape({
+                      id: PropTypes.string
+                    }),
+                    fields: PropTypes.shape({
+                      label: PropTypes.string,
+                      url: PropTypes.string,
+                      ariaLabel: PropTypes.string,
+                      mediaItem: PropTypes.arrayOf(
+                        PropTypes.shape({
+                          fields: PropTypes.shape({
+                            altText: PropTypes.string,
+                            asset: PropTypes.shape({
+                              fields: PropTypes.shape({
+                                file: PropTypes.shape({
+                                  url: PropTypes.string
+                                })
+                              })
+                            })
+                          })
+                        })
+                      )
+                    })
+                  })
+                )
+              })
+            })
+          ),
+          bottomNav: PropTypes.shape({
+            fields: PropTypes.shape({
+              navItems: PropTypes.arrayOf(
+                PropTypes.shape({
+                  fields: PropTypes.shape({
+                    label: PropTypes.string,
+                    url: PropTypes.string,
+                    mediaItem: PropTypes.arrayOf(
+                      PropTypes.shape({
+                        fields: PropTypes.shape({
+                          altText: PropTypes.string,
+                          asset: PropTypes.shape({
+                            fields: PropTypes.shape({
+                              file: PropTypes.shape({
+                                url: PropTypes.string
+                              })
+                            })
+                          })
+                        })
+                      })
+                    )
+                  })
+                })
+              )
+            })
+          })
+        })
+      })
+    )
+  })
+};

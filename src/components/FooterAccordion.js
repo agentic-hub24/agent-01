@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import { DropSvg, DropSvgOpen } from './svgs';
 
 const FooterAccordion = ({
@@ -40,8 +41,8 @@ const FooterAccordion = ({
           'bg-[#999999]': isNavHeader
         })}
       >
-        <div
-          className={classNames('', {
+        <button
+          className={classNames('!w-full', {
             'flex p-3.5 flex-wrap items-center list-none cursor-pointer':
               isHeader,
             'flex border-b-[1px] border-[#666] flex-wrap items-center list-none cursor-pointer':
@@ -54,13 +55,25 @@ const FooterAccordion = ({
           <h4 className={footerHeadingClass}>
             {header} {!open ? <DropSvgOpen /> : <DropSvg />}
           </h4>
-        </div>
-        {/* {open ? children : null} */}
+        </button>
+
         {/*Changing this to below coz Cookie modal does open for smaller screens*/}
         <div style={{ display: open ? 'block' : 'none' }}>{children}</div>
       </div>
     </div>
   );
+};
+
+FooterAccordion.propTypes = {
+  isActive: PropTypes.bool,
+  isNavHeader: PropTypes.bool,
+  isTopNavMobile: PropTypes.bool,
+  isTopNavMobileLogo: PropTypes.bool,
+  isHeader: PropTypes.bool,
+  header: PropTypes.string,
+  handleToggle: PropTypes.func,
+  open: PropTypes.bool,
+  children: PropTypes.node
 };
 
 export default FooterAccordion;

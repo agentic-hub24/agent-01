@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { RichText } from '@components/RichText';
 
 export default function StoreDetails({
@@ -13,7 +14,10 @@ export default function StoreDetails({
       </h2>
       <div className='flex md:flex-row flex-col font-HelveticaRoman font-normal text-[14px] text-[#232323]'>
         {details.map((innerItem, index) => (
-          <div className='flex flex-col md:w-1/4 w-2/3 mr-[30px]' key={index}>
+          <div
+            className='flex flex-col md:w-1/4 w-2/3 mr-[30px]'
+            key={innerItem.fields.internalTitle || index}
+          >
             <div className='font-helveticaNeueLTBd text-[14px] text-[#232323]'>
               {innerItem.fields.storeName}
             </div>
@@ -71,6 +75,28 @@ export default function StoreDetails({
     </>
   );
 }
+
+StoreDetails.propTypes = {
+  city: PropTypes.string,
+  details: PropTypes.arrayOf(
+    PropTypes.shape({
+      fields: PropTypes.shape({
+        internalTitle: PropTypes.string,
+        storeName: PropTypes.string,
+        storeDetails: PropTypes.string,
+        storeTelephoneNumber: PropTypes.string,
+        mobile: PropTypes.string,
+        emailAddress: PropTypes.string,
+        websiteLink: PropTypes.string,
+        storeOpeningHours: PropTypes.shape({
+          content: PropTypes.arrayOf(PropTypes.string)
+        })
+      })
+    })
+  ),
+  locale: PropTypes.string,
+  storeDetailsLabel: PropTypes.object
+};
 
 StoreDetails.defaultProps = {
   city: '',

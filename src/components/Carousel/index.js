@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import { HiChevronRight, HiChevronLeft } from 'react-icons/hi2';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const CarouselComponent = ({ carouselItem, showBanner }) => {
   const [clicked, setClicked] = useState(null);
@@ -17,7 +19,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
         swipeable={true}
         showStatus={false}
         interval={5000}
-        showIndicators={carouselItem?.length > 1 ? true : false}
+        showIndicators={carouselItem?.length > 1}
         dynamicHeight={true}
         onChange={id => setCount(id)}
         renderArrowPrev={(onClickHandler, hasPrev) =>
@@ -49,9 +51,13 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
           )
         }
       >
-        {carouselItem?.map((item, index) => {
+        {carouselItem?.map(item => {
           return (
-            <Link href={item?.fields?.url || '#'} key={index} target='_blank'>
+            <Link
+              href={item?.fields?.url || '#'}
+              key={item?.sys?.id}
+              target='_blank'
+            >
               <div className='lg:relative lg:inline-block'>
                 <img
                   src={
@@ -81,7 +87,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
         })}
       </Carousel>
       {/* Carousel banner mobile */}
-      {showBanner && carouselItem[count]?.fields?.url && (
+      {showBanner && (
         <div className='bg-[#e3e3e3] flex flex-col items-center text-[#000] lg:hidden font-HelveticaRoman leading-tight p-[20px]'>
           <h1 className='text-[34px] text-center'>
             {
@@ -95,20 +101,55 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
                 .description
             }
           </p>
-          <Link href={carouselItem[count]?.fields?.url || '#'} target='_blank'>
-            <button className='bg-[#fff] px-4 py-3 text-[12px] rounded-md uppercase shadow-lg mt-[15px] font-HelveticaBold'>
-              Browse
-            </button>
-          </Link>
+          {carouselItem[count]?.fields?.url && (
+            <Link
+              href={carouselItem[count]?.fields?.url || '#'}
+              target='_blank'
+            >
+              <button className='bg-[#fff] px-4 py-3 text-[12px] rounded-md uppercase shadow-lg mt-[15px] font-HelveticaBold'>
+                Browse
+              </button>
+            </Link>
+          )}
         </div>
       )}
     </div>
   );
 };
 
-export default CarouselComponent;
+CarouselComponent.propTypes = {
+  carouselItem: PropTypes.arrayOf(
+    PropTypes.shape({
+      fields: PropTypes.shape({
+        url: PropTypes.string,
+        mediaItem: PropTypes.arrayOf(
+          PropTypes.shape({
+            fields: PropTypes.shape({
+              asset: PropTypes.shape({
+                fields: PropTypes.shape({
+                  file: PropTypes.shape({
+                    url: PropTypes.string
+                  }),
+                  altText: PropTypes.string,
+                  title: PropTypes.string,
+                  description: PropTypes.string
+                })
+              })
+            })
+          })
+        )
+      }),
+      sys: PropTypes.shape({
+        id: PropTypes.string
+      })
+    })
+  ),
+  showBanner: PropTypes.bool
+};
 
 CarouselComponent.defaultProps = {
   showBanner: true,
   carouselItem: []
 };
+
+export default CarouselComponent;

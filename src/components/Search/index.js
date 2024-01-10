@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getProductListing } from '@services/productListingAPI/client';
-import Cta from '@components/Cta';
+import PropTypes from 'prop-types';
 import FilterContent from '@components/ProductListing/FilterContent';
 import PLPCards from '@components/ProductListing/PLPCards';
 import PLPOrderBySelect from '@components/ProductListing/PLPOrderBySelect';
 import {
   selectOptions,
-  CTAObject,
   staticLabelsPLP
 } from '@components/ProductListing/helper';
 import BackToTop from '@components/backToTop';
@@ -32,7 +31,7 @@ export default function SearchPage({
   const [apiRequestBody, setApiRequestBody] = useState();
   const [selectedFilterCount, setSelectedFilterCount] = useState();
   const [activeIndex, setActiveIndex] = useState();
-  const [ListingData, setListingData] = useState(productListingData);
+  const [listingData, setListingData] = useState(productListingData);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -133,7 +132,7 @@ export default function SearchPage({
             <span className='font-bold capitalize'>{requestBody?.search}</span>
           </h1>
           <p className='my-5 font-sans font-bold text-xl leading-none'>
-            {ListingData?.response?.searchResults?.totalSearchResults}
+            {listingData?.response?.searchResults?.totalSearchResults}
             &nbsp;{staticLabelsPLP[router.locale].totalProductLabel}
           </p>
           <div className='relative mb-20 hidden lg:block'>
@@ -147,7 +146,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].product}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.productsCount})
+                    ({listingData?.response?.searchResults?.productsCount})
                   </span>
                 </span>
               </li>
@@ -160,7 +159,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].spec}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.specificationCount})
+                    ({listingData?.response?.searchResults?.specificationCount})
                   </span>
                 </span>
               </li>
@@ -179,7 +178,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].product}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.productsCount})
+                    ({listingData?.response?.searchResults?.productsCount})
                   </span>
                 </span>
               </option>
@@ -187,7 +186,7 @@ export default function SearchPage({
                 <span className='m-0 outline-none inline-block py-[8px] px-[22px] border-0 rounded-4 uppercase no-underline text-center font-HelveticaMedium font-semibold text-1.4em font-normal leading-1 shadow-none cursor-pointer bg-transparent'>
                   {staticLabelsPLP[router.locale].spec}{' '}
                   <span>
-                    ({ListingData?.response?.searchResults?.specificationCount})
+                    ({listingData?.response?.searchResults?.specificationCount})
                   </span>
                 </span>
               </option>
@@ -196,43 +195,41 @@ export default function SearchPage({
         </div>
       </div>
       {activeIndex === 1 ? (
-        <>
-          <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
-            <div className='flex justify-between flex-wrap md:flex-nowrap'>
-              <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
-              <PLPOrderBySelect
-                sortingArray={selectOptions[router.locale]}
-                orderBySelect={e => orderBySelect(e)}
-              />
-            </div>
-            <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
-              <FilterContent
-                filterOptions={ListingData?.response?.['@search.facets']}
-                showAll={true}
-                pageType={'spec'}
-                searchValue={requestBody?.search}
-                slug={params?.slug}
-                selectedFilter={apiRequestBody}
-                locale={router.locale}
-                totalProductCount={ListingData?.response?.['@odata.count']}
-                setSelectedFilterCount={setSelectedFilterCount}
-              />
-              {searchResults?.specificationCount > 0 ? (
-                <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
-                  <SpecCard
-                    skuId={skuId}
-                    productValueArray={productValueArray}
-                    locale={locale}
-                  />
-                </div>
-              ) : (
-                <div className='lg:mx-10 md:mx-10 my-0 py-10px'>
-                  {staticLabelsPLP[router.locale].noProductFound}
-                </div>
-              )}
-            </div>
-          </section>
-        </>
+        <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
+          <div className='flex justify-between flex-wrap md:flex-nowrap'>
+            <div className=' flex flex-col pt-[50px] pb-[22px] m-[10px] border-b-2 md:border-b-0 w-full'></div>
+            <PLPOrderBySelect
+              sortingArray={selectOptions[router.locale]}
+              orderBySelect={e => orderBySelect(e)}
+            />
+          </div>
+          <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
+            <FilterContent
+              filterOptions={listingData?.response?.['@search.facets']}
+              showAll={true}
+              pageType={'spec'}
+              searchValue={requestBody?.search}
+              slug={params?.slug}
+              selectedFilter={apiRequestBody}
+              locale={router.locale}
+              totalProductCount={listingData?.response?.['@odata.count']}
+              setSelectedFilterCount={setSelectedFilterCount}
+            />
+            {searchResults?.specificationCount > 0 ? (
+              <div className='float-right lg:mx-10 md:mx-10 my-0 py-10px pb-[20px] w-full md:w-2/3 lg:w-2/3'>
+                <SpecCard
+                  skuId={skuId}
+                  productValueArray={productValueArray}
+                  locale={locale}
+                />
+              </div>
+            ) : (
+              <div className='lg:mx-10 md:mx-10 my-0 py-10px'>
+                {staticLabelsPLP[router.locale].noProductFound}
+              </div>
+            )}
+          </div>
+        </section>
       ) : (
         <>
           <section className='max-w-screen-lg mx-auto bg-white text-[#232323] overflow-auto'>
@@ -247,7 +244,7 @@ export default function SearchPage({
 
             <div className='flex flex-wrap md:flex-nowrap w-full flex-col md:flex-row'>
               <FilterContent
-                filterOptions={ListingData?.response?.['@search.facets']}
+                filterOptions={listingData?.response?.['@search.facets']}
                 filterSelect={filterSelect}
                 selectedFilter={apiRequestBody}
                 selectedFilterCount={selectedFilterCount}
@@ -256,7 +253,7 @@ export default function SearchPage({
                 currentPageValue={1}
                 slug={params?.slug}
                 locale={router.locale}
-                totalProductCount={ListingData?.response?.['@odata.count']}
+                totalProductCount={listingData?.response?.['@odata.count']}
                 setSelectedFilterCount={setSelectedFilterCount}
               />
               {/* cards div */}
@@ -266,11 +263,11 @@ export default function SearchPage({
                   productValueArray?.map((item, index) => {
                     return (
                       <PLPCards
-                        handleMouseOut={e => handleMouseOut(e)}
+                        handleMouseOut={() => handleMouseOut()}
                         handleMouseOver={e => handleMouseOver(e)}
                         skuId={skuId}
                         item={item}
-                        key={index}
+                        key={skuId || index}
                       />
                     );
                   })
@@ -281,16 +278,34 @@ export default function SearchPage({
             </div>
           </section>
           <Pagination
-            currentPage={ListingData?.response?.paginationData?.CurrentPage}
+            currentPage={listingData?.response?.paginationData?.CurrentPage}
             totalPages={
-              ListingData?.response?.paginationData?.totalNumberOfPages
+              listingData?.response?.paginationData?.totalNumberOfPages
             }
             onPageChange={handlePageChange}
           />
         </>
       )}
-      <Cta fields={CTAObject[router.locale]} />
       <BackToTop topHeight={0} localeProp={router.locale} />
     </>
   );
 }
+
+SearchPage.propTypes = {
+  productListingData: PropTypes.shape({
+    response: PropTypes.shape({
+      value: PropTypes.array,
+      searchResults: PropTypes.shape({
+        totalSearchResults: PropTypes.number,
+        productsCount: PropTypes.number,
+        specificationCount: PropTypes.number
+      })
+    })
+  }),
+  requestBody: PropTypes.object,
+  params: PropTypes.shape({
+    slug: PropTypes.string
+  }),
+  pageType: PropTypes.string,
+  locale: PropTypes.string
+};

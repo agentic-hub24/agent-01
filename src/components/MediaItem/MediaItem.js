@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import PropTypes from 'prop-types';
 import MediaVideo from './MediaVideo';
 
 const MediaItem = ({ assets, height }) => {
@@ -33,6 +34,11 @@ const MediaItem = ({ assets, height }) => {
       })}
     </div>
   );
+};
+
+MediaItem.propTypes = {
+  assets: PropTypes.array,
+  height: PropTypes.string
 };
 
 export default MediaItem;

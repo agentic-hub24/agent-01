@@ -2,6 +2,7 @@ import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import SearchPage from '@components/Search';
 import { removeQuotesFromString } from '@utils/footerUtils';
 
@@ -22,6 +23,22 @@ export default function ResultPage({
     />
   );
 }
+
+ResultPage.propTypes = {
+  productListingData: PropTypes.object,
+  requestBody: PropTypes.object,
+  params: PropTypes.object,
+  pageType: PropTypes.string,
+  locale: PropTypes.string
+};
+
+ResultPage.defaultProps = {
+  productListingData: {},
+  requestBody: {},
+  params: {},
+  pageType: '',
+  locale: ''
+};
 
 export async function getServerSideProps(context) {
   const {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 const NavItems = ({
   navItem,
@@ -8,7 +9,6 @@ const NavItems = ({
   secondaryNavItemFunc,
   handleCloseHandle
 }) => {
-  // const socialIcon = getSocialIcon(navItem?.fields?.label);
   const [cookieClass, setCookieClass] = useState('');
 
   useEffect(() => {
@@ -38,11 +38,8 @@ const NavItems = ({
           onClick={() => handleCloseHandle()}
         >
           <div className={linkClass}>
-            {/* {socialIcon ? <span className="mr-1">{socialIcon}</span> : null} */}
             {navItem?.fields?.label ? (
-              <>
-                <span>{navItem?.fields?.label}</span>
-              </>
+              <span>{navItem?.fields?.label}</span>
             ) : null}
           </div>
         </a>
@@ -51,6 +48,14 @@ const NavItems = ({
   );
 };
 export default NavItems;
+
+NavItems.propTypes = {
+  navItem: PropTypes.object,
+  secondaryNavItemFunc: PropTypes.func,
+  linkClass: PropTypes.string,
+  classNames: PropTypes.string,
+  handleCloseHandle: PropTypes.func
+};
 
 NavItems.defaultProps = {
   secondaryNavItemFunc: () => {},

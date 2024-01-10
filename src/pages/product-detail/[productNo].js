@@ -4,6 +4,7 @@ import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductDetails } from '@services/productListingAPI/client';
+import PropTypes from 'prop-types';
 import DetailsComponent from '@components/detailsComponent';
 import { createPDPSeoData } from '@utils/footerUtils';
 
@@ -44,6 +45,11 @@ export default function ProductDetailMain({ productDetailsData, productNo }) {
 
   return <DetailsComponent productDetailsData={productDetailsData} />;
 }
+
+ProductDetailMain.propTypes = {
+  productDetailsData: PropTypes.object,
+  productNo: PropTypes.string
+};
 
 export async function getServerSideProps(context) {
   const {

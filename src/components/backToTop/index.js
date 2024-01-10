@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { HiOutlineChevronUp } from 'react-icons/hi';
+import PropTypes from 'prop-types';
 import { backtoTopLabels } from '@utils/footerUtils';
 
 export default function BackToTop({ topHeight, localeProp = '' }) {
@@ -18,7 +19,7 @@ export default function BackToTop({ topHeight, localeProp = '' }) {
   return (
     <>
       {top && (
-        <div
+        <button
           className='fixed bottom-[12px] right-[12px] rounded shadow w-[56px] h-[56px] bg-[#dbdbdb] cursor-pointer shadow pt-[2px]'
           onClick={handleScrollToTop}
         >
@@ -28,8 +29,13 @@ export default function BackToTop({ topHeight, localeProp = '' }) {
           <div className='text-[8px] font-bold text-[#232323] text-center'>
             {backtoTopLabels[localeProp]}
           </div>
-        </div>
+        </button>
       )}
     </>
   );
 }
+
+BackToTop.propTypes = {
+  topHeight: PropTypes.number,
+  localeProp: PropTypes.string
+};

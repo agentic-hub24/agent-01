@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 
 const CTAURL = {
   en: process.env.NEXT_PUBLIC_EMPLIFY_EN,
@@ -12,7 +13,7 @@ const Cta = ({ fields }) => {
     let url = CTAURL[locale];
     let height = 700;
     let width = 700;
-    var left = (screen.width - width) / 2;
+    let left = (screen.width - width) / 2;
     window.open(
       url,
       'center window',
@@ -28,14 +29,20 @@ const Cta = ({ fields }) => {
 
   return (
     <div className='p-[20px] max-w-screen-lg mx-auto text-right '>
-      <span
+      <button
         onClick={openPopUp}
-        className='font-HelveticaRomanpx-[10px] pb-[10] text-[12px] text-black cursor-pointer hover:underline'
+        className='font-HelveticaRoman px-[10px] pb-[10] text-[12px] text-black cursor-pointer hover:underline'
       >
         {fields.label}
-      </span>
+      </button>
     </div>
   );
+};
+
+Cta.propTypes = {
+  fields: PropTypes.shape({
+    label: PropTypes.string
+  })
 };
 
 export default Cta;

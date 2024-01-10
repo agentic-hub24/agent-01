@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { RichText } from '@components/RichText';
 
 const ArticleContent = ({ heading, fields }) => {
@@ -8,13 +9,29 @@ const ArticleContent = ({ heading, fields }) => {
       </h2>
       {fields?.sections?.map((sect, index) => (
         <RichText
-          key={index}
+          key={sect?.sys?.id || index}
           text={sect?.fields?.richText}
           paragraphCustomClasses='text-[14px] text-black font-HelveticaRoman'
         />
       ))}
     </div>
   );
+};
+
+ArticleContent.propTypes = {
+  heading: PropTypes.string,
+  fields: PropTypes.shape({
+    sections: PropTypes.arrayOf(
+      PropTypes.shape({
+        sys: PropTypes.shape({
+          id: PropTypes.string
+        }),
+        fields: PropTypes.shape({
+          richText: PropTypes.string
+        })
+      })
+    )
+  })
 };
 
 export default ArticleContent;

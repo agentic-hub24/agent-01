@@ -1,18 +1,13 @@
 import { useState, useEffect } from 'react';
 import { getProductListing } from '@services/productListingAPI/client';
-import Cta from '@components/Cta';
+import PropTypes from 'prop-types';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
 import FilterContent from './FilterContent';
 import PLPCards from './PLPCards';
 import PLPHeader from './PLPHeader';
 import PLPOrderBySelect from './PLPOrderBySelect';
-import {
-  CTAObject,
-  selectOptions,
-  formatterHeader,
-  staticLabelsPLP
-} from './helper';
+import { selectOptions, formatterHeader, staticLabelsPLP } from './helper';
 
 export default function ProductListing({
   productListingData,
@@ -92,7 +87,6 @@ export default function ProductListing({
             productCount={totalProductCount}
             pageHeading={formatterHeader(sub_slug)}
           />
-          {/* order by select -- start ==> TODO: Select option from CTFL */}
           <PLPOrderBySelect
             orderBySelect={e => orderBySelect(e)}
             sortingArray={selectOptions[locale]}
@@ -115,18 +109,18 @@ export default function ProductListing({
           <div className='flex md:ml-[30px] mb-[20px] mt-[20px] pb-[20px] md:w-3/4 flex-wrap'>
             {/* Repeater div 1 */}
             {productValueArray && productValueArray.length > 0 ? (
-              productValueArray?.map((item, index) => {
+              productValueArray?.map(item => {
                 return (
                   <PLPCards
-                    handleMouseOut={e => handleMouseOut(e)}
+                    handleMouseOut={() => handleMouseOut()}
                     handleMouseOver={e => handleMouseOver(e)}
                     isHovering={isHovering}
                     skuId={skuId}
                     item={item}
-                    handleModalOpen={e => handleModalOpen(e)}
-                    handleModalClose={e => handleModalClose(e)}
+                    handleModalOpen={() => handleModalOpen()}
+                    handleModalClose={() => handleModalClose()}
                     modalOpen={modalOpen}
-                    key={index}
+                    key={item?.SkuNumber}
                     locale={locale}
                   />
                 );
@@ -137,11 +131,27 @@ export default function ProductListing({
           </div>
         </div>
       </section>
-      <Cta fields={CTAObject[locale]} />
       <BackToTop topHeight={0} localeProp={locale} />
     </>
   );
 }
+
+ProductListing.propTypes = {
+  productListingData: PropTypes.shape({
+    response: PropTypes.shape({
+      value: PropTypes.array,
+      '@search.facets': PropTypes.object,
+      '@odata.count': PropTypes.string
+    })
+  }),
+  requestBody: PropTypes.object,
+  params: PropTypes.shape({
+    slug: PropTypes.string,
+    sub_slug: PropTypes.string
+  }),
+  locale: PropTypes.string
+};
+
 ProductListing.defaultProps = {
   productListingData: {
     response: {
@@ -154,6 +164,5 @@ ProductListing.defaultProps = {
   params: {
     slug: '',
     sub_slug: ''
-  },
-  pageData: {}
+  }
 };

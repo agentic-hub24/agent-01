@@ -71,7 +71,7 @@
 
 body {
   margin: 0;
-  font-family: 'Helvetica-Light', 'sans-serif';
+  font-family: 'Helvetica-Light', sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   color: #6c7293;
@@ -82,7 +82,7 @@ body {
   margin-top: 26px;
 }
 a {
-  font-family: 'Helvetica-Light', Helvetica, 'sans-serif';
+  font-family: 'Helvetica-Light', Helvetica, sans-serif;
   color: #428bca;
   &:hover {
     text-decoration: underline;
@@ -109,7 +109,6 @@ a {
       bottom: 60px;
     }
     // @media screen and (min-width: 1200px) {
-    //   bottom: 10px;
     // }
     @media screen and (min-width: 769px) and (max-width: 1199px) {
       bottom: 2px;
@@ -204,7 +203,7 @@ a {
 }
 
 #embed a {
-  font-family: 'Helvetica-Light', Helvetica, 'sans-serif';
+  font-family: 'Helvetica-Light', Helvetica, sans-serif;
   color: blue;
   font-weight: 400;
   text-decoration: underline;
@@ -222,10 +221,7 @@ a {
 
 /* Styles for the slider thumb */
 .slider .thumb {
-  top: 11px;
   left: 8px;
-  width: 14px;
-  height: 2px;
   background: #666;
   content: '';
   display: block;
@@ -349,9 +345,6 @@ a {
   background: #fff;
 }
 
-element.style {
-  margin-top: 0;
-}
 .koh-search-pagination ul {
   border: 0;
   padding: 0;
@@ -405,7 +398,7 @@ element.style {
 
 .rich-text h4 {
   color: #000;
-  font-family: HelveticaNeueLT-Roman;
+  font-family: HelveticaNeueLT-Roman, sans-serif;
 }
 
 .rich-text h3 {
@@ -415,7 +408,7 @@ element.style {
   line-height: 1.1;
   font-weight: 500;
   color: #000;
-  font-family: HelveticaNeueLT-Roman;
+  font-family: HelveticaNeueLT-Roman, sans-serif;
 }
 
 .rich-text h2 {
@@ -425,7 +418,7 @@ element.style {
   line-height: 1.1;
   font-weight: 500;
   color: #000;
-  font-family: HelveticaNeueLT-Roman;
+  font-family: HelveticaNeueLT-Roman, sans-serif;
 }
 
 .loader {
@@ -459,7 +452,7 @@ element.style {
 
 .navMenu li a {
   color: #666;
-  font-family: 'HelveticaBold';
+  font-family: 'HelveticaBold', sans-serif;
   line-height: 1rem;
 }
 

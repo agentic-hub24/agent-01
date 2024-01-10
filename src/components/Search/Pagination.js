@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const pageRange = 3; // Number of visible pages
@@ -68,6 +69,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       </ul>
     </div>
   );
+};
+
+Pagination.propTypes = {
+  currentPage: PropTypes.string,
+  totalPages: PropTypes.string,
+  onPageChange: PropTypes.func
 };
 
 export default Pagination;

@@ -36,15 +36,11 @@ export const checkForNewProducts = dateStr => {
   const differenceInYears = difference / millisecondsInYear;
 
   // Check if the difference is greater than or equal to 1 year
-  if (differenceInYears >= 1) {
-    return false;
-  } else {
-    return true;
-  }
+  return differenceInYears < 1;
 };
 
 export const magnify = (imgID, zoom) => {
-  var img, glass, w, h, bw;
+  let img, glass, w, h, bw;
   img = document.getElementById(imgID);
   /*create magnifier glass:*/
   glass = document.createElement('DIV');
@@ -66,7 +62,7 @@ export const magnify = (imgID, zoom) => {
   glass.addEventListener('touchmove', moveMagnifier);
   img.addEventListener('touchmove', moveMagnifier);
   function moveMagnifier(e) {
-    var pos, x, y;
+    let pos, x, y;
     /*prevent any other actions that may occur when moving over the image*/
     e.preventDefault();
     /*get the cursor's x and y positions:*/
@@ -94,7 +90,7 @@ export const magnify = (imgID, zoom) => {
       '-' + (x * zoom - w + bw) + 'px -' + (y * zoom - h + bw) + 'px';
   }
   function getCursorPos(e) {
-    var a,
+    let a,
       x = 0,
       y = 0;
     e = e || window.event;
@@ -278,25 +274,6 @@ export const PDP_LABELS = {
     technology: 'Technology',
     availableAt: 'Available at:',
     discontinued: 'This product has been discontinued.'
-  }
-};
-
-export const CTAObject = {
-  es: {
-    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-    label: 'Ayúdenos a mejorar este sitio',
-    ariaLabel: 'Help us Improve this Site ',
-    visible: true,
-    buttonBrandColor: 'None',
-    ctaType: 'Text Link'
-  },
-  en: {
-    internalTitle: 'Latem - Help us Improve this Site - CTA PT',
-    label: 'Help us Improve this Site',
-    ariaLabel: 'Help us Improve this Site ',
-    visible: true,
-    buttonBrandColor: 'None',
-    ctaType: 'Text Link'
   }
 };
 

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import FooterSection from '@components/FooterSection';
 import HeaderSection from '@components/HeaderSection';
 import PreviewBanner from '@components/PreviewBanner';
@@ -35,3 +36,15 @@ export default function Layout({
     </>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node,
+  headerNavigationData: PropTypes.shape({
+    items: PropTypes.arrayOf(PropTypes.object)
+  }),
+  footerNavigationData: PropTypes.shape({
+    items: PropTypes.arrayOf(PropTypes.object)
+  }),
+  seoMetadata: PropTypes.object,
+  world: PropTypes.object
+};
