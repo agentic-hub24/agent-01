@@ -4,6 +4,7 @@ import contentfulClient, {
 import { getProductListing } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
 import ProductListing from '@components/ProductListing';
+import { getSEOData } from '@utils/footerUtils';
 
 export default function ProductList({
   productListingData,
@@ -33,6 +34,13 @@ export async function getServerSideProps(context) {
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
   const client = preview ? contentfulPreviewClient : contentfulClient;
+  const seoMetaData = await client.getEntries({
+    content_type: 'seoMetadata',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
+    include: 7,
+    locale: lc
+  });
+
   const footerNavigationData = await client.getEntries({
     content_type: 'footer',
     'metadata.tags.sys.id[in]': 'kohlerLatam',
@@ -62,11 +70,13 @@ export async function getServerSideProps(context) {
   const productListingData = await getProductListing(requestBody);
   // PLP API --> end
 
+  const pageData = getSEOData(params.sub_slug, seoMetaData);
   return {
     props: {
       footerNavigationData,
       headerNavigationData,
       world,
+      pageData,
       productListingData,
       params,
       locale,

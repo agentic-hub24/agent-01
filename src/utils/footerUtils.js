@@ -61,19 +61,23 @@ export const defaultImage = (productItem, defaultSKU) => {
   return `//kohler.scene7.com/is/image/PAWEB/Category_Template?$PDPcon$&$gradient_src=PAWEB%2Forganic-gradient&$shadow_src=PAWEB%2FBlank&$Badge1_src=PAWEB%2FBlank&$Badge4_src=PAWEB%2FBlank&$Badge3_src=PAWEB%2FBlank&$Badge2_src=PAWEB%2FBlank&$product_src=is{PAWEB%2F${defaultImage}}`;
 };
 
-export const createPDPSeoData = ({
-  product: {
-    ProductProductNo,
-    ProductBrandName,
-    ProductDescriptionProductShort,
-    links: { ProductItem },
-    ProductDefaultSKU
-  }
-}) => {
+export const createPDPSeoData = (
+  {
+    product: {
+      ProductProductNo,
+      ProductBrandName,
+      ProductDescriptionProductShort,
+      links: { ProductItem },
+      ProductDefaultSKU
+    }
+  },
+  context
+) => {
   const pageData = {
     seoMetadata: {
       fields: {
-        canonicalUrl: '',
+        pageTitle: `KOHLER | ${ProductProductNo} | ${ProductBrandName}| ${ProductDescriptionProductShort}`,
+        canonicalUrl: `${context?.req?.headers?.host}/${context?.locale}${context?.resolvedUrl}`,
         pageDescription: `${ProductDescriptionProductShort}`,
         ogTitle: `KOHLER | ${ProductProductNo} | ${ProductBrandName}| ${ProductDescriptionProductShort}`,
         ogDescription: `${ProductDescriptionProductShort}`,
@@ -85,8 +89,23 @@ export const createPDPSeoData = ({
           }
         },
         ogType: 'Website',
-        ogUrl: '',
+        ogUrl: `${context?.req?.headers?.host}/${context?.locale}${context?.resolvedUrl}`,
         keywords: `${ProductProductNo} | ${ProductBrandName} | KOHLER`
+      }
+    }
+  };
+  return pageData;
+};
+
+export const getSEOData = (slug, seoMetadata) => {
+  const data = seoMetadata?.items?.find(elem =>
+    elem?.fields?.canonicalUrl?.includes(slug)
+  );
+
+  const pageData = {
+    seoMetadata: {
+      fields: {
+        ...data?.fields
       }
     }
   };
