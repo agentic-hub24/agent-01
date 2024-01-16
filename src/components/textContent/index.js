@@ -16,13 +16,12 @@ const TextContent = ({ fields, pageHeading }) => {
       <h2 className='mt-[20px] mb-[30px] text-[2rem] md:text-[2.7rem] font-normal text-black'>
         {fields?.heading || pageHeading}
       </h2>
-      {fields?.richText?.content?.map((sect, index) => (
+      {fields?.richText && (
         <RichText
-          key={index}
-          text={sect}
+          text={fields?.richText}
           paragraphCustomClasses='text-[14px] text-black font-HelveticaRoman'
         />
-      ))}
+      )}
     </div>
   );
 };

@@ -6,6 +6,48 @@ import PropTypes from 'prop-types';
 import SearchPage from '@components/Search';
 import { removeQuotesFromString } from '@utils/footerUtils';
 
+async function fetchContentfulEntries(locale, preview) {
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
+  const client = preview ? contentfulPreviewClient : contentfulClient;
+
+  const query1 = await client.getEntries({
+    content_type: 'latamLandingPage',
+    'fields.slug': '',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
+    include: 7,
+    locale: lc
+  });
+  const query2 = client.getEntries({
+    content_type: 'header',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
+    include: 7,
+    locale: lc
+  });
+  const query3 = client.getEntries({
+    content_type: 'footer',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
+    include: 7,
+    locale: lc
+  });
+
+  const world = await client.getEntries({
+    content_type: 'worldwideMenu',
+    include: 7,
+    locale: lc
+  });
+
+  const results = await Promise.all([query1, query2, query3]);
+
+  const headerNavigationData = results[1];
+  const footerNavigationData = results[2];
+
+  return {
+    headerNavigationData,
+    footerNavigationData,
+    world
+  };
+}
+
 export default function ResultPage({
   productListingData,
   requestBody,
@@ -47,42 +89,14 @@ export async function getServerSideProps(context) {
     params: { slug },
     locale
   } = context;
-  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
   const searchValue = removeQuotesFromString(query?.search);
   const currentPage = removeQuotesFromString(query?.currentPage);
   const pageType = query?.type ? query?.type : '';
-  const client = preview ? contentfulPreviewClient : contentfulClient;
-  const query1 = await client.getEntries({
-    content_type: 'latamLandingPage',
-    'fields.slug': '',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const query2 = client.getEntries({
-    content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const query3 = client.getEntries({
-    content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
 
-  const world = await client.getEntries({
-    content_type: 'worldwideMenu',
-    include: 7,
-    locale: lc
-  });
+  const { headerNavigationData, footerNavigationData, world } =
+    await fetchContentfulEntries(locale, preview);
 
-  const results = await Promise.all([query1, query2, query3]);
-
-  const headerNavigationData = results[1];
-  const footerNavigationData = results[2];
   //PLP API CALL --> Start
   const requestBody = {
     search: searchValue,
