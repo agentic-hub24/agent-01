@@ -58,6 +58,26 @@ import {
 } from './helper';
 import VideoModal from './videoModal';
 
+const SocialButton = ({ href, onClick, className, title, icon, label }) => (
+  <li className='relative'>
+    <button
+      target='popup'
+      data-href={href}
+      onClick={onClick}
+      rel='noreferrer'
+      className={className}
+      title={title}
+    >
+      <div className='flex inline-flex'>
+        <div className='flex w-[20px] h-[20px]'>{icon}</div>
+        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
+          {label}
+        </div>
+      </div>
+    </button>
+  </li>
+);
+
 export default function DetailsComponent({ productDetailsData }) {
   const router = useRouter();
   const { locale = '' } = router;
@@ -368,6 +388,26 @@ export default function DetailsComponent({ productDetailsData }) {
       : false;
   };
 
+  // social media
+
+  const shareOnFacebook = () => {
+    window.open(
+      `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
+      'facebook share',
+      'width=600,height=400'
+    );
+  };
+
+  const shareOnTwitter = () => {
+    window.open(
+      `http://twitter.com/share?text=${
+        PDP_LABELS[router.locale].twitterText
+      }&url=${window.location.href}`,
+      'twitter share',
+      'width=600,height=400'
+    );
+  };
+
   return (
     <>
       {isLoading && <Loader loading={isLoading} />}
@@ -649,56 +689,24 @@ export default function DetailsComponent({ productDetailsData }) {
                   className='flex flex-col cursor-pointer text-[#000] [&_li]:block absolute w-[230px] p-4 shadow-md rounded bg-white'
                   style={{ top: '-20px' }}
                 >
-                  <li className=''>
-                    <button
-                      data-href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
-                      target='popup'
-                      onClick={() => {
-                        window.open(
-                          `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
-                          'facebook share',
-                          'width=600,height=400'
-                        );
-                      }}
-                      rel='noreferrer'
-                      className='flex bg-[#fff] text-[15px] text-[#325a90] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
-                      title='Share On facebook'
-                    >
-                      <div className='flex inline-flex'>
-                        <div className='flex w-[20px] h-[20px]'>
-                          <Fb />
-                        </div>
-                        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
-                          Facebook
-                        </div>
-                      </div>
-                    </button>
-                  </li>
-                  <li className='relative'>
-                    <button
-                      target='popup'
-                      data-href={`http://twitter.com/share?text=${PDP_LABELS[locale].twitterText}&url=${window.location.href}`}
-                      onClick={() => {
-                        window.open(
-                          `http://twitter.com/share?text=${PDP_LABELS[locale].twitterText}&url=${window.location.href}`,
-                          'twitter share',
-                          'width=600,height=400'
-                        );
-                      }}
-                      rel='noreferrer'
-                      className='flex bg-[#fff] text-[15px] text-[#55acee] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
-                      title='Share On twitter'
-                    >
-                      <div className='flex inline-flex'>
-                        <div className='flex w-[20px] h-[20px]'>
-                          <Twitter />
-                        </div>
-                        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
-                          Twitter
-                        </div>
-                      </div>
-                    </button>
-                  </li>
+                  <SocialButton
+                    href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
+                    onClick={shareOnFacebook}
+                    className='flex bg-[#fff] text-[15px] text-[#325a90] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
+                    title='Share On facebook'
+                    icon={<Fb />}
+                    label='Facebook'
+                  />
+                  <SocialButton
+                    href={`http://twitter.com/share?text=${
+                      PDP_LABELS[router.locale].twitterText
+                    }&url=${window.location.href}`}
+                    onClick={shareOnTwitter}
+                    className='flex bg-[#fff] text-[15px] text-[#55acee] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
+                    title='Share On twitter'
+                    icon={<Twitter />}
+                    label='Twitter'
+                  />
                 </ul>
               </div>
             )}
@@ -1373,4 +1381,13 @@ DetailsComponent.defaultProps = {
       }
     }
   }
+};
+
+SocialButton.propTypes = {
+  href: PropTypes.string,
+  onClick: PropTypes.func,
+  className: PropTypes.string,
+  title: PropTypes.string,
+  icon: PropTypes.node,
+  label: PropTypes.string
 };

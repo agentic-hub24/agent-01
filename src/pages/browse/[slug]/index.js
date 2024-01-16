@@ -6,28 +6,10 @@ import PropTypes from 'prop-types';
 import ShowAllProducts from '@components/ShowAllProducts';
 import { getSEOData } from '@utils/footerUtils';
 
-export default function AllListing({ params, locale, categoryProductData }) {
-  return (
-    <ShowAllProducts
-      params={params}
-      locale={locale}
-      categoryProductData={categoryProductData}
-    />
-  );
-}
-
-AllListing.propTypes = {
-  params: PropTypes.object.isRequired,
-  locale: PropTypes.string.isRequired,
-  categoryProductData: PropTypes.object.isRequired
-};
-
-export async function getServerSideProps(context) {
-  const { params, locale, preview } = context;
+async function fetchContentfulEntries(locale, preview) {
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
-  const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
-
   const client = preview ? contentfulPreviewClient : contentfulClient;
+
   const seoMetaData = await client.getEntries({
     content_type: 'seoMetadata',
     'metadata.tags.sys.id[in]': 'kohlerLatam',
@@ -53,13 +35,44 @@ export async function getServerSideProps(context) {
     locale: lc
   });
 
+  return {
+    seoMetaData,
+    footerNavigationData,
+    headerNavigationData,
+    world
+  };
+}
+
+export default function AllListing({ params, locale, categoryProductData }) {
+  return (
+    <ShowAllProducts
+      params={params}
+      locale={locale}
+      categoryProductData={categoryProductData}
+    />
+  );
+}
+
+AllListing.propTypes = {
+  params: PropTypes.object.isRequired,
+  locale: PropTypes.string.isRequired,
+  categoryProductData: PropTypes.object.isRequired
+};
+
+export async function getServerSideProps(context) {
+  const { params, locale, preview } = context;
+  const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
+
+  const { seoMetaData, footerNavigationData, headerNavigationData, world } =
+    await fetchContentfulEntries(locale, preview);
+
   // category API -- start
   const requestBody = {
     category: params.slug,
     lang: languageAPI
   };
   const categoryProductData = await getProductCategory(requestBody);
-  // categoty API -- END
+  // category API -- END
 
   const pageData = getSEOData(params.slug, seoMetaData);
   return {
