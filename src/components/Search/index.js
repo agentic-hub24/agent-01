@@ -267,7 +267,7 @@ export default function SearchPage({
                         handleMouseOver={e => handleMouseOver(e)}
                         skuId={skuId}
                         item={item}
-                        key={skuId || index}
+                        key={item?.SkuNumber || index}
                       />
                     );
                   })

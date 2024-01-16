@@ -305,6 +305,7 @@ export default function FilterContent({
                   totalProductCount={totalProductCount}
                   locale={locale}
                   subSlug={subSlug}
+                  slug={slug}
                 />
               ) : (
                 <CategoryListDesktop
