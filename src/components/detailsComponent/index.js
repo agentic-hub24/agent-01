@@ -3,16 +3,15 @@
 /* eslint-disable react/no-unknown-property */
 
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { FaRegFilePdf } from 'react-icons/fa';
 import {
   HiCheck,
   HiOutlineDownload,
   HiOutlineChevronRight,
-  HiOutlineChevronDown,
-  HiShare
+  HiOutlineChevronDown
 } from 'react-icons/hi';
-import { HiMiniPrinter, HiPlay } from 'react-icons/hi2';
+import { HiPlay } from 'react-icons/hi2';
 import { MdOutlineZoomOutMap } from 'react-icons/md';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -24,10 +23,9 @@ import {
   getYoutubeMetaData
 } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
-import { SocialButton } from '@components/CommonSection';
+import SocialComponent from '@components/SocialComponent';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
-import { Fb, Twitter } from '@components/svgs';
 import ImageZoomModal from './ImageZoomModal';
 import LinkWithLabel from './LinkWithLabel';
 import SimilarProducts from './SimilarProducts';
@@ -62,7 +60,6 @@ import VideoModal from './videoModal';
 export default function DetailsComponent({ productDetailsData }) {
   const router = useRouter();
   const { locale = '' } = router;
-  const ref = useRef();
   const [colorName, setColorName] = useState('');
   const [carousel, setCarousel] = useState([]);
   const [skuNumber, setSKUNumber] = useState('');
@@ -81,7 +78,6 @@ export default function DetailsComponent({ productDetailsData }) {
   const [showZoom, setShowZoom] = useState(false);
   const [technicalInfoFiles, setTechnicalInfoFiles] = useState([]);
   const [colorFinishCodeArray, setColorFinishCodeArray] = useState([]);
-  const [social, setSocial] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [thumbsPosition, setThumbsPosition] = useState(0);
   const [imageName, setImageName] = useState('');
@@ -343,23 +339,6 @@ export default function DetailsComponent({ productDetailsData }) {
     fetchSimilarProducts();
   }, [skuNumber]);
 
-  useEffect(() => {
-    const checkIfClickedOutside = e => {
-      // If the menu is open and the clicked target is not within the menu,
-      // then close the menu
-      if (social && ref.current && !ref.current.contains(e.target)) {
-        setSocial(false);
-      }
-    };
-
-    document.addEventListener('mousedown', checkIfClickedOutside);
-
-    return () => {
-      // Cleanup the event listener
-      document.removeEventListener('mousedown', checkIfClickedOutside);
-    };
-  }, [social]);
-
   const handleMagnifier = (e, myImageId) => {
     let glass = document.getElementsByClassName('img-magnifier-glass');
     !zoomActive
@@ -367,26 +346,6 @@ export default function DetailsComponent({ productDetailsData }) {
       : glass && glass.length > 0 && zoomActive
       ? glass[0].parentNode.removeChild(glass[0])
       : false;
-  };
-
-  // social media
-
-  const shareOnFacebook = () => {
-    window.open(
-      `http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`,
-      'facebook share',
-      'width=600,height=400'
-    );
-  };
-
-  const shareOnTwitter = () => {
-    window.open(
-      `http://twitter.com/share?text=${
-        PDP_LABELS[router.locale].twitterText
-      }&url=${window.location.href}`,
-      'twitter share',
-      'width=600,height=400'
-    );
   };
 
   return (
@@ -650,47 +609,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 </Link>
               </div>
             )}
-            <div className='flex mt-5'>
-              <button
-                className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
-                onClick={() => window.print()}
-              >
-                <HiMiniPrinter size={20} />
-              </button>
-              <button
-                className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
-                onClick={() => setSocial(true)}
-              >
-                <HiShare size={20} />
-              </button>
-            </div>
-            {social && (
-              <div className='ml-20 relative' ref={ref}>
-                <ul
-                  className='flex flex-col cursor-pointer text-[#000] [&_li]:block absolute w-[230px] p-4 shadow-md rounded bg-white'
-                  style={{ top: '-20px' }}
-                >
-                  <SocialButton
-                    href={`http://www.facebook.com/sharer/sharer.php?u=${window.location.href}`}
-                    onClick={shareOnFacebook}
-                    className='flex bg-[#fff] text-[15px] text-[#325a90] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
-                    title='Share On facebook'
-                    icon={<Fb />}
-                    label='Facebook'
-                  />
-                  <SocialButton
-                    href={`http://twitter.com/share?text=${
-                      PDP_LABELS[router.locale].twitterText
-                    }&url=${window.location.href}`}
-                    onClick={shareOnTwitter}
-                    className='flex bg-[#fff] text-[15px] text-[#55acee] transititext-primary transition duration-150 ease-in-out hover:text-opacity-70 hover:no-underline'
-                    title='Share On twitter'
-                    icon={<Twitter />}
-                    label='Twitter'
-                  />
-                </ul>
-              </div>
-            )}
+            <SocialComponent />
             {availableAt && Object.keys(availableAt).length > 0 && (
               <div className='flex flex-col mt-6 '>
                 <div className='text-[16px] font-helveticaLight'>
