@@ -3,6 +3,7 @@ import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import PropTypes from 'prop-types';
+import { fetchContentfulCommonEntries } from '@components/CommonSection';
 import Landing from '@components/landing';
 import Loader from '@components/loader';
 
@@ -16,30 +17,13 @@ export async function getServerSideProps({ params, preview, locale }) {
     include: 7,
     locale: lc
   });
-  const query2 = client.getEntries({
-    content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const query3 = client.getEntries({
-    content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
 
-  const world = await client.getEntries({
-    content_type: 'worldwideMenu',
-    include: 7,
-    locale: lc
-  });
+  const { footerNavigationData, headerNavigationData, world } =
+    await fetchContentfulCommonEntries(lc, client);
 
-  const results = await Promise.all([query1, query2, query3]);
+  const results = await Promise.all([query1]);
 
   const res = results[0];
-  const headerNavigationData = results[1];
-  const footerNavigationData = results[2];
 
   const pageData = res?.items?.[0]?.fields;
   if (!pageData) {
