@@ -24,6 +24,7 @@ import {
   getYoutubeMetaData
 } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
+import { SocialButton } from '@components/CommonSection';
 import BackToTop from '@components/backToTop';
 import Loader from '@components/loader';
 import { Fb, Twitter } from '@components/svgs';
@@ -57,26 +58,6 @@ import {
   thumbsImageFormatter
 } from './helper';
 import VideoModal from './videoModal';
-
-const SocialButton = ({ href, onClick, className, title, icon, label }) => (
-  <li className='relative'>
-    <button
-      target='popup'
-      data-href={href}
-      onClick={onClick}
-      rel='noreferrer'
-      className={className}
-      title={title}
-    >
-      <div className='flex inline-flex'>
-        <div className='flex w-[20px] h-[20px]'>{icon}</div>
-        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
-          {label}
-        </div>
-      </div>
-    </button>
-  </li>
-);
 
 export default function DetailsComponent({ productDetailsData }) {
   const router = useRouter();
@@ -1381,13 +1362,4 @@ DetailsComponent.defaultProps = {
       }
     }
   }
-};
-
-SocialButton.propTypes = {
-  href: PropTypes.string,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-  title: PropTypes.string,
-  icon: PropTypes.node,
-  label: PropTypes.string
 };

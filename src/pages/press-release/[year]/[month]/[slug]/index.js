@@ -6,32 +6,16 @@ import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import PropTypes from 'prop-types';
+import {
+  SocialButton,
+  fetchContentfulCommonEntries
+} from '@components/CommonSection';
 import { RichText } from '@components/RichText';
 import BackToTop from '@components/backToTop';
 import { PDP_LABELS } from '@components/detailsComponent/helper';
 import Landing from '@components/landing';
 import Loader from '@components/loader';
 import { Fb, Twitter } from '@components/svgs';
-
-const SocialButton = ({ href, onClick, className, title, icon, label }) => (
-  <li className='relative'>
-    <button
-      target='popup'
-      data-href={href}
-      onClick={onClick}
-      rel='noreferrer'
-      className={className}
-      title={title}
-    >
-      <div className='flex inline-flex'>
-        <div className='flex w-[20px] h-[20px]'>{icon}</div>
-        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
-          {label}
-        </div>
-      </div>
-    </button>
-  </li>
-);
 
 export default function PressReleaseLandingPage({ pageData }) {
   const router = useRouter();
@@ -155,15 +139,6 @@ PressReleaseLandingPage.propTypes = {
   })
 };
 
-SocialButton.propTypes = {
-  href: PropTypes.string,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-  title: PropTypes.string,
-  icon: PropTypes.node,
-  label: PropTypes.string
-};
-
 export async function getServerSideProps({ params, preview, locale }) {
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const client = preview ? contentfulPreviewClient : contentfulClient;
@@ -174,30 +149,13 @@ export async function getServerSideProps({ params, preview, locale }) {
     include: 7,
     locale: lc
   });
-  const query2 = client.getEntries({
-    content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const query3 = client.getEntries({
-    content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
 
-  const world = await client.getEntries({
-    content_type: 'worldwideMenu',
-    include: 7,
-    locale: lc
-  });
+  const { footerNavigationData, headerNavigationData, world } =
+    await fetchContentfulCommonEntries(lc, client);
 
-  const results = await Promise.all([query1, query2, query3]);
+  const results = await Promise.all([query1]);
 
   const res = results[0];
-  const headerNavigationData = results[1];
-  const footerNavigationData = results[2];
 
   const pageData = res?.items?.[0]?.fields;
   if (!pageData) {
@@ -212,9 +170,5 @@ export async function getServerSideProps({ params, preview, locale }) {
       pageData,
       world
     }
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every specified seconds
-    // revalidate: process.env.CONTENT_REVALIDATION_TIME ?? 10
   };
 }

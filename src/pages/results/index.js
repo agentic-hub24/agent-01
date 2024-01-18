@@ -5,53 +5,12 @@ import contentfulClient, {
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
+import { fetchContentfulCommonEntries } from '@components/CommonSection';
 import SearchPage from '@components/Search';
 import SearchNotFound from '@components/Search/SearchNotFound';
 import SearchSuggestion from '@components/Search/SearchSuggestion';
 import Loader from '@components/loader';
 import { removeQuotesFromString } from '@utils/footerUtils';
-
-async function fetchContentfulEntries(locale, preview) {
-  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
-  const client = preview ? contentfulPreviewClient : contentfulClient;
-
-  const query1 = await client.getEntries({
-    content_type: 'latamLandingPage',
-    'fields.slug': '',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const query2 = client.getEntries({
-    content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const query3 = client.getEntries({
-    content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-
-  const world = await client.getEntries({
-    content_type: 'worldwideMenu',
-    include: 7,
-    locale: lc
-  });
-
-  const results = await Promise.all([query1, query2, query3]);
-
-  const headerNavigationData = results[1];
-  const footerNavigationData = results[2];
-
-  return {
-    headerNavigationData,
-    footerNavigationData,
-    world
-  };
-}
 
 export default function ResultPage({
   productListingData,
@@ -119,10 +78,12 @@ ResultPage.defaultProps = {
 
 export async function getServerSideProps(context) {
   const { preview, query, locale } = context;
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
+  const client = preview ? contentfulPreviewClient : contentfulClient;
   const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
 
-  const { headerNavigationData, footerNavigationData, world } =
-    await fetchContentfulEntries(locale, preview);
+  const { footerNavigationData, headerNavigationData, world } =
+    await fetchContentfulCommonEntries(lc, client);
 
   //PLP API CALL --> Start
   const searchValue = removeQuotesFromString(query?.search);

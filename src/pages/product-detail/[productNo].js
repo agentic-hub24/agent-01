@@ -5,6 +5,7 @@ import contentfulClient, {
 } from '@services/contenful/client';
 import { getProductDetails } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
+import { fetchContentfulCommonEntries } from '@components/CommonSection';
 import DetailsComponent from '@components/detailsComponent';
 import { createPDPSeoData } from '@utils/footerUtils';
 
@@ -61,24 +62,8 @@ export async function getServerSideProps(context) {
   const languageAPI = ['default', 'es'].includes(locale) ? 'es-mx' : 'en';
   const client = preview ? contentfulPreviewClient : contentfulClient;
 
-  const footerNavigationData = await client.getEntries({
-    content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-
-  const headerNavigationData = await client.getEntries({
-    content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const world = await client.getEntries({
-    content_type: 'worldwideMenu',
-    include: 7,
-    locale: lc
-  });
+  const { footerNavigationData, headerNavigationData, world } =
+    await fetchContentfulCommonEntries(lc, client);
 
   const productDetailsData = await getProductDetails(languageAPI, productNo);
   // seo meta data

@@ -3,45 +3,9 @@ import contentfulClient, {
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
+import { fetchContentfulCommonEntries } from '@components/CommonSection';
 import ProductListing from '@components/ProductListing';
 import { getSEOData } from '@utils/footerUtils';
-
-async function fetchContentfulEntries(locale, preview) {
-  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
-  const client = preview ? contentfulPreviewClient : contentfulClient;
-
-  const seoMetaData = await client.getEntries({
-    content_type: 'seoMetadata',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-
-  const footerNavigationData = await client.getEntries({
-    content_type: 'footer',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const headerNavigationData = await client.getEntries({
-    content_type: 'header',
-    'metadata.tags.sys.id[in]': 'kohlerLatam',
-    include: 7,
-    locale: lc
-  });
-  const world = await client.getEntries({
-    content_type: 'worldwideMenu',
-    include: 7,
-    locale: lc
-  });
-
-  return {
-    seoMetaData,
-    footerNavigationData,
-    headerNavigationData,
-    world
-  };
-}
 
 export default function ProductList({
   productListingData,
@@ -69,9 +33,18 @@ ProductList.propTypes = {
 export async function getServerSideProps(context) {
   const { params, locale, preview, query } = context;
   const languageAPI = ['default', 'es'].includes(locale) ? 'es' : 'en';
+  const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
+  const client = preview ? contentfulPreviewClient : contentfulClient;
 
-  const { seoMetaData, footerNavigationData, headerNavigationData, world } =
-    await fetchContentfulEntries(locale, preview);
+  const seoMetaData = await client.getEntries({
+    content_type: 'seoMetadata',
+    'metadata.tags.sys.id[in]': 'kohlerLatam',
+    include: 7,
+    locale: lc
+  });
+
+  const { footerNavigationData, headerNavigationData, world } =
+    await fetchContentfulCommonEntries(lc, client);
 
   //PLP API CALL --> Start
   const requestBody = {
