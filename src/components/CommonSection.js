@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 export const commonSectionSearch = isEnglish => (
   <section className='text-xs w-full mx-auto bg-white text-gray-800 overflow-auto relative z-0'>
     <div className='font-sans font-light text-xl leading-5 font-medium relative float-left w-full min-h-1px mb-[20px] pt-[100px] px-10'>
@@ -36,41 +34,6 @@ export const commonSectionSearch = isEnglish => (
     </div>
   </section>
 );
-
-export const SocialButton = ({
-  href,
-  onClick,
-  className,
-  title,
-  icon,
-  label
-}) => (
-  <li className='relative'>
-    <button
-      target='popup'
-      data-href={href}
-      onClick={onClick}
-      rel='noreferrer'
-      className={className}
-      title={title}
-    >
-      <div className='flex inline-flex'>
-        <div className='flex w-[20px] h-[20px]'>{icon}</div>
-        <div className='flex p-2 text-[#232323] font-HelveticaRoman text-[14px]'>
-          {label}
-        </div>
-      </div>
-    </button>
-  </li>
-);
-SocialButton.propTypes = {
-  href: PropTypes.string,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-  title: PropTypes.string,
-  icon: PropTypes.node,
-  label: PropTypes.string
-};
 
 export async function fetchContentfulCommonEntries(lc, client) {
   const footerNavigationData = await client.getEntries({
