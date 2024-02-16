@@ -18,6 +18,9 @@ const CustomHead = ({ seoMetaData }) => {
     <Head>
       <title>{pageTitle}</title>
       <link rel='canonical' href={canonicalUrl} />
+      {process.env.NEXT_PUBLIC_LOWER_ENV_TAG && (
+        <meta name='robots' content='noindex, nofollow' />
+      )}
       <meta name='description' content={pageDescription}></meta>
       <meta property='og:title' content={ogTitle} />
       <meta property='og:description' content={ogDescription} />
