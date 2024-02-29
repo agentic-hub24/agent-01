@@ -77,7 +77,7 @@ export const createPDPSeoData = (
     seoMetadata: {
       fields: {
         pageTitle: `KOHLER | ${ProductProductNo} | ${ProductBrandName}| ${ProductDescriptionProductShort}`,
-        canonicalUrl: `${context?.req?.headers?.host}/${context?.locale}${context?.resolvedUrl}`,
+        canonicalUrl: `${process.env.SEO_PDP_BASE_URL}/${context?.locale}${context?.resolvedUrl}`,
         pageDescription: `${ProductDescriptionProductShort}`,
         ogTitle: `KOHLER | ${ProductProductNo} | ${ProductBrandName}| ${ProductDescriptionProductShort}`,
         ogDescription: `${ProductDescriptionProductShort}`,
@@ -89,7 +89,7 @@ export const createPDPSeoData = (
           }
         },
         ogType: 'Website',
-        ogUrl: `${context?.req?.headers?.host}/${context?.locale}${context?.resolvedUrl}`,
+        ogUrl: `${process.env.SEO_PDP_BASE_URL}/${context?.locale}${context?.resolvedUrl}`,
         keywords: `${ProductProductNo} | ${ProductBrandName} | KOHLER`
       }
     }
