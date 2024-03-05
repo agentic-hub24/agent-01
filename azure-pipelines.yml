@@ -102,9 +102,11 @@ stages:
           parameters:
                PathtoPublish: '$(Build.ArtifactStagingDirectory)'
                ArtifactName: $(ArtifactName)
-
+    
+    - stage: deploy
+      dependsOn: build
+      jobs:
       - job: deploy
-        dependsOn: build
         condition: and(succeeded(), or(eq( variables.deploytoApp, 'true'), ${{ eq( parameters.DeploytoEnvironment , 'true') }}))
 
         steps:
@@ -144,9 +146,11 @@ stages:
           parameters:
                PathtoPublish: '$(Build.ArtifactStagingDirectory)'
                ArtifactName: $(ArtifactName)
-
+    
+    - stage: proddeploy
+      dependsOn: prodbuild
+      jobs:
       - deployment: proddeployment
-        dependsOn: prodbuild
         condition: and(succeeded(), or(eq( variables.deploytoApp, 'true'), ${{ eq( parameters.DeploytoEnvironment , 'true') }}))
         environment: Kohler latam
         strategy:
