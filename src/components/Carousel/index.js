@@ -66,6 +66,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
                   }
                   className='w-12 text-black'
                   alt={item?.fields?.mediaItem?.[0]?.fields.altText}
+                  aria-label={item?.fields?.mediaItem?.[0]?.fields.altText}
                 />
                 {/* carousel banner desktop */}
                 {showBanner && (

@@ -30,6 +30,7 @@ export default function ImageZoomModal({
                 <img
                   src={carouselImageFormatter(imageResource, isNewProduct)}
                   alt={'zoom-modal'}
+                  aria-label={'zoom-modal'}
                   className='h-[500px] w-auto'
                   onError={e => (e.target.src = defaultImageLink)}
                 />

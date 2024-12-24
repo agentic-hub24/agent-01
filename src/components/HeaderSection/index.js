@@ -149,6 +149,7 @@ export default function HeaderSection({ navData = {}, world }) {
               <Image
                 src={logo?.fields?.mediaItem?.fields?.asset?.fields?.file?.url}
                 alt={logo?.fields?.mediaItem?.fields?.altText}
+                aria-label={logo?.fields?.mediaItem?.fields?.altText}
                 className='h-6 w-auto mr-2'
                 height={75}
                 width={132}
@@ -244,6 +245,7 @@ export default function HeaderSection({ navData = {}, world }) {
                     logo?.fields?.mediaItem?.fields?.asset?.fields?.file?.url
                   }
                   alt={logo?.fields?.mediaItem?.fields?.altText}
+                  aria-label={logo?.fields?.mediaItem?.fields?.altText}
                   className='h-6 w-auto mr-2'
                   height={60}
                   width={105}

@@ -1,10 +1,12 @@
 import { memo } from 'react';
+import dynamic from 'next/dynamic';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import PropTypes from 'prop-types';
-import Landing from '@components/landing';
 
+// import Landing from '@components/landing';
+const Landing = dynamic(() => import('@components/landing'));
 const Home = ({ pageData }) => {
   return <Landing pageData={pageData} />;
 };

@@ -14,8 +14,10 @@
   font-family: HelveticaNeueLT-Roman;
   src: url(../assets/fonts/helveticaNeue/34e0e4c0-c294-49bb-9a8e-1b2cafd54e32.woff)
       format('woff'),
-    url(../assets/fonts/helveticaNeue/8a8bfee3-197c-4942-9b11-71508cc9f406.ttf)
-      format('truetype'),
+    // url(../assets/fonts/helveticaNeue/8a8bfee3-197c-4942-9b11-71508cc9f406.ttf)
+    //   format('truetype'),
+    url(../assets/fonts/helveticaNeue/HelveticaNeueLTW01-55Roman.woff)
+      format('woff'),
     url(../assets/fonts/helveticaNeue/5101995a-e73b-4cf9-84e8-f99eb43277b1.svg#5101995a-e73b-4cf9-84e8-f99eb43277b1)
       format('svg');
 }
@@ -24,8 +26,10 @@
   font-family: HelveticaNeueLT-Bd;
   src: url(../assets/fonts/helveticaNeue/439c5962-f9fe-4eaf-a1f6-f41d42edba75.woff)
       format('woff'),
-    url(../assets/fonts/helveticaNeue/419a308d-b777-4f84-9235-2caf4a98ec23.ttf)
-      format('truetype'),
+    // url(../assets/fonts/helveticaNeue/419a308d-b777-4f84-9235-2caf4a98ec23.ttf)
+    //   format('truetype'),
+    url(../assets/fonts/helveticaNeue/HelveticaNeueLTW01-75Bold.woff2)
+     format('woff'),
     url(../assets/fonts/helveticaNeue/e4d5b881-6835-45b7-8766-3e5b9e7cab8b.svg)
       format('svg');
 }
@@ -34,22 +38,24 @@
   font-family: HelveticaNeueLT-Hv;
   src: url(../assets/fonts/helveticaNeue/0c4dfc49-f798-458f-be90-e1d5a3e65f48.woff)
       format('woff'),
-    url(../assets/fonts/helveticaNeue/f4ad3cac-3a29-41f8-b890-e7badf717aa0.ttf)
-      format('truetype'),
+    // url(../assets/fonts/helveticaNeue/f4ad3cac-3a29-41f8-b890-e7badf717aa0.ttf)
+    //   format('truetype'),
+     url(../assets/fonts/helveticaNeue/HelveticaNeueLTW01-87HvCn.woff)
+       format('woff'),
     url(../assets/fonts/helveticaNeue/c1ce2e4a-f726-4fea-89b2-7e0896c07a06.svg)
       format('svg');
 }
 @font-face {
   font-family: 'Helvetica-Light';
-  src: url(../assets/fonts/Helvetica-Light.ttf) format('truetype');
+  src: url(../assets/fonts/Helvetica-Light.woff) format('woff');
 }
 @font-face {
   font-family: 'Helvetica';
-  src: url(../assets/fonts/Helvetica.ttf) format('truetype');
+  src: url(../assets/fonts/Helvetica.woff) format('woff');
 }
 @font-face {
   font-family: 'Helvetica-Medium';
-  src: url(../assets/fonts/helvetica_medium.ttf) format('truetype');
+  src: url(../assets/fonts/HelveticaMedium.woff) format('woff');
 }
 
 @font-face {
@@ -60,13 +66,13 @@
 
 @font-face {
   font-family: 'helveticaRoman';
-  src: url('../assets/fonts/Helvetica_Roman.ttf') format('truetype');
+  src: url('../assets/fonts/Helvetica.woff') format('woff');
 }
 
 @font-face {
   font-family: 'helveticaBold';
-  src: url('../assets/fonts/Helvetica-Font/Helvetica-Bold.ttf')
-    format('truetype');
+  src: url('../assets/fonts/Helvetica-Font/Helvetica-Bold.woff')
+    format('woff');
 }
 
 body {

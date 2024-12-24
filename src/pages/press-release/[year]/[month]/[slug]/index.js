@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
@@ -5,11 +6,11 @@ import contentfulClient, {
 import PropTypes from 'prop-types';
 import { fetchContentfulCommonEntries } from '@components/CommonSection';
 import { RichText } from '@components/RichText';
-import SocialComponent from '@components/SocialComponent';
-import BackToTop from '@components/backToTop';
-import Landing from '@components/landing';
-import Loader from '@components/loader';
 
+const SocialComponent = dynamic(() => import('@components/SocialComponent'));
+const BackToTop = dynamic(() => import('@components/backToTop'));
+const Landing = dynamic(() => import('@components/landing'));
+const Loader = dynamic(() => import('@components/loader'));
 export default function PressReleaseLandingPage({ pageData }) {
   const router = useRouter();
 

@@ -53,6 +53,7 @@ export default function CompareModal({
                                 src={imageFormatter(ele.SkuResourceImgName)}
                                 alt={ele?.SkuResourceImgName}
                                 style={{ height: '51px', width: '68px' }}
+                                aria-label={ele?.SkuResourceImgName}
                               />
                               {/* PDP product link */}
                               <a href='#' className='hover:no-underline'>
@@ -162,6 +163,7 @@ export default function CompareModal({
                                           el.SKUColorSwatchFilename
                                         )}
                                         alt={el?.SKUColorSwatchFilename}
+                                        aria-label={el?.SKUColorSwatchFilename}
                                         style={{
                                           height: '24px',
                                           width: '24px'

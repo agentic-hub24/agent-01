@@ -1,11 +1,15 @@
+import dynamic from 'next/dynamic';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
-import { fetchContentfulCommonEntries } from '@components/CommonSection';
-import SearchPage from '@components/Search';
 import { removeQuotesFromString } from '@utils/footerUtils';
+
+const { fetchContentfulCommonEntries } = dynamic(() =>
+  import('@components/CommonSection')
+);
+const SearchPage = dynamic(() => import('@components/Search'));
 
 export default function ResultPage({
   productListingData,

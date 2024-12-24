@@ -449,6 +449,7 @@ export default function DetailsComponent({ productDetailsData }) {
                           ProductNewProduct
                         )}
                         alt={carousel[imageIndex]?.ResourceName}
+                        aria-label={carousel[imageIndex]?.ResourceName}
                         id='myImage'
                         className='w-full'
                         onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
@@ -483,6 +484,7 @@ export default function DetailsComponent({ productDetailsData }) {
                                 )}
                                 id={element.ResourceName}
                                 alt={element.ResourceName}
+                                aria-label={element.ResourceName}
                                 onError={e =>
                                   (e.target.src = DEFAULT_IMAGE_LINK)
                                 }
@@ -510,6 +512,7 @@ export default function DetailsComponent({ productDetailsData }) {
                           src={imageFormatter()}
                           id={'image1'}
                           alt='image1'
+                          aria-label='image1'
                         />
                       </div>
                     )}
@@ -576,6 +579,7 @@ export default function DetailsComponent({ productDetailsData }) {
                   <img
                     src={imageFormatter(el.SKUColorSwatchFilename)}
                     alt={el?.SKUColorSwatchFilename}
+                    aria-label={el?.SKUColorSwatchFilename}
                     style={{
                       height: '40px',
                       width: '40px'
@@ -621,6 +625,7 @@ export default function DetailsComponent({ productDetailsData }) {
                       <img
                         src={`https://kohler.scene7.com/is/image/PAWEB/${availableAt.RegionRetailer1IMG}?$WTB_featured_retailer$`}
                         alt={PDP_LABELS[locale].availableAt}
+                        aria-label={PDP_LABELS[locale].availableAt}
                       />
                     </a>
                   </Link>
@@ -960,6 +965,7 @@ export default function DetailsComponent({ productDetailsData }) {
                                 }
                                 className='w-full'
                                 alt='youtube thumbnail'
+                                aria-label='youtube thumbnail'
                               />
 
                               <button
@@ -1069,7 +1075,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
-                    <img src={lineArt?.ResourceFullWebURL} alt='Gif line art' />
+                    <img src={lineArt?.ResourceFullWebURL} alt='Gif line art' aria-label='Gif line art' />
                   </div>
                 )}
 

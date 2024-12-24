@@ -1,8 +1,10 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
-import Layout from '@components/Layout';
-import ErrorBoundary from '@components/errorBoundary';
 import '../styles/global.scss';
+
+const Layout = dynamic(() => import('@components/Layout'));
+const ErrorBoundary = dynamic(() => import('@components/errorBoundary'));
 
 const MyApp = ({ Component, pageProps }) => {
   const { headerNavigationData, footerNavigationData, world } = pageProps;
