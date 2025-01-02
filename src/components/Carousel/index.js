@@ -6,6 +6,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Image from 'next/image';
 
 const CarouselComponent = ({ carouselItem, showBanner }) => {
   const [clicked, setClicked] = useState(null);
@@ -58,14 +59,17 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
               key={item?.sys?.id}
               target='_blank'
             >
-              <div className='lg:relative lg:inline-block'>
-                <img
+              <div className='lg:relative lg:inline-block aspect-video overflow-hidden'>
+                <Image
                   src={
                     'https:' +
                     item?.fields?.mediaItem?.[0]?.fields.asset.fields.file.url
                   }
-                  className='w-12 text-black'
+                  className='text-black'
                   alt={item?.fields?.mediaItem?.[0]?.fields.altText}
+                  width={1500}
+                  height={720}
+                  priority
                 />
                 {/* carousel banner desktop */}
                 {showBanner && (

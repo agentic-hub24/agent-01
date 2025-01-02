@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import PropTypes from 'prop-types';
-import MediaVideo from './MediaVideo';
+import dynamic from 'next/dynamic';
+const MediaVideo = dynamic(() => import('./MediaVideo'))
+import Image from 'next/image';
 
 const MediaItem = ({ assets, height }) => {
   return (
@@ -12,18 +14,21 @@ const MediaItem = ({ assets, height }) => {
         return (
           <div
             key={sys?.id || id}
-            className={`w-full h-full flex ${
+            className={`w-full h-full flex overflow-hidden ${
               isPressReleseaseArticle
                 ? 'justify-start p-[32px]'
                 : 'justify-center'
             }`}
           >
             {fields?.type === 'Image' && (
-              <img
+              <Image
                 src={`https:${fields?.asset?.fields?.file?.url}`}
                 key={sys?.id}
                 alt={fields?.altText}
                 title={fields?.altText}
+                width={290}
+                height={217}
+                loading='lazy'
               />
             )}
             {fields?.type === 'Video' && (
