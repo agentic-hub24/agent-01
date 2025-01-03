@@ -3,6 +3,7 @@ import { HiOutlinePlus } from 'react-icons/hi';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import PLPModal from './PLPModal';
+import Image from 'next/image';
 import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
 
 export default function PLPCards({
@@ -26,7 +27,7 @@ export default function PLPCards({
         className='h-[380px] hover:shadow-2xl text-[#232323] bg-[#f9f9f9] md:basis-1/4 basis-1/3 grow mr-[2px] mb-[5px] ml-[2px] md:max-w-[33%] max-w-[50%] relative'
       >
         <div className='mb-[10px] mt-2 flex justify-center border-4 border-neutral-50 '>
-          <img
+          <Image
             src={carouselImageFormatter(
               item?.SkuResourceImgName,
               item?.ProductNewProduct
@@ -34,6 +35,8 @@ export default function PLPCards({
             alt={item?.SkuResourceImgName}
             className='h-[147px] w-[196px]'
             onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+            width={196}
+            height={147}
           />
         </div>
         {isHovering && skuId === item?.SkuNumber && (

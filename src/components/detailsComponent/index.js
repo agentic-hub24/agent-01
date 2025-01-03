@@ -443,7 +443,7 @@ export default function DetailsComponent({ productDetailsData }) {
                         handleMagnifier(e, 'myImage');
                       }}
                     >
-                      <img
+                      <Image
                         src={carouselImageFormatter(
                           carousel[imageIndex]?.ResourceName,
                           ProductNewProduct
@@ -451,6 +451,8 @@ export default function DetailsComponent({ productDetailsData }) {
                         alt={carousel[imageIndex]?.ResourceName}
                         id='myImage'
                         className='w-full'
+                        width={525}
+                        height={395}
                         onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                       />
                     </div>
@@ -573,13 +575,15 @@ export default function DetailsComponent({ productDetailsData }) {
                     setShowColorName('');
                   }}
                 >
-                  <img
+                  <Image
                     src={imageFormatter(el.SKUColorSwatchFilename)}
                     alt={el?.SKUColorSwatchFilename}
                     style={{
                       height: '40px',
                       width: '40px'
                     }}
+                    width={40}
+                    height={40}
                     onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                   />
                   {colorFileName === el.SKUColorSwatchFilename && (
