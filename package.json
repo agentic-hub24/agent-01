@@ -10,7 +10,9 @@
     "docs": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
+    "@babel/runtime": "^7.26.0",
     "@contentful/rich-text-react-renderer": "^15.16.3",
+    "bootstrap-icons": "^1.11.3",
     "classnames": "^2.3.2",
     "contentful": "^10.1.0",
     "next": "^12.2.5",
