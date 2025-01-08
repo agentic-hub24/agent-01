@@ -19,15 +19,15 @@ const MediaItem = ({ assets, height }) => {
                 ? 'justify-start p-[32px]'
                 : 'justify-center'
             }`}
-          >
+          >{console.log("fields", fields?.asset?.fields?.file?.details?.image)}
             {fields?.type === 'Image' && (
               <Image
                 src={`https:${fields?.asset?.fields?.file?.url}`}
                 key={sys?.id}
                 alt={fields?.altText}
                 title={fields?.altText}
-                width={290}
-                height={217}
+                width={fields?.asset?.fields?.file?.details?.image?.width}
+                height={fields?.asset?.fields?.file?.details?.image?.height}
                 loading='lazy'
               />
             )}

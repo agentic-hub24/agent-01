@@ -58,17 +58,24 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
               href={item?.fields?.url || '#'}
               key={item?.sys?.id}
               target='_blank'
+              rel='preload'
             >
-              <div className='lg:relative lg:inline-block aspect-video overflow-hidden'>
+              <div className='lg:relative lg:inline-block'>
                 <Image
                   src={
                     'https:' +
                     item?.fields?.mediaItem?.[0]?.fields.asset.fields.file.url
                   }
-                  className='text-black'
+                  className='w-12 text-black'
                   alt={item?.fields?.mediaItem?.[0]?.fields.altText}
-                  width={1500}
-                  height={720}
+                  width={
+                    item?.fields?.mediaItem?.[0]?.fields.asset.fields.file
+                      .details.image.width
+                  }
+                  height={
+                    item?.fields?.mediaItem?.[0]?.fields.asset.fields.file
+                      .details.image.height
+                  }
                   priority
                 />
                 {/* carousel banner desktop */}

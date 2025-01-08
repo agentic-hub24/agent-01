@@ -518,7 +518,7 @@ export default function DetailsComponent({ productDetailsData }) {
                   </Carousel>
                 </div>
                 <button
-                  className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0'
+                  className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0 mb-[7px]'
                   onClick={() => setShowZoom(true)}
                 >
                   <MdOutlineZoomOutMap size={30} />
@@ -578,10 +578,6 @@ export default function DetailsComponent({ productDetailsData }) {
                   <Image
                     src={imageFormatter(el.SKUColorSwatchFilename)}
                     alt={el?.SKUColorSwatchFilename}
-                    style={{
-                      height: '40px',
-                      width: '40px'
-                    }}
                     width={40}
                     height={40}
                     onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}

@@ -33,7 +33,6 @@ export default function PLPCards({
               item?.ProductNewProduct
             )}
             alt={item?.SkuResourceImgName}
-            className='h-[147px] w-[196px]'
             onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
             width={196}
             height={147}

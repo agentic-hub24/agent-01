@@ -46,7 +46,7 @@ const ArticleCard = ({
         <MediaItem assets={fields?.mediaItem} />
       </figure>
       <h4
-        className={`text-2xl p-5 text-[#333333] m-auto  cursor-pointer min-h-[2em] ${
+        className={`text-2xl p-5 text-[#333333] m-auto  cursor-pointer ${
           isBidetSeat ||
           isIntelligent ||
           isWaterFilterationES ||
