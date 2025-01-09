@@ -257,7 +257,7 @@ export default function HeaderSection({ navData = {}, world }) {
             {/* brand logo --end */}
           </div>
           <button
-            className='flex text-[#bebebe] vaishnavi'
+            className='flex text-[#bebebe]'
             onClick={() => handleSearch()}
           >
             <HiSearch size={25} />
