@@ -123,7 +123,6 @@ export default function CompareProducts({
                       src={imageFormatter(storage[0].SkuResourceImgName)}
                       alt={storage[0]?.SkuResourceImgName}
                       style={{ height: '51px', width: '68px' }}
-                      aria-label={storage[0]?.SkuResourceImgName}
                     />
                     {/* PDP product link */}
                     <a href='#' className='hover:no-underline'>
@@ -160,7 +159,6 @@ export default function CompareProducts({
                       src={imageFormatter(storage[1].SkuResourceImgName)}
                       alt={storage[1]?.SkuResourceImgName}
                       style={{ height: '51px', width: '68px' }}
-                      aria-label={storage[1]?.SkuResourceImgName}
                     />
                     {/* PDP product link */}
                     <a href='#' className='hover:no-underline'>
@@ -196,7 +194,6 @@ export default function CompareProducts({
                     <img
                       src={imageFormatter(storage[2].SkuResourceImgName)}
                       alt={storage[2]?.SkuResourceImgName}
-                      aria-label={storage[2]?.SkuResourceImgName}
                       style={{ height: '51px', width: '68px' }}
                     />
                     {/* PDP product link */}

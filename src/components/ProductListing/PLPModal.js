@@ -106,7 +106,6 @@ export default function PLPModal({
                     modalValues?.ProductNewProduct
                   )}
                   alt={image.ResourceName}
-                  aria-label={image.ResourceName}
                   className='sm:h-[415px] sm:w-[570px] h-[240px] w-full'
                   onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                 />
@@ -153,7 +152,6 @@ export default function PLPModal({
                       <img
                         src={imageFormatter(el.SKUColorSwatchFilename)}
                         alt={el?.SKUColorSwatchFilename}
-                        aria-label={el?.SKUColorSwatchFilename}
                         style={{
                           height: '40px',
                           width: '40px'

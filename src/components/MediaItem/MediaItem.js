@@ -23,7 +23,6 @@ const MediaItem = ({ assets, height }) => {
                 src={`https:${fields?.asset?.fields?.file?.url}`}
                 key={sys?.id}
                 alt={fields?.altText}
-                aria-label={fields?.altText}
                 title={fields?.altText}
               />
             )}

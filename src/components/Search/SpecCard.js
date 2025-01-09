@@ -20,7 +20,6 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                   <img
                     src={imageFormatter(item?.SkuResourceImgName)}
                     alt={item?.SkuResourceImgName}
-                    aria-label={item?.SkuResourceImgName}
                     className='h-[125px] w-[150px]'
                   />
                 </div>
