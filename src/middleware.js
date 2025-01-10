@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/og';
 
 const PUBLIC_FILE = /\.(.*)$/;
 

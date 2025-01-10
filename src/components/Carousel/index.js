@@ -6,7 +6,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 
 const CarouselComponent = ({ carouselItem, showBanner }) => {
   const [clicked, setClicked] = useState(null);

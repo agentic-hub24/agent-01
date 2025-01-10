@@ -20,6 +20,7 @@ const nextConfig = {
     unoptimized: true
   },
   reactStrictMode: true,
+  swcMinify: true,
   env: {
     API_BASEURL: process.env.API_BASEURL,
     environment: process.env.environment,
@@ -40,7 +41,7 @@ const nextConfig = {
   i18n: {
     locales: ['default', 'en', 'es'],
     defaultLocale: 'default',
-    localeDetection: true
+    localeDetection: false
   }
 };
 

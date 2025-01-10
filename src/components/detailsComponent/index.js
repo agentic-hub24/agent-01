@@ -15,7 +15,7 @@ import { HiPlay } from 'react-icons/hi2';
 import { MdOutlineZoomOutMap } from 'react-icons/md';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -599,7 +599,7 @@ export default function DetailsComponent({ productDetailsData }) {
             </div>
             {!discontinuedBanner && (
               <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
-                <Link href='/store-listing' passHref>
+                <Link href='/store-listing' passHref legacyBehavior>
                   <a
                     target='_blank'
                     className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
@@ -616,7 +616,7 @@ export default function DetailsComponent({ productDetailsData }) {
                   {PDP_LABELS[locale].availableAt}
                 </div>
                 <div className='flex'>
-                  <Link href={availableAt.RegionRetailer1URL.trim()} passHref>
+                  <Link href={availableAt.RegionRetailer1URL.trim()} passHref legacyBehavior>
                     <a target='_blank'>
                       <img
                         src={`https://kohler.scene7.com/is/image/PAWEB/${availableAt.RegionRetailer1IMG}?$WTB_featured_retailer$`}
@@ -1009,6 +1009,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 <Link
                   href={`${PDP_LABELS[locale].contactUsNumberLink}`}
                   passHref
+                  legacyBehavior
                 >
                   <a target='_blank' className='font-bold text-[#000]'>
                     {PDP_LABELS[locale].contactUsNumber}
@@ -1018,18 +1019,18 @@ export default function DetailsComponent({ productDetailsData }) {
               <p>{PDP_LABELS[locale].contactUsTime} </p>
               <p>{PDP_LABELS[locale].contactUsDay}</p>
               <p>
-                <Link href='/contact-us-page' passHref>
+                <Link href='/contact-us-page' passHref legacyBehavior>
                   <a target='_blank'>{PDP_LABELS[locale].emailUS}</a>
                 </Link>
               </p>
               <ul className='mt-[10px] list-disc mb-[30px]'>
                 <li>
-                  <Link href={`/${PDP_LABELS[locale].careCleaningLink}`}>
+                  <Link href={`/${PDP_LABELS[locale].careCleaningLink}`} legacyBehavior>
                     <a target='_blank'>{PDP_LABELS[locale].careAndCleaning}</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${PDP_LABELS[locale].warrantyLink}`}>
+                  <Link href={`/${PDP_LABELS[locale].warrantyLink}`} legacyBehavior>
                     <a target='_blank'>{PDP_LABELS[locale].guarantee}</a>
                   </Link>
                 </li>

@@ -3,7 +3,7 @@ import { HiOutlinePlus } from 'react-icons/hi';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import PLPModal from './PLPModal';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
 
 export default function PLPCards({

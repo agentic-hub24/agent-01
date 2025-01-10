@@ -24,7 +24,7 @@ const MobileNavItem = ({
       className={classNames}
       onClick={e => secondaryNavItemFuncMobile(e, navItem)}
     >
-      <Link passHref href={navItem?.fields?.url || ''}>
+      <Link passHref href={navItem?.fields?.url || ''} legacyBehavior>
         <a
           key={navItem?.fields?.sys?.id}
           target={navItem?.fields?.openerType === 'New Tab' ? '_blank' : ''}

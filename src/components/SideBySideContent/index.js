@@ -19,6 +19,7 @@ const renderCtaLinks = cta => {
         href={fields?.url || ''}
         passHref
         className={`flex w-full text-[16px] font-HelveticaRoman justify-left hover:no-underline`}
+        legacyBehavior
       >
         <a
           target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
