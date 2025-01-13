@@ -94,7 +94,7 @@ export default function SocialComponent() {
         <button
           className='flex justify-center items-center mr-3 h-[40px] w-[40px] bg-[#e5e5e5] text-[#232323] rounded hover:bg-[#364573] hover:text-[#fff]'
           onClick={() => setSocial(true)}
-          aria-label='Social Media Link'
+          aria-label='Share Link'
         >
           <HiShare size={20} />
         </button>

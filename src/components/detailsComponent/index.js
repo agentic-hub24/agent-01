@@ -407,6 +407,7 @@ export default function DetailsComponent({ productDetailsData }) {
                       </button>
                       <button
                         className='lg:block hidden text-[#e5e5e5] hover:text-[#232323]'
+                        aria-label='show more images'
                         onClick={() => handlePrevClick()}
                       >
                         <HiOutlineChevronDown size={45} />
@@ -518,6 +519,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 <button
                   className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0'
                   onClick={() => setShowZoom(true)}
+                  aria-label='Image Miximizer'
                 >
                   <MdOutlineZoomOutMap size={30} />
                 </button>
