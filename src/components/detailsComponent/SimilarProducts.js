@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import PropTypes from 'prop-types';
 import { carouselImageFormatter, DEFAULT_IMAGE_LINK } from './helper';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 
 export default function SimilarProducts({ productProductLinkType, locale }) {
   return (
