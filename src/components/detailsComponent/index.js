@@ -15,7 +15,7 @@ import { HiPlay } from 'react-icons/hi2';
 import { MdOutlineZoomOutMap } from 'react-icons/md';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -518,7 +518,7 @@ export default function DetailsComponent({ productDetailsData }) {
                   </Carousel>
                 </div>
                 <button
-                  className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0 mb-[7px]'
+                  className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0'
                   onClick={() => setShowZoom(true)}
                 >
                   <MdOutlineZoomOutMap size={30} />

@@ -11,6 +11,7 @@ import {
   DEFAULT_IMAGE_LINK,
   staticLabelsPLP
 } from './helper';
+import Image from 'next/legacy/image';
 
 export default function PLPModal({
   handleModalClose,
@@ -149,14 +150,12 @@ export default function PLPModal({
                         setShowColorName('');
                       }}
                     >
-                      <img
+                      <Image
                         src={imageFormatter(el.SKUColorSwatchFilename)}
                         alt={el?.SKUColorSwatchFilename}
-                        style={{
-                          height: '40px',
-                          width: '40px'
-                        }}
                         onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                        height={40}
+                        width={40}
                       />
                       {colorFileName === el.SKUColorSwatchFilename && (
                         <div className='absolute top-0 right-0 h-[40px] w-[40px] bg-cover border-2 border-neutral-500'>

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import PropTypes from 'prop-types';
 import { DEFAULT_IMAGE_LINK, carouselImageFormatter } from './helper';
+import Image from 'next/image';
 
 export default function SimilarProductsCards({
   productProductLinkType,
@@ -17,14 +18,15 @@ export default function SimilarProductsCards({
                 key={item?.id || index}
               >
                 <div className='mb-[10px] flex justify-center border-4 border-neutral-50'>
-                  <img
+                  <Image
                     src={carouselImageFormatter(
                       item?.links?.ProductResource[0]?.ResourceName,
                       item?.ProductNewProduct
                     )}
                     alt={item?.SkuResourceImgName}
-                    className='h-[147px] w-[196px]'
                     onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
+                    height={147}
+                    width={196}
                   />
                 </div>
 

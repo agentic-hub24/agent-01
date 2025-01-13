@@ -145,7 +145,7 @@ export default function HeaderSection({ navData = {}, world }) {
 
           {/* brand logo --start */}
           <div className='flex items-center hover:cursor-pointer'>
-            <Link href='/' className='flex items-center mr-6'>
+            <Link href='/' className='flex items-center mr-6' legacyBehavior>
               <Image
                 src={logo?.fields?.mediaItem?.fields?.asset?.fields?.file?.url}
                 alt={logo?.fields?.mediaItem?.fields?.altText}
@@ -238,7 +238,7 @@ export default function HeaderSection({ navData = {}, world }) {
           <div className='flex'>
             {/* brand logo --start */}
             <div className='flex items-center hover:cursor-pointer'>
-              <Link href='/' className='flex items-center mr-6'>
+              <Link href='/' className='flex items-center mr-6' legacyBehavior>
                 <Image
                   src={
                     logo?.fields?.mediaItem?.fields?.asset?.fields?.file?.url

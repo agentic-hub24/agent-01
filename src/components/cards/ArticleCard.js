@@ -94,7 +94,7 @@ const ArticleCard = ({
       {cardRows?.map(({ fields, sys }) => (
         <div key={sys?.id} className={wrapperDivClass}>
           {fields?.url ? (
-            <Link href={fields?.url ? fields.url : ''}>
+            <Link href={fields?.url ? fields.url : ''} legacyBehavior>
               {renderCards(fields)}
             </Link>
           ) : (

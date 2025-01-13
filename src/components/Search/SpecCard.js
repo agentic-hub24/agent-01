@@ -7,6 +7,7 @@ import {
 } from '@components/ProductListing/helper';
 import SearchAccordion from './SearchAccordion';
 import SpecItems from './SpecItems';
+import Image from 'next/legacy/image';
 
 export default function SpecCard({ productValueArray, locale = 'en' }) {
   return (
@@ -17,10 +18,11 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
             {(item?.DWGPlanView || item?.ThreeDDXF) && (
               <div className='relative overflow-x-hidden overflow-y-auto pb-[30px] mb-[30px] border-b border-gray-300 '>
                 <div className='float-left p-[20px] bg-gradient-to-b from-gray-200 to-white bg-contain bg-no-repeat'>
-                  <img
+                  <Image
                     src={imageFormatter(item?.SkuResourceImgName)}
                     alt={item?.SkuResourceImgName}
-                    className='h-[125px] w-[150px]'
+                    height={125}
+                    width={150}
                   />
                 </div>
                 <Link
@@ -31,6 +33,7 @@ export default function SpecCard({ productValueArray, locale = 'en' }) {
                   as={`/product-detail/${item.ProductProductNo}?skuid=K-${item?.SkuNumber}`}
                   className=''
                   passHref
+                  legacyBehavior
                 >
                   <div className='w-auto ml-[-210px] float-right w-calc-100-subtract-210 hover:cursor-pointer'>
                     {' '}

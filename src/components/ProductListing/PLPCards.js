@@ -54,6 +54,7 @@ export default function PLPCards({
           as={`/product-detail/${item.ProductProductNo}?skuid=K-${item?.SkuNumber}`}
           className=''
           passHref
+          legacyBehavior
         >
           <div>
             <div className='mb-[20px] px-[10px] text-center font-helvetica leading-tight text-ellipsis text-[14px] text-[#232323] hover:cursor-pointer'>

@@ -59,6 +59,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
               key={item?.sys?.id}
               target='_blank'
               rel='preload'
+              legacyBehavior
             >
               <div className='lg:relative lg:inline-block'>
                 <Image
@@ -116,6 +117,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
             <Link
               href={carouselItem[count]?.fields?.url || '#'}
               target='_blank'
+              legacyBehavior
             >
               <button className='bg-[#fff] px-4 py-3 text-[12px] rounded-md uppercase shadow-lg mt-[15px] font-HelveticaBold'>
                 Browse
