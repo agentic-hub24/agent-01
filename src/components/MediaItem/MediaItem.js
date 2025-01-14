@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 const MediaVideo = dynamic(() => import('./MediaVideo'))
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 
 const MediaItem = ({ assets, height }) => {
   return (

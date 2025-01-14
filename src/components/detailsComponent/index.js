@@ -430,6 +430,7 @@ export default function DetailsComponent({ productDetailsData }) {
                       msallowfullscreen='msallowfullscreen'
                       oallowfullscreen='oallowfullscreen'
                       webkitallowfullscreen='webkitallowfullscreen'
+                      loading='lazy'
                     ></iframe>
                   ) : (
                     <div
@@ -949,7 +950,7 @@ export default function DetailsComponent({ productDetailsData }) {
                             className='pr-4 md:w-1/3 w-full pb-4'
                           >
                             <div className='relative'>
-                              <img
+                              <Image
                                 src={
                                   item?.metaData?.items &&
                                   item?.metaData?.items[0]?.snippet?.thumbnails
@@ -960,6 +961,8 @@ export default function DetailsComponent({ productDetailsData }) {
                                 }
                                 className='w-full'
                                 alt='youtube thumbnail'
+                                width={item?.metaData?.items[0]?.snippet?.thumbnails?.standard.width}
+                                height={item?.metaData?.items[0]?.snippet?.thumbnails?.standard.height}
                               />
 
                               <button
@@ -1069,8 +1072,8 @@ export default function DetailsComponent({ productDetailsData }) {
                   mm{' '}
                 </div>
                 {lineArt && (
-                  <div className='mt-[30px]'>
-                    <img src={lineArt?.ResourceFullWebURL} alt='Gif line art' />
+                  <div className='mt-[30px]'>{console.log("lineart", lineArt)}
+                    <Image src={lineArt?.ResourceFullWebURL} alt='Gif line art' width={315} height={145}/>
                   </div>
                 )}
 

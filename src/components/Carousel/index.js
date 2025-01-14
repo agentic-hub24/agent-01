@@ -12,7 +12,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
   const [clicked, setClicked] = useState(null);
   const [count, setCount] = useState(0);
   return (
-    <div className='w-full cursor-pointer'>
+    <div className='w-full cursor-pointer min-h-[700px] min-w-[1400px]'>
       <Carousel
         showThumbs={false}
         infiniteLoop={true}
