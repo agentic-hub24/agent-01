@@ -1,16 +1,24 @@
 import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import { getProductListing } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
-import { fetchContentfulCommonEntries } from '@components/CommonSection';
-import SearchPage from '@components/Search';
-import SearchNotFound from '@components/Search/SearchNotFound';
-import SearchSuggestion from '@components/Search/SearchSuggestion';
-import Loader from '@components/loader';
 import { removeQuotesFromString } from '@utils/footerUtils';
+
+const { fetchContentfulCommonEntries } = dynamic(() =>
+  import('@components/CommonSection')
+);
+const SearchPage = dynamic(() => import('@components/Search'));
+const SearchNotFound = dynamic(() =>
+  import('@components/Search/SearchNotFound')
+);
+const SearchSuggestion = dynamic(() =>
+  import('@components/Search/SearchSuggestion')
+);
+const Loader = dynamic(() => import('@components/loader'));
 
 export default function ResultPage({
   productListingData,

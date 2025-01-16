@@ -47,6 +47,7 @@ export default function MediaVideo({ fields, height }) {
             onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
             className='w-full'
             alt='youtube thumbnail'
+            aria-label='youtube thumbnail'
           />
 
           <button

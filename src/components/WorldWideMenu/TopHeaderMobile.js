@@ -145,6 +145,7 @@ const TopHeaderMobile = ({ world = {}, handleCloseHandle }) => {
                         style={{ paddingLeft: '10px', paddingRight: '10px' }}
                         src={i.fields.mediaItem[0].fields.asset.fields.file.url}
                         alt={i.fields.mediaItem[0].fields?.altText}
+                        aria-label={i.fields.mediaItem[0].fields?.altText}
                       />
                     </a>
                   </li>

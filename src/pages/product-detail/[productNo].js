@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
@@ -6,8 +7,10 @@ import contentfulClient, {
 import { getProductDetails } from '@services/productListingAPI/client';
 import PropTypes from 'prop-types';
 import { fetchContentfulCommonEntries } from '@components/CommonSection';
-import DetailsComponent from '@components/detailsComponent';
 import { createPDPSeoData } from '@utils/footerUtils';
+
+// import DetailsComponent from '@components/detailsComponent';
+const DetailsComponent = dynamic(() => import('@components/detailsComponent'));
 
 export default function ProductDetailMain({ productDetailsData, productNo }) {
   const router = useRouter();

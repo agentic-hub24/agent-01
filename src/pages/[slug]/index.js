@@ -1,12 +1,13 @@
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import contentfulClient, {
   contentfulPreviewClient
 } from '@services/contenful/client';
 import PropTypes from 'prop-types';
 import { fetchContentfulCommonEntries } from '@components/CommonSection';
-import Landing from '@components/landing';
-import Loader from '@components/loader';
 
+const Loader = dynamic(() => import('@components/loader'));
+const Landing = dynamic(() => import('@components/landing'));
 export async function getServerSideProps({ params, preview, locale }) {
   const lc = ['default', 'es'].includes(locale) ? 'es-419' : 'en-US';
   const client = preview ? contentfulPreviewClient : contentfulClient;

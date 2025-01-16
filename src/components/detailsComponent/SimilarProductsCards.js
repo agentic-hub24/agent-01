@@ -23,6 +23,7 @@ export default function SimilarProductsCards({
                       item?.ProductNewProduct
                     )}
                     alt={item?.SkuResourceImgName}
+                    aria-label={item?.SkuResourceImgName}
                     className='h-[147px] w-[196px]'
                     onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                   />

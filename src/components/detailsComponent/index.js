@@ -407,6 +407,7 @@ export default function DetailsComponent({ productDetailsData }) {
                       </button>
                       <button
                         className='lg:block hidden text-[#e5e5e5] hover:text-[#232323]'
+                        aria-label='show more images'
                         onClick={() => handlePrevClick()}
                       >
                         <HiOutlineChevronDown size={45} />
@@ -518,6 +519,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 <button
                   className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0'
                   onClick={() => setShowZoom(true)}
+                  aria-label='Image Miximizer'
                 >
                   <MdOutlineZoomOutMap size={30} />
                 </button>
@@ -960,6 +962,7 @@ export default function DetailsComponent({ productDetailsData }) {
                                 }
                                 className='w-full'
                                 alt='youtube thumbnail'
+                                aria-label='youtube thumbnail'
                               />
 
                               <button
@@ -1069,7 +1072,11 @@ export default function DetailsComponent({ productDetailsData }) {
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
-                    <img src={lineArt?.ResourceFullWebURL} alt='Gif line art' />
+                    <img
+                      src={lineArt?.ResourceFullWebURL}
+                      alt='Gif line art'
+                      aria-label='Gif line art'
+                    />
                   </div>
                 )}
 
