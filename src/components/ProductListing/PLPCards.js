@@ -25,6 +25,7 @@ export default function PLPCards({
         }}
         onMouseOut={() => handleMouseOut(item.SkuNumber)}
         className='h-[380px] hover:shadow-2xl text-[#232323] bg-[#f9f9f9] md:basis-1/4 basis-1/3 grow mr-[2px] mb-[5px] ml-[2px] md:max-w-[33%] max-w-[50%] relative'
+        tabIndex={0}
       >
         <div className='mb-[10px] mt-2 flex justify-center border-4 border-neutral-50 '>
           <Image

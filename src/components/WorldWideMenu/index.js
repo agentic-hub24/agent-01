@@ -146,6 +146,7 @@ export default function WorldWideMenu({ world }) {
                             paddingRight: '10px'
                           }}
                           alt={i.fields.mediaItem[0].fields?.altText}
+                          aria-label={i.fields.mediaItem[0].fields?.altText}
                           src={
                             i.fields.mediaItem[0].fields.asset.fields.file.url
                           }
