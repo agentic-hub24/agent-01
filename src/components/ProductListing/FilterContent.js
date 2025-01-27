@@ -42,6 +42,7 @@ const ResultLinkButton = ({
           }`
         : `/browse/${slug}`
     }
+    legacyBehavior
   >
     <button className='m-0 mb-[10px] outline-none bg-gray-300 text-gray-800 inline-block border-0 rounded-md relative text-left w-full pb-[10px]'>
       <span className='block float-left text-base leading-normal font-normal shadow-none font-helvaticaFont mr-[10px] mt-[10px] ml-[10px] '>

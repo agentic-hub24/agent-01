@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import '../styles/global.scss';
 
 const Layout = dynamic(() => import('@components/Layout'));

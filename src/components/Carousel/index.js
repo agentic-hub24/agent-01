@@ -6,12 +6,13 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Link from 'next/link';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Image from 'next/legacy/image';
 
 const CarouselComponent = ({ carouselItem, showBanner }) => {
   const [clicked, setClicked] = useState(null);
   const [count, setCount] = useState(0);
   return (
-    <div className='w-full cursor-pointer'>
+    <div className='w-full cursor-pointer min-h-[700px] min-w-[1400px]'>
       <Carousel
         showThumbs={false}
         infiniteLoop={true}
@@ -57,15 +58,26 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
               href={item?.fields?.url || '#'}
               key={item?.sys?.id}
               target='_blank'
+              rel='preload'
+              legacyBehavior
             >
               <div className='lg:relative lg:inline-block'>
-                <img
+                <Image
                   src={
                     'https:' +
                     item?.fields?.mediaItem?.[0]?.fields.asset.fields.file.url
                   }
                   className='w-12 text-black'
                   alt={item?.fields?.mediaItem?.[0]?.fields.altText}
+                  width={
+                    item?.fields?.mediaItem?.[0]?.fields.asset.fields.file
+                      .details.image.width
+                  }
+                  height={
+                    item?.fields?.mediaItem?.[0]?.fields.asset.fields.file
+                      .details.image.height
+                  }
+                  priority
                 />
                 {/* carousel banner desktop */}
                 {showBanner && (
@@ -105,6 +117,7 @@ const CarouselComponent = ({ carouselItem, showBanner }) => {
             <Link
               href={carouselItem[count]?.fields?.url || '#'}
               target='_blank'
+              legacyBehavior
             >
               <button className='bg-[#fff] px-4 py-3 text-[12px] rounded-md uppercase shadow-lg mt-[15px] font-HelveticaBold'>
                 Browse

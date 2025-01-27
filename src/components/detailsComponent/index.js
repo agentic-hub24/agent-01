@@ -431,6 +431,7 @@ export default function DetailsComponent({ productDetailsData }) {
                       msallowfullscreen='msallowfullscreen'
                       oallowfullscreen='oallowfullscreen'
                       webkitallowfullscreen='webkitallowfullscreen'
+                      loading='lazy'
                     ></iframe>
                   ) : (
                     <div
@@ -444,7 +445,7 @@ export default function DetailsComponent({ productDetailsData }) {
                         handleMagnifier(e, 'myImage');
                       }}
                     >
-                      <img
+                      <Image
                         src={carouselImageFormatter(
                           carousel[imageIndex]?.ResourceName,
                           ProductNewProduct
@@ -452,6 +453,8 @@ export default function DetailsComponent({ productDetailsData }) {
                         alt={carousel[imageIndex]?.ResourceName}
                         id='myImage'
                         className='w-full'
+                        width={525}
+                        height={395}
                         onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                       />
                     </div>
@@ -575,13 +578,11 @@ export default function DetailsComponent({ productDetailsData }) {
                     setShowColorName('');
                   }}
                 >
-                  <img
+                  <Image
                     src={imageFormatter(el.SKUColorSwatchFilename)}
                     alt={el?.SKUColorSwatchFilename}
-                    style={{
-                      height: '40px',
-                      width: '40px'
-                    }}
+                    width={40}
+                    height={40}
                     onError={e => (e.target.src = DEFAULT_IMAGE_LINK)}
                   />
                   {colorFileName === el.SKUColorSwatchFilename && (
@@ -601,7 +602,7 @@ export default function DetailsComponent({ productDetailsData }) {
             </div>
             {!discontinuedBanner && (
               <div className='mt-3 px-[20px] py-[14px] rounded-md bg-[#364573] hover:bg-[#1f2b54] text-center'>
-                <Link href='/store-listing' passHref>
+                <Link href='/store-listing' passHref legacyBehavior>
                   <a
                     target='_blank'
                     className='text-[#fff] uppercase font-HelveticaBold text-[14px] hover:no-underline'
@@ -618,7 +619,7 @@ export default function DetailsComponent({ productDetailsData }) {
                   {PDP_LABELS[locale].availableAt}
                 </div>
                 <div className='flex'>
-                  <Link href={availableAt.RegionRetailer1URL.trim()} passHref>
+                  <Link href={availableAt.RegionRetailer1URL.trim()} passHref legacyBehavior>
                     <a target='_blank'>
                       <img
                         src={`https://kohler.scene7.com/is/image/PAWEB/${availableAt.RegionRetailer1IMG}?$WTB_featured_retailer$`}
@@ -951,7 +952,7 @@ export default function DetailsComponent({ productDetailsData }) {
                             className='pr-4 md:w-1/3 w-full pb-4'
                           >
                             <div className='relative'>
-                              <img
+                              <Image
                                 src={
                                   item?.metaData?.items &&
                                   item?.metaData?.items[0]?.snippet?.thumbnails
@@ -962,6 +963,8 @@ export default function DetailsComponent({ productDetailsData }) {
                                 }
                                 className='w-full'
                                 alt='youtube thumbnail'
+                                width={item?.metaData?.items[0]?.snippet?.thumbnails?.standard.width}
+                                height={item?.metaData?.items[0]?.snippet?.thumbnails?.standard.height}
                                 aria-label='youtube thumbnail'
                               />
 
@@ -1012,6 +1015,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 <Link
                   href={`${PDP_LABELS[locale].contactUsNumberLink}`}
                   passHref
+                  legacyBehavior
                 >
                   <a target='_blank' className='font-bold text-[#000]'>
                     {PDP_LABELS[locale].contactUsNumber}
@@ -1021,18 +1025,18 @@ export default function DetailsComponent({ productDetailsData }) {
               <p>{PDP_LABELS[locale].contactUsTime} </p>
               <p>{PDP_LABELS[locale].contactUsDay}</p>
               <p>
-                <Link href='/contact-us-page' passHref>
+                <Link href='/contact-us-page' passHref legacyBehavior>
                   <a target='_blank'>{PDP_LABELS[locale].emailUS}</a>
                 </Link>
               </p>
               <ul className='mt-[10px] list-disc mb-[30px]'>
                 <li>
-                  <Link href={`/${PDP_LABELS[locale].careCleaningLink}`}>
+                  <Link href={`/${PDP_LABELS[locale].careCleaningLink}`} legacyBehavior>
                     <a target='_blank'>{PDP_LABELS[locale].careAndCleaning}</a>
                   </Link>
                 </li>
                 <li>
-                  <Link href={`/${PDP_LABELS[locale].warrantyLink}`}>
+                  <Link href={`/${PDP_LABELS[locale].warrantyLink}`} legacyBehavior>
                     <a target='_blank'>{PDP_LABELS[locale].guarantee}</a>
                   </Link>
                 </li>
@@ -1072,11 +1076,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 </div>
                 {lineArt && (
                   <div className='mt-[30px]'>
-                    <img
-                      src={lineArt?.ResourceFullWebURL}
-                      alt='Gif line art'
-                      aria-label='Gif line art'
-                    />
+                    <Image src={lineArt?.ResourceFullWebURL} alt='Gif line art' width={315} height={145} aria-label='Gif line art'/>
                   </div>
                 )}
 

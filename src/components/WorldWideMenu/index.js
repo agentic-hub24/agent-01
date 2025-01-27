@@ -16,7 +16,7 @@ export default function WorldWideMenu({ world }) {
       <div className='h-[34px] bg-[#232323] text-[#b5b5b5] border-b-2 border-slate-800'>
         <div className='flex justify-between flex-rows max-w-screen-lg mx-auto pt-[6px]'>
           <div className='flex px-6'>
-            <Link href={logo?.fields?.url || '/'}>
+            <Link href={logo?.fields?.url || '/'} legacyBehavior>
               <h4
                 className='text-sm cursor-pointer hover:text-white font-helveticaGroup no-underline text-[#bebebe]'
                 style={{
@@ -38,6 +38,7 @@ export default function WorldWideMenu({ world }) {
                   href={item?.fields?.url || '/'}
                   key={item?.sys?.id || index}
                   locale={item?.fields?.url.replace('/', '')}
+                  legacyBehavior
                 >
                   <div>
                     <h4
@@ -67,6 +68,7 @@ export default function WorldWideMenu({ world }) {
                 href={item?.fields?.url || '/'}
                 key={item?.sys?.id || index}
                 locale={item?.fields?.url.replace('/', '')}
+                legacyBehavior
               >
                 <h4
                   className='text-sm cursor-pointer hover:text-white font-helveticaGroup no-underline text-[#bebebe]'

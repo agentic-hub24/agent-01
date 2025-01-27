@@ -20,7 +20,7 @@ const SearchSuggestion = ({ requestBody, suggestion, locale = 'en' }) => {
           </h1>
           <h1 className='font-sans font-light text-5xl leading-1'>
             {staticLabelsPLP[locale].didYouMean}
-            <Link href={formatRedirectionUrl(suggestion)}>
+            <Link href={formatRedirectionUrl(suggestion)} legacyBehavior>
               <a>&quot;{suggestion}&quot;</a>
             </Link>
           </h1>

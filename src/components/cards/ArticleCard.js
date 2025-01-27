@@ -73,7 +73,7 @@ const ArticleCard = ({
       </h5>
       {fields?.cta &&
         fields?.cta?.map(({ fields, sys }, index) => (
-          <Link key={sys?.id} href={fields?.url || ''}>
+          <Link key={sys?.id} href={fields?.url || ''} legacyBehavior>
             <a
               target={fields?.openerType !== 'Current Window' ? '_blank' : ''}
               className={`flex w-full text-[16px] ${
@@ -94,7 +94,7 @@ const ArticleCard = ({
       {cardRows?.map(({ fields, sys }) => (
         <div key={sys?.id} className={wrapperDivClass}>
           {fields?.url ? (
-            <Link href={fields?.url ? fields.url : ''}>
+            <Link href={fields?.url ? fields.url : ''} legacyBehavior>
               {renderCards(fields)}
             </Link>
           ) : (
