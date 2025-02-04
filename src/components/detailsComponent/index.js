@@ -522,7 +522,7 @@ export default function DetailsComponent({ productDetailsData }) {
                 <button
                   className='md:flex cursor-pointer hidden items-end bg-transparent absolute right-0 bottom-0'
                   onClick={() => setShowZoom(true)}
-                  aria-label='Image Miximizer'
+                  aria-label='Image Magnifier'
                 >
                   <MdOutlineZoomOutMap size={30} />
                 </button>
